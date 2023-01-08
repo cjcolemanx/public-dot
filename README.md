@@ -35,6 +35,8 @@ _which_ of those configs I use/wrote, check these files and folders:
 - 'rofi/scripts/myscripts'
 - ... and eww is just a mess rn
 
+Widgets and Dunst are launched/killed with either a keybind or they're part of the `baspwmrc` file.
+
 ## The Medium One
 
 BSPWM + SXHKD.
@@ -42,7 +44,7 @@ BSPWM + SXHKD.
 Includes a script for launching a scratchpad terminal.
 
 I made it a personal rule to only use `Super` in global operations (crazy), so
-every command in the `sxhkdrc` will
+every command in the `sxhkdrc` will begin with that key.
 
 Rofi menus are accessed via a set of `Super + Space` then `Super + <X>` -type
 commands.
