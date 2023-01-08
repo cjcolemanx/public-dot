@@ -1,0 +1,54 @@
+[core]
+  excludesfile = ~/.gitignore
+  editor = nvim
+  ignorecase = false
+[push]
+  default = simple
+[color]
+  status = auto
+  diff = auto
+  branch = auto
+  interactive = auto
+  grep = auto
+  ui = auto
+[alias]
+  ll = log --oneline
+  full = log --format=fuller
+  a  = add
+  s  = status
+  p = push
+  co = checkout
+  ci = commit
+  ca = commit -a
+  cm = commit -m
+  pff= push -ff
+  ps = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
+  pl = "!git pull origin $(git rev-parse --abbrev-ref HEAD)"
+  st = status
+  br = branch
+  ba = branch -a
+  # views
+  last = log -1 HEAD --stat
+  hist = log --pretty=format:\"%Cgreen%h %Creset%cd %Cblue[%cn] %Creset%s%C(yellow)%d%C(reset)\" --graph --date=relative --decorate --all
+  llog = log --graph --mane-status --pretty=format\"%C(red)%h %C(reset)(%cd) %C(green)%an %Creset%s %C(yellow)%d%Creset\" --date=relative
+  adog = log --all --decorate --oneline --graph
+  week = log --pretty=format:\"%C(yellow)%ce %Creset(%cr): %s\" --relative-date --since=1.week
+  day = log --pretty=format:\"%C(yellow)%ce %Creset(%cr): %s\" --relative-date --since=1.day
+  # list setup
+  showremotes = remote -v
+  showconfig = config --global -l
+  # quickies
+  search = "!git rev-list --all --header | xargs git grep -F"
+  main = switch main
+  master = switch master
+[ghq]
+  root = ~/Repos
+; INCLUDE THESE IN ~/.gitconfig
+; [include]
+;   path = ~/.config/git/.gitconfig
+; [github]
+;   user = <github.username>
+;   email = <github.email>
+; [user]
+; 	name = <github.username>
+; 	email = <github.email>

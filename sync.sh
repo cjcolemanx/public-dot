@@ -5,6 +5,7 @@ arr_folders=(
   "bash" 
   "bspwm"
   "eww"
+  "git"
   "nvim"
   "polybar"
   "rofi"
