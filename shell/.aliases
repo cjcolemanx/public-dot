@@ -33,17 +33,17 @@ alias   ls='ls --group-directories-first'
 alias list='ls -alX' # same as above, but different format
 alias   la='ls --color=auto --group-directories-first -Aglx'
 alias lsla='ls -al --color=always --group-directories-first'
-alias   rm='rm -I'
-alias   rd='rm -Irf'
-alias   md='mkdir -p'
 alias wget='wget -c' # continue
+alias   rm='rm -i'
+alias   rd='rm -ir'
+alias   md='mkdir -p'
 alias    g='git'
 # Colorize Grep
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 # NOTE: new, not complete
 # Show a directories contents (quickly)
-alias checkdir='list $1'
+# alias checkdir='list $1'
 # Other Utility
 alias   now='date +"%T"'
 alias today='date +"%d-%m-%Y"'
@@ -62,7 +62,6 @@ alias chmod+rwx='chmod +rwx'
 
 ### => Useful User Scripts
 alias touchNested='bash ~/.scripts/files/touchNested.sh'
-alias        cdls='bash ~/.scripts/combos/cdls.sh'
 alias bkp-configs='bash ~/.scripts/maintenance/bkp_configs.sh'
 # FIXME: Not working! It's a broken rofi script
 # alias man='bash ~/.scripts/utility/man_search.sh'

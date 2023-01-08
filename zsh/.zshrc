@@ -6,6 +6,7 @@
 [ -f ~/.config/zsh/.zsh_aliases ] && source ~/.config/zsh/.zsh_aliases
 [ -f ~/.config/zsh/.zsh_binds ] && source ~/.config/zsh/.zsh_binds
 [ -f ~/.config/shell/.aliases ] && source ~/.config/shell/.aliases
+[ -f ~/.config/shell/.funcs ] && source ~/.config/shell/.funcs
 [ -f ~/.config/shell/.variables ] && source ~/.config/shell/.variables
 [ -f ~/.config/shell/.sources ] && source ~/.config/shell/.sources
 [ -f ~/.scripts/master.sh ] && source ~/.scripts/master.sh
