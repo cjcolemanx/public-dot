@@ -4,16 +4,16 @@ Don't expect a lot of stability here. I tinker with this constantly.
 
 ## Dependencies
 
-- Window Manager: bspwm + sxhkd
-- Shell: ZSH (w/ Oh-My-Zsh and Starship)
-- Text Editor: NeoVim and VSCodium
-- Widgets and Bars: Rofi, Eww, and Polybar
-- Terminal Emulator: Kitty
-- Screenshots: Flameshot (wanna look into Scrot tho)
-- Notifications: Dunst
-- Wallpapers: Nitrogen
-- Compositor: Picom
-- Clipboard: Clipmenu
+- Window Manager: [bspwm](https://github.com/baskerville/bspwm) + [sxxhkd](https://github.com/baskerville/sxhkd)
+- Shell: ZSH (w/ [Oh-My-Zsh](https://ohmyz.sh/) and [Starship](https://starship.rs/))
+- Text Editor: [NeoVim](https://neovim.io/) and [VSCodium](https://vscodium.com/)
+- Widgets and Bars: [Rofi](https://github.com/davatorium/rofi), [Eww](https://github.com/elkowar/eww), and [Polybar](https://github.com/polybar/polybar)
+- Terminal Emulator: [Kitty](https://sw.kovidgoyal.net/kitty/)
+- Screenshots: [Flameshot](https://flameshot.org/) (wanna look into Scrot tho)
+- Notifications: [Dunst](https://dunst-project.org/)
+- Wallpapers: [Nitrogen](https://github.com/l3ib/nitrogen/)
+- Compositor: [Picom](https://github.com/yshui/picom)
+- Clipboard: [Clipmenu](https://github.com/cdown/clipmenu)
 
 ### Notes
 
@@ -35,6 +35,8 @@ _which_ of those configs I use/wrote, check these files and folders:
 - 'rofi/scripts/myscripts'
 - ... and eww is just a mess rn
 
+Widgets and Dunst are launched/killed with either a keybind or they're part of the `baspwmrc` file.
+
 ## The Medium One
 
 BSPWM + SXHKD.
@@ -42,7 +44,7 @@ BSPWM + SXHKD.
 Includes a script for launching a scratchpad terminal.
 
 I made it a personal rule to only use `Super` in global operations (crazy), so
-every command in the `sxhkdrc` will
+every command in the `sxhkdrc` will begin with that key.
 
 Rofi menus are accessed via a set of `Super + Space` then `Super + <X>` -type
 commands.
