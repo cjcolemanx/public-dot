@@ -1,0 +1,19 @@
+# use 'compgen -c | grep -x . | sort -u' to find single
+#  character aliases
+# [[ -f ~/.config/shell/.aliases ]] && . ~/.config/shell/.aliases 
+
+# Source Commands
+alias sourceme='source ~/.zshrc'
+
+#### UNUSED ####
+
+# Git
+# alias add='git add -u'
+# alias addall='git add .'
+# alias branch='git branch'
+# alias checkout='git checkout'
+# alias clone='git clone'
+# alias commit='git commit'
+# alias fetch='git fetch'
+# alias pull='git pull origin'
+# alias push='git push origin'

@@ -1,0 +1,26 @@
+#############################
+### ~~ Shell Variables ~~ ###
+#############################
+
+### => Default Programs
+export PAGER=less
+export EDITOR=nvim
+
+### => Locations
+export DIR_HDD_A="/mnt/A"
+export DIR_HDD_BKP="/mnt/BKP"
+export DIR_MY_SCRIPTS="~/.scripts"
+export MY_ARCH_PROFILE="~/.my_arch_profile"
+export MYSCRIPTS="/home/charles/.scripts"
+export HDD_A="/mnt/A"
+
+### => Config Locations
+### NOTE: likely not used anywhere, but I'm scared to remove it now :)
+export NVIMRC='~/.config/nvim/init.lua'
+
+### => Clipmenu Config
+export CM_LAUNCHER=rofi
+export CM_HISTLENGTH=16
+
+# Setup Vivid (ls output)
+export LS_COLORS="$(vivid generate gruvbox-dark-hard)"

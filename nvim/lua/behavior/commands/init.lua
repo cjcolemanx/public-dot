@@ -1,0 +1,5 @@
+require("behavior.commands.aucommands")
+require("behavior.commands.plugin-aucommands")
+require("behavior.commands.tabs")
+require("behavior.commands.window-commands")
+require("behavior.commands.workspace-aucommands")

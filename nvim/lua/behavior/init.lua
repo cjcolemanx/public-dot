@@ -1,0 +1,7 @@
+require("behavior.commands")
+require("behavior.dev")
+require("behavior.functions")
+require("behavior.global")
+require("behavior.scripts")
+require("behavior.snippets")
+require("behavior.utility")

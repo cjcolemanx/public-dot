@@ -1,0 +1,12 @@
+# NVM
+if [ -f "/usr/share/nvm/init-nvm.sh" ] ; then
+  source /usr/share/nvm/init-nvm.sh
+fi
+
+# Angular CLI Autocompletion
+source <(ng completion script)
+
+# Cargo (Rust)
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi

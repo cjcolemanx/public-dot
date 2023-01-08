@@ -1,0 +1,29 @@
+### EXPORTED
+export EDITOR="nvim"                     # default text editor
+export HISTCONTROL=ignoredups:erasedups  # no duplicates in history
+
+export RANGER_LOAD_DEFAULT_RC=FALSE  # prevent loading custom AND default
+
+### PATH
+#if [ -d "$HOME/.bin" ] ;
+#  then Path="$HOME/.bin:$PATH"
+#fi
+#
+#if [ -d "$HOME/.local/bin" ] ;
+#  then Path="$HOME/.local/bin:$PATH"
+#fi
+#
+#if [ -d "$HOME/Applications" ] ;
+#  then Path="$HOME/Applications:$PATH"
+#fi
+
+### OTHER ENVIRONMENT VARIABLES
+#if [ -z "$XDG_CONFIG_HOME" ]; then
+#  export XDG_CONFIG_HOME="$HOME/.config"
+#fi
+#if [ -z "$XDG_DATA_HOME" ]; then
+#  export XDG_DATA_HOME="$HOME/.local/share"
+#fi
+#if [ -z "$XDG_CACHE_HOME" ]; then
+#  export XDG_CACHE_HOME="$HOME/.cache"
+#fi

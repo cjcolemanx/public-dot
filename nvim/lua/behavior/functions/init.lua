@@ -1,0 +1,5 @@
+require("behavior.functions.cmp")
+require("behavior.functions.common-funcs")
+require("behavior.functions.fs")
+require("behavior.functions.nvim-tree")
+require("behavior.functions.util")

@@ -1,0 +1,138 @@
+###########################
+### ~~ Shell Aliases ~~ ###
+###########################
+# Avoid these!:
+# 'w' (show logged in users' activity)
+# 'X' (X Window System server)
+# 'R' (R programming language interpreter)
+# '[' (similar to 'test')
+
+### => File Navigation
+### 4 and 5 are not all that useful, but ya know
+alias   ..='cd ../'
+alias  ...='cd ../../'
+alias ....='cd ../../../'
+alias   .4='cd ../../../../'
+alias   .5='cd ../../../../../;'
+# Quick Directories
+alias      ranger-home='ranger $HOME'
+alias         ranger-a='ranger /mnt/A'
+alias  ranger-projects='ranger $HOME/Projects'
+alias     ranger-repos='ranger $HOME/Repos'
+alias   ranger-scripts='ranger $HOME/.scripts'
+alias ranger-downloads='ranger $HOME/Downloads'
+alias   ranger-myrepos='ranger $HOME/Repos/github.com/cjcolemanx'
+alias   ranger-configs='ranger $HOME/.config'
+
+### => Shorthand / Safety Nets
+### Some stuff should be automatic
+alias grep='grep --color'
+alias egrep='egrep -E --color=auto'
+alias fgrep='fgrep -F --color=auto'
+alias   ls='ls --group-directories-first'
+alias list='ls -alX' # same as above, but different format
+alias   la='ls --color=auto --group-directories-first -Aglx'
+alias lsla='ls -al --color=always --group-directories-first'
+alias   rm='rm -I'
+alias   rd='rm -Irf'
+alias   md='mkdir -p'
+alias wget='wget -c' # continue
+alias    g='git'
+# Colorize Grep
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+# NOTE: new, not complete
+# Show a directories contents (quickly)
+alias checkdir='list $1'
+# Other Utility
+alias   now='date +"%T"'
+alias today='date +"%d-%m-%Y"'
+alias     h='history'
+alias     j='jobs -l'
+
+### => Permissions Handling
+### Type faster to trick your brain into thinking you're more productive
+alias   chmod+r='chmod +r'
+alias   chmod+w='chmod +w'
+alias   chmod+x='chmod +x'
+alias  chmod+rw='chmod +rw'
+alias  chmod+rx='chmod +rx'
+alias  chmod+wx='chmod +wx'
+alias chmod+rwx='chmod +rwx'
+
+### => Useful User Scripts
+alias touchNested='bash ~/.scripts/files/touchNested.sh'
+alias        cdls='bash ~/.scripts/combos/cdls.sh'
+alias bkp-configs='bash ~/.scripts/maintenance/bkp_configs.sh'
+# FIXME: Not working! It's a broken rofi script
+# alias man='bash ~/.scripts/utility/man_search.sh'
+
+### => Confirmation
+### Stop breaking things : )
+alias cp='cp -i'
+alias ln='ln -i'
+alias mv='mv -i'
+
+### => Quick Config
+### Faster dotfile editing
+alias   sxhkdrc='nvim ~/.config/sxhkd/sxhkdrc'
+alias   bspwmrc='nvim ~/.config/bspwm/bspwmrc'
+alias   kittyrc='nvim ~/.config/kitty/kitty.conf'
+alias    nvimrc='nvim ~/.config/nvim/init.lua'
+alias    rofirc='nvim ~/.config/rofi/config.rasi'
+alias     ewwrc='nvim ~/.config/eww/eww.yuck'
+alias polybarrc='nvim ~/.config/polybar/grayblocks/config.ini'
+alias   ncmpcpp='nvim ~/.config/ncmpcpp/config'
+alias   shellrc='nvim ~/.config/shell/todo.md'
+alias     zshrc='nvim ~/.config/zsh/todo.md'
+alias    bashrc='nvim ~/.config/bash/todo.md'
+
+### => Note-Taking
+alias journal="ranger /mnt/A/notes/personal" # Personal Notes
+alias   notes="ranger /mnt/A/notes" # Technical Notes
+
+
+### => Use Defaults
+### Not always a good idea, but these are pretty much never gonna change
+###   on this machine.
+alias sxhkd='sxhkd -c ~/.config/sxhkd/sxhkdrc' # Key bindings
+alias  code='codium' # No VSCode pls
+alias   eww='~/Repos/github.com/elkowar/eww/target/release/eww' # 
+
+### => Switch Shells
+### I only ever use ZSH now so idk...
+alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
+alias  tozsh="sudo chsh $USER -s /usr/bin/zsh && echo 'Now log out.'"
+alias tofish="sudo chsh $USER -s /usr/bin/fish && echo 'Now log out.'"
+# Helpers
+alias whichshells='cat /etc/shells' # List Available Shells
+alias   whatshell='ps -p $$'        # List Current Shell
+
+# kitty kittens
+alias icat="kitty +kitten icat --align=left" # Image-in-terminal Kitty
+
+
+### => Window Manager Stuff
+### Use to identify programs for bspwm
+alias pavucontrol='pavucontrol --class pavucontrol' # Always Launch with this class
+
+# Source
+alias miniplayer='miniplayer'
+
+### => Other utils
+
+# => Commands
+# NOTE: old and useless for the Newman, 
+# but super useful to keep around for other keyboards
+alias fixmykeys='sudo kbct remap --config ~/.config/kbct.yaml &'
+
+### => Arch aliases
+alias pacman='sudo pacman' # Skip a key press
+alias pacsyu='sudo pacman -Syu' # update standard plugins
+alias pacsyyu='sudo pacman -Syyu' # refresh pkglist and update standard
+# alias parsua='paru -Sua --noconfirm' # update AUR pkgs (paru)
+# alias parsyu='paru -Syu --noconfirm' # update standard AUR pkgs (paru)
+alias yaysua='yay -Sua --noconfirm' # update AUR pkgs (yay)
+alias yaysyu='yay -Syu --noconfirm' # update standard and AUR pkgs (yay)
+# alias unlock='sudo rm /var/lib/pacman/db.lck' # remove pacman lock
+# alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages

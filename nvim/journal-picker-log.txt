@@ -1,0 +1,23 @@
+Current Line: ""
+
+Current History: {
+  _append = <function 1>,
+  _reset = <function 2>,
+  content = { "nightfox", "nvim-tree.mapp", "nvim-tree.view.map", "mks", "telescope.ext", "leap.", "diagnostic", "vim.lsp.disable", "attach", "nvim-tree", "telescope", "nvim-tree", "commenmt", "buf_get", "get_active", "cmp.", "luasnip", "cmp", "vim.keymap", "os.date", "cmp.sel", "cmp.s", "cmp", "luasn", "todo-", "popup", "men", "telescope.actions.", "telescope.utils", "notify", "nvim_noti", "vim.ui", "setKey", "feed", "inspect", "nightfox", "luasnip", "nvim", "file", "telescope.pickers", "telescope.builtin.pickers", "telescope.actions", "vim.fn", "vim.cmd", "telescope.theme", "telescope.lay", "telesope.pickers", "luasnip", "edit", "entry_", "telescope.actions", "vim", "cmd", "vim.cmd", "mks", "telescope.setup", "telescope.previ", "pickers", "telescope.pickers", "readdir", "buf", "buffer", "tabs", "tabn", "tab", "tabedit", "buffer", "telescope.pre", "builtin", "notify", "telescope.picker", "telescope", "telescope.pickers", "termgui", "fox", "highligh", "telescope.buil", "Indent", "telescope.builtin.hi", "Indent", "highligh", "telescope", "readdir", "keymap.", "readdir", "entry", "fee", "vsplit", "split", "splitr", "nvim-tree", "vim.cmd", "nvim_create", "create_au", "pickers", "entry_", "make_entry", "telescope.action.", "telescope.action", "actions.set" },
+  enabled = true,
+  index = 101,
+  limit = 100,
+  path = "/home/charles/.local/share/nvim/telescope_history",
+  <metatable> = <1>{
+    __index = <table 1>,
+    append = <function 3>,
+    get_next = <function 4>,
+    get_prev = <function 5>,
+    new = <function 6>,
+    reset = <function 7>
+  }
+}
+
+Current Prompt Buffer: 16
+
+Current Prompt: "hello"

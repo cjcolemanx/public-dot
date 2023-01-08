@@ -1,0 +1,1 @@
+- [ ] test out checkdir alias and complete functionality
