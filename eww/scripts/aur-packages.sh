@@ -9,6 +9,6 @@ updates=$((updates_aur))
 if [ "$updates" -gt 0 ]; then
     echo $updates
 else
-    echo "00"
+    echo ""
 fi
 

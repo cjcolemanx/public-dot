@@ -1,21 +1,20 @@
 local M = {}
 -- TODO: Implement
 M.journal_picker = {
-  -- find in `lua/behavior/global/variables`
   location = vim.g.personal_wiki_path,
   journal_items = {
-    "TOC.md",
+    "tasks/TOC.md",
+    "journal/TOC.md",
+    "goals/TOC.md",
   },
 }
 
--- You can't have mine...
 M.config_files = {
-  location = "$HOME/.config/nvim/",
+  location = "/home/charles/.config/nvim/",
 }
 
--- You can't have mine...
 M.documentation_picker = {
-  location = "$HOME/Downloads/Dash-User-Contributions/docsets/",
+  location = "/mnt/A/notes/_docsets/Dash-User-Contributions/docsets/",
 }
 
 return M

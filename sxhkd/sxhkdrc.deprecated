@@ -1,0 +1,69 @@
+####
+# General Format: 
+#   Domain Selector Commands(flaggsssss)
+####
+# MEGA RESTART
+# super + r; super + r; super + r
+#   pkill sxhkd & sxhkd -c ~/.config/sxhkd/sxhkdrc &
+
+#########################
+###   ~ Super Control ~
+###
+### Media
+########################
+
+# super + ctrl + {j,k}
+#   playerctl volume {0.05-,0.05+}
+
+# super + ctrl + {comma,period}
+#   playerctl {previous,next}
+
+# super + ctrl + {h,l}
+  # playerctl position {10-,10+}
+
+# super + ctrl + space
+  # playerctl play-pause
+
+# super + ctrl + BackSpace
+  # playerctl stop
+
+# super + ctrl + Return
+  # playerctl play
+
+# XF86AudioLowerVolume
+	# mpc volume -1
+  # playerctl volume 0.01-
+
+# XF86AudioRaiseVolume
+	# mpc volume +1
+  # playerctl volume 0.01+
+
+# FIXME:
+# shuffle
+# super + ctrl + s
+#   zsh ~/.config/sxhkd/scripts/toggle_shuffle.sh
+# loop
+# super + ctrl + r
+#   zsh ~/.config/sxhkd/scripts/toggle_repeat.sh
+
+# FIXME: not working
+# super + alt + i; super + alt + l; {1,2,3}
+# 	bspc node --layer {below,normal,above}
+# super + b ; super + {1,2,3,4,5,bracketleft,bracketright}
+#   bsp-layout {tall, rtall, wide, rwide, grid, prev, next}
+# insert receptacle
+#super + i; {h,j,k,l}
+#  bspc node --presel-dir {west,south,north,east} -i
+# Move to rectacle
+#super + r
+#  bspreceptacle
+
+# Scratchpad
+# super + t
+#   id=$(cat /tmp/scratchid);\
+#   bspc node $id --flag hidden;bspc node -f $ik
+
+# File Manager
+# super + space; f
+# 	$TERMINAL -t float -g=140x40 -e ranger
+

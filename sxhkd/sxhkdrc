@@ -50,7 +50,7 @@ super + space; super + {slash}
 super + space; super + {c}
   clipmenu 
 super + u
-	$HOME/.config/sxhkd/scripts/scratchpad.sh
+	/home/charles/.config/sxhkd/scripts/scratchpad.sh
 
 # FIXME:
 # super + space; super + {f}

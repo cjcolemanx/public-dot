@@ -1,11 +1,14 @@
-local status, shade = pcall(require, "shade")
+-- FIXME: this guy is breaking popups
+-- local status, shade = pcall(require, "shade")
+
+local status = false
 
 if not status then
-	return
+  return
 end
 
 shade.setup({
-	overlay_opacity = 60,
-	opacity_step = 1,
-	keys = {},
+  overlay_opacity = 60,
+  opacity_step = 1,
+  keys = {},
 })
