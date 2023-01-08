@@ -1,0 +1,38 @@
+;; DEFINITIONS
+(defpoll aur-pkgs :interval "3600s"
+  :initial 0
+  `bash $HOME/.config/eww/scripts/aur-packages.sh`
+)
+
+(defpoll arc-pkgs :interval "3600s"
+  :initial 0
+  `bash $HOME/.config/eww/scripts/arch-packages.sh`
+)
+
+
+(defpoll notifs-waiting :interval "1s" 
+  :initial 0
+  `dunstctl count waiting`
+)
+
+(defpoll notifs-displayed :interval "1s" 
+  :initial 0
+  `dunstctl count displayed`
+)
+
+(defpoll notifs-history :interval "1s" 
+  :initial 0
+  `dunstctl count history`
+)
+
+(defpoll volume :interval "5s" 
+                :initial "0" 
+  `bash $HOME/.config/eww/scripts/amixer-get-volume.sh`
+)
+
+(defpoll date-short :interval "20h" `date '+%m/%d'`)
+(defpoll date-year :interval "20h" `date '+%y'`)
+(defpoll date-day :interval "20h" `date '+%d'`)
+
+;; TOGGLES
+(defvar show_cal_window false)

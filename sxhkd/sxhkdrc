@@ -1,0 +1,214 @@
+###########################
+###      ~ SXHKD ~      ###
+###########################
+
+### Terminals
+super + {_, alt} + Return 
+	{kitty, alacritty}
+
+###########################
+###   ~ Super Space ~
+###
+### Rofi and Applications
+###########################
+
+# TODO: calculator
+#super + space ; super + c
+#  rofi -show calc -combi calc -no-show-match -no-sort
+
+### Quick Open
+super + space; super + {w}
+  {brave}
+super + o
+  bash ~/.config/polybar/grayblocks/scripts/launcher.sh &
+super + shift + o
+  rofi -show combi -combi-modi "window"
+
+### Rofi Launchers
+super + space; super + {m}
+  bash  { ~/.config/rofi/applets/bin/mpd.sh &}
+super + space; super + {v}
+  bash  { ~/.config/rofi/applets/bin/volume.sh &}
+super + space; super + {s}
+  bash  { ~/.config/rofi/applets/bin/screenshot.sh &}
+super + space; super + {l}
+  bash  { ~/.config/rofi/applets/bin/quicklinks.sh &}
+super + space; super + {f}
+  bash  {~/.config/rofi/scripts/my-scripts/ranger.sh &}
+super + space; super + {y}
+  bash  {~/.config/rofi/scripts/my-scripts/shell_scripts.sh &}
+super + space; super + {t}
+  bash  {~/.config/rofi/scripts/my-scripts/tmux.sh &}
+super + space; super + {r}
+  bash  {~/.config/rofi/scripts/my-scripts/master_restarter.sh &}
+
+# ...And one when you forget the binds : )
+super + space; super + {slash}
+  bash  {~/.config/rofi/scripts/my-scripts/keys_please.sh &}
+
+### Other Apps/Things
+super + space; super + {c}
+  clipmenu 
+super + u
+	$HOME/.config/sxhkd/scripts/scratchpad.sh
+
+# FIXME:
+# super + space; super + {f}
+#   bash  {~/.config/rofi/scripts/my-scripts/finders.sh &}
+
+### Dunst
+# Hide All Notifications
+super + space; super + space
+  dunstctl close-all
+
+# Display Notifications
+super + minus
+  dunstctl history-pop
+
+# Close Latest Notification
+super + equal
+  dunstctl close
+
+##########################
+###   ~ Super Control ~
+###
+### Media
+##########################
+
+### Screenshots
+# Desktop
+super + ctrl + p
+	flameshot screen --clipboard --path /mnt/A/pictures/screenshots
+
+# All Desktops
+super + ctrl + shift + p
+	flameshot full --clipboard --path /mnt/A/pictures/screenshots
+
+# Snipping
+super + ctrl + s
+	flameshot gui --clipboard --path /mnt/A/pictures/screenshots
+
+### Audio
+# Volume
+super + ctrl + {j,k}
+  mpc volume {-7,+7}
+
+# Incremental Seeking
+super + ctrl + {comma,period}
+  mpc seekthrough {-00:00:05,+00:00:05}
+
+# Track Switching
+super + ctrl + {h,l}
+  mpc {prev,next}
+
+# Play/Pause/Stop
+super + ctrl + space
+  mpc toggle
+super + ctrl + BackSpace
+  mpc stop
+super + ctrl + Return
+  mpc play
+
+# Lil' GUI
+# NOTE: Depends on https://github/GuradKenzie/miniplayer
+super + ctrl + m
+	/home/charles/.config/sxhkd/scripts/miniplayer.sh
+
+### Output Routing
+# ALSA stuff is too hard, so I use this GUI
+super + ctrl + equal
+	pavucontrol --class pavucontrol
+
+### Headset Controls
+XF86AudioLowerVolume
+	amixer -Mq set Master,0 1%- unmute & notify-send "Volume (-)"
+
+XF86AudioRaiseVolume
+	amixer -Mq set Master,0 1%+ unmute & notify-send "Volume (+)"
+
+##############################
+###   ~ Super Alternative ~
+###
+### Window Management
+##############################
+
+### Basic
+# Focus/Swap Node In Direction
+super + {_,shift + }{h,j,k,l}
+  bspc node -{f,s} {west,south,north,east} {,--follow}
+
+# Focus Next/Prev Node (Cycles EVERY window)
+super + {_,shift + } n
+  bspc node -f {next,prev}
+
+# Focus Next/Prev Node (Only This Workspace)
+super + bracket{left,right}
+  bspc node -f {prev,next}.local
+
+# Switch Desktop
+super + {_, shift + } Tab
+  bspc desktop -f {prev,next}.local
+
+# Cycle tiled and monocle
+super + m
+  bspc desktop -l next
+
+# close window
+super + w
+  bspc node -c
+
+# Change Window Type
+super + slash; super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# Focus other monitor
+super + f; super + {h,l}
+  bspc monitor -f {prev, next}
+
+### Re-Ordering and Sending
+# Send to desktop
+super + {_, shift +} {1-9,0}
+  bspc {desktop  -f, node -d} '^{1-9,10}' 
+
+# Swap Smallest and Biggest Nodes
+super + {g, shift + g}
+	bspc node -s {biggest, smallest}.local
+
+# Rotate Desktop
+super + r; super + {h,l}
+	bspc node @/ -R {270, 90}
+
+# Rotate Nodes
+super + r; super + {j,k}
+	bspc node @/ -C {forward, backward}
+
+# send to monitor
+super + s ; super + {l,h}
+  bspc node -m {next,prev} --follow
+
+# Expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+  bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Contract a window by moving one of its side inward
+super + alt + c; super + alt + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Move Floating Window
+super + shift + {a,s,w,d}
+	bspc node focused -v {-40 0, 0 40, 0 -40, 40 0}
+
+### Receptacles
+# NOTE: MAJOR WIP - receptacles are difficult to manage, and the bspc syntax isn't helping
+# Insert Receptacle
+super + i; super + r; super + {h,j,k,l}
+	bspc node -i {west,south,north,east}
+
+# Move Focused into Receptacle
+super + i; super + m; super + {h,j,k,l}
+	bash ~/.config/bspwm/scripts/move-to-receptacle.sh
+
+# FIXME:
+# Kill Receptacle in direction
+# super + i; super + q; super + {h,j,k,l}
+# 	bspc node -k {west,south,north,east}.leaf.\!window

@@ -1,0 +1,92 @@
+(include "variables.yuck")
+
+(defwidget arch-status [] 
+  (box :class "sidebar-container" 
+       :orientation "vertical" 
+       :valign "start"
+       :halign "fill" 
+       :spacing 3
+       (box :orientation "vertical" :halign "fill"
+         "" arc-pkgs
+       )
+       (box :orientation "vertical" :halign "fill"
+         "" aur-pkgs
+       )
+  )
+)
+
+(defwidget dunst-notifs []
+  (box :class "sidebar-container"
+    :orientation "vertical" 
+    :valign "start"
+    :halign "fill" 
+    :spacing 3
+    ; :hexpand true
+    (box :orientation "vertical" 
+      :halign "fill" 
+      "" notifs-waiting 
+    )
+    (box :orientation "vertical" :halign "fill" 
+      "" notifs-displayed
+    )
+    (box :orientation "vertical" :halign "fill" :hexpand false
+      "" notifs-history
+    )
+  )
+)
+
+(defwidget volume []
+  (box :class "volume-metric"
+       :orientation "v"
+       :space-evenly false
+       :valign "fill"
+       :vexpand false
+    (scale :orientation "h" 
+           :min 0
+           :max 100 
+           ; :onchange "pamixer --set-volume $(echo {} | sed 's/\\..*//g')"
+           :value volume)
+    (eventbox :onscroll "if [ '{}' == 'up' ]; then pamixer -i 5; else pamixer -d 5; fi"
+              :vexpand true
+              :valign "fill"
+      (box :orientation "v"
+           :valign "fill"
+           :vexpand true
+        (button ;:onclick "./audio.sh toggle"
+          (label :style "font-size: 1.2em; font-family: DejaVuSansMono Nerd Font Mono"
+                 :text ""
+          )
+        )
+        (button ;:onclick "pavucontrol &"
+          "${volume}%"
+        )
+      )
+    )
+  )
+)
+
+(defwidget cal []
+  (box :class "volume-metric"
+       :orientation "v"
+       :space-evenly false
+       :valign "fill"
+       :vexpand false
+    (eventbox :onhover `eww update show_cal_window='true'`
+              ; :onscroll "if [ '{}' == 'up' ]; then pamixer -i 5; else pamixer -d 5; fi"
+              :vexpand true
+              :valign "fill"
+      (box :orientation "v"
+           :valign "fill"
+           :vexpand true
+        (button ;:onclick "./audio.sh toggle"
+          (label :style "font-size: 1.2em; font-family: DejaVuSansMono Nerd Font Mono"
+                 :text ""
+          )
+        )
+        (button ;:onclick "pavucontrol &"
+          "${date-short}"
+        )
+      )
+    )
+  )
+)

@@ -1,0 +1,59 @@
+;; IMPORTS
+(include "widgets.yuck")
+(include "separators.yuck")
+
+(defwindow sidebar 
+  :monitor 0
+  :geometry (geometry :x "2px"
+    :y "60px"
+    :width "24px"
+    :height "1360px" 
+    :anchor "top left"
+   )
+  :stacking "fg"
+  :reserve (struts :distance "40px"
+    :side "top"
+  )
+  :windowtype "dock"
+  :wm-ignore false
+  (box :orientation "vertical"
+       :class "sidebar-main"
+       :halign "center"
+       :space-evenly true
+       (box :orientation "vertical"
+            :space-evenly false
+            :spacing 3
+            (arch-status)
+            (_vert_sep_line)
+            (dunst-notifs)
+            (_vert_sep_line)
+       )
+       (box )
+       (box :orientation "vertical"
+            :space-evenly false
+            :valign "end"
+            (volume)
+            (cal)
+       )
+       (box :orientation "vertical"
+            :space-evenly false
+            :valign "end"
+            (button :onclick "killall -q DiscordCanary"
+                    "k_Dis"
+            )
+       )
+  )
+)
+
+(defwindow calendar
+  :geometry (geometry :x '80px'
+                      :y "-3%"
+                      :anchor "bottom left"
+                      :width "270px"
+                      :height "60px"
+            )
+  (box :visible false ;{show_cal_window ? true : false}
+       :style "background-color: #383838"
+    (calendar :day date-day :year date-year )
+  )
+)

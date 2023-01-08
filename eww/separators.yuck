@@ -1,0 +1,7 @@
+(defwidget _vert_sep_line []
+  (box :orientation "horizontal" 
+    :height 2
+    :valign "center"
+    :style "border-bottom: 1px solid #484848;"
+  )
+)

@@ -1,0 +1,59 @@
+* {
+  all: unset;
+}
+
+window {
+  font-size: 16px;
+}
+
+.sidebar-main {
+  background-color: #1d2021;
+  // padding-top: 6px;
+  // padding-left: 6px;
+  // padding-right: 6px;
+  padding: 6px;
+  color: #8ec07c;
+}
+
+.sidebar-container {
+  background-color: #1d2021;
+  font-family: JetBrainsMono Nerd Font;
+
+  box {
+    background-color: #383838;
+    // margin-top: 4px;
+    border: 1px solid #383838;
+    border-radius: 3px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+.volume-metric {
+  background-color: #1d2021;
+  color: #ebdbb2;
+  padding: 0;
+
+  .volume-top > scale {
+    margin-bottom: 5px;
+  }
+
+  slider {
+    all: unset;
+  }
+
+  scale trough highlight {
+    all: unset;
+    background-color: #8ec07c;
+    // background-color: #665c54;
+    border-bottom-right-radius: 5px;
+  }
+  scale trough {
+    all: unset;
+    background-color: #1d2021;
+    min-width: 20px;
+    min-height: 2px;
+  }
+}

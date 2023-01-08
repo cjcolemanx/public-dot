@@ -1,0 +1,139 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+#[ black ](fg:#393552)
+#[ red ](fg:#eb6f92)
+#[ green ](fg:#a3be8c)
+#[ yellow ](fg:#f6c177)
+#[ blue ](fg:#569fba)
+#[ magenta ](fg:#c4a7e7)
+#[ cyan ](fg:#9ccfd8)
+#[ white ](fg:#e0def4)
+#[ orange ](fg:#ea9a97)
+#[ pink ](fg:#eb98c3)
+#[ comment ](fg:#817c9c)
+#[ bg0 ](fg:#191726)
+#[ bg1 ](fg:#232136)
+#[ bg2 ](fg:#2d2a45)
+#[ bg3 ](fg:#373354)
+#[ bg4 ](fg:#4b4673)
+#[ fg0 ](fg:#eae8ff)
+#[ fg1 ](fg:#e0def4)
+#[ fg2 ](fg:#cdcbe0)
+#[ fg3 ](fg:#6e6a86)
+#[ sel0 ](fg:#433c59)
+#[ sel1 ](fg:#63577d)
+
+format = """
+[([\n ](bg:none fg:#ea9a97)$status  [](bg:none fg:#ea9a97))](fg:#393552 bg:#ea9a97) 
+[ 🕔 ｢$time｣ ](fg:#383552 bg:#569fba)[](fg:#569fba bg:#373354)\
+[ 📅 ${custom.date} \\(${custom.dayOfWeek}\\) ](fg:#e0def4 bg:#373354)[](fg:#373354 bg:#817c9c)\
+[( $git_branch $git_status )](fg:#f6c177 bg:#817c9c)[](fg:#817c9c bg:#eae8ff)\
+[($dotnet)($nodejs)($lua)($ruby)($python)($docker_context)](bg:#eae8ff)[](fg:#eae8ff bg:#191726)\
+[ ${custom.folder_number} ${custom.file_number}  \
+$directory ($shlvl) ](fg:#9ccfd8 bg:#191726)[](fg:#191726)\
+[\n $shell -> ](fg:#a3be8c)
+"""
+
+#REMOVED (for now)
+#[ ${custom.uptime}  \
+
+
+[time]
+disabled=false
+time_format="%H:%M %p"
+format="[$time](fg:#393552 bg:#569fba bold)"
+
+
+[shlvl]
+disabled=false
+format = '$shlvl'
+threshold = 3
+
+
+[shell]
+disabled=false
+format = '$indicator'
+
+
+[username]
+disabled=false
+format="$user"
+show_always=true
+
+
+[directory]
+disabled=false
+format="($read_only)$path"
+
+
+[git_status]
+untracked='' # show nothing of untracked
+format = '\[$conflicted$deleted$renamed$modified$staged\]'
+modified = '*'
+
+
+[git_branch]
+format = '$symbol$branch'
+
+
+[status]
+disabled = false
+format = '$symbol $status $common_meaning'
+
+
+[nodejs]
+disabled = false
+
+[docker_context]
+disabled = false
+
+[php]
+disabled = false
+
+[python]
+disabled = false
+
+[ruby]
+disabled = false
+
+[lua]
+disabled = false
+
+
+
+
+# CUSTOM
+[custom.date]
+command='date +"%d/%m %a"'
+when=true
+format='$output' 
+
+
+[custom.dayOfWeek]
+command='date +"%w" -d "tomorrow"'
+when=true
+format='$output' 
+
+
+[custom.uptime]
+command='bash uptime.sh'
+when=true
+format='up: $output'
+
+
+[custom.file_number]
+command='find . -maxdepth 1 -type f -not -name ".DS_Store" | wc -l'
+when = "exit 0" # run always
+symbol = ""
+description = "Number of files in the current working directory"
+format = '$symbol $output'
+
+
+[custom.folder_number]
+command = "find . -maxdepth 1 -type d -not -name '.git' -not -name '.' | wc -l"
+when = "exit 0"
+symbol = ""
+description = "Number of folders in the current working directory"
+format = '$symbol $output'
