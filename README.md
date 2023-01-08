@@ -4,16 +4,16 @@ Don't expect a lot of stability here. I tinker with this constantly.
 
 ## Dependencies
 
-- Window Manager: bspwm + sxhkd
-- Shell: ZSH (w/ Oh-My-Zsh and Starship)
-- Text Editor: NeoVim and VSCodium
-- Widgets and Bars: Rofi, Eww, and Polybar
-- Terminal Emulator: Kitty
-- Screenshots: Flameshot (wanna look into Scrot tho)
-- Notifications: Dunst
-- Wallpapers: Nitrogen
-- Compositor: Picom
-- Clipboard: Clipmenu
+- Window Manager: [bspwm](https://github.com/baskerville/bspwm) + [sxxhkd](https://github.com/baskerville/sxhkd)
+- Shell: ZSH (w/ [Oh-My-Zsh](https://ohmyz.sh/) and [Starship](https://starship.rs/))
+- Text Editor: [NeoVim](https://neovim.io/) and [VSCodium](https://vscodium.com/)
+- Widgets and Bars: [Rofi](https://github.com/davatorium/rofi), [Eww](https://github.com/elkowar/eww), and [Polybar](https://github.com/polybar/polybar)
+- Terminal Emulator: [Kitty](https://sw.kovidgoyal.net/kitty/)
+- Screenshots: [Flameshot](https://flameshot.org/) (wanna look into Scrot tho)
+- Notifications: [Dunst](https://dunst-project.org/)
+- Wallpapers: [Nitrogen](https://github.com/l3ib/nitrogen/)
+- Compositor: [Picom](https://github.com/yshui/picom)
+- Clipboard: [Clipmenu](https://github.com/cdown/clipmenu)
 
 ### Notes
 
