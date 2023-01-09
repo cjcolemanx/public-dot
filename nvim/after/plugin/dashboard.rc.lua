@@ -14,7 +14,11 @@ local _, img_func = pcall(require, "ui.dashboard.ascii")
 -- 	img_func.add_text_to_bottom(img_func.add_border_to_art(images.garfield), "LaSaGna", "~ ", " ~")
 -- )
 
-db.custom_header = img_func.get_random_image()
+local dash_image = img_func.get_random_image()
+
+if dash_image ~= nil then
+	db.custom_header = img_func.get_random_image()
+end
 
 db.custom_center = {
 	{

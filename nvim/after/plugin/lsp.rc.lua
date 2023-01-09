@@ -7,6 +7,7 @@ end
 local util = require("lspconfig").util
 local protocol = require("vim.lsp.protocol")
 
+-- Sets up Language Server on Buffer attach
 local on_attach = function(client, bufnr)
 	local function bmap(mode, lhs, rhs)
 		mode = mode or "n"
@@ -43,14 +44,22 @@ local on_attach = function(client, bufnr)
 	require("keymaps.plugin-maps").lsp_maps_on_attach(bmap, bnmap, buf_set_keymap, opts)
 end
 
--- CMP w/ LSP
+-------------------------
+-- => CMP
+-------------------------
 -- local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
--- Servers
+-------------------------
+-- => SERVER SETUP
+-------------------------
+-- TypeScript AND JavaScript
 local cmd = { vim.fn.stdpath("data") .. "/mason/bin/typescript-language-server", "--stdio" }
 
+-------------------------
+-- => JavaScript + Web
+-------------------------
 lsp.flow.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
@@ -72,10 +81,12 @@ lsp.emmet_ls.setup({
 	capabilities = capabilities,
 })
 
-lsp.sourcekit.setup({
-	on_attach = on_attach,
-})
+-- TODO:
+-- nvim_lsp.tailwindcss.setup {}
 
+-------------------------
+-- => Vue
+-------------------------
 -- FIXME: Probably wanna switch to Volar....
 -- lsp.vuels.setup({
 -- 	on_attach = { on_attach },
@@ -124,10 +135,16 @@ lsp.sourcekit.setup({
 -- 	root_dir = root_pattern("package.json", "vue.config.js"),
 -- })
 
+-------------------------
+-- => Markdown
+-------------------------
 lsp.marksman.setup({
 	on_attach,
 })
 
+-------------------------
+-- => Lua
+-------------------------
 lsp.sumneko_lua.setup({
 	on_attach = on_attach,
 	settings = {
@@ -143,16 +160,54 @@ lsp.sumneko_lua.setup({
 	},
 })
 
--- TODO:
--- nvim_lsp.tailwindcss.setup {}
+-------------------------
+-- => Rust
+-------------------------
+lsp.rust_analyzer.setup({
+	on_attach = on_attach,
+	settings = {
+		["rust-analyzer"] = {
+			cargo = {
+				allFeatures = true,
+			},
+			checkOnSave = {
+				allFeatures = true,
+				command = "clippy",
+			},
+			procMacro = {
+				ignored = {
+					["async-trait"] = { "async_trait" },
+					["napi-derive"] = { "napi" },
+					["async-recursion"] = { "async_recursion" },
+				},
+			},
+		},
+	},
+})
 
+-------------------------
+-- => Shell
+-------------------------
+lsp.bashls.setup({
+	on_attach = on_attach,
+})
+
+-------------------------
+-- => C, C++
+-------------------------
+lsp.sourcekit.setup({
+	on_attach = on_attach,
+})
+
+-------------------------
+-- => Diagnostics
+-------------------------
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
 	underline = true,
 	update_in_insert = false,
 	virtual_text = { spacing = 4, prefix = "●" },
 })
 
--- Diagnostics
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 
 for type, icon in pairs(signs) do

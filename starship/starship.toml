@@ -25,10 +25,17 @@ add_newline = false
 #[ sel0 ](fg:#433c59)
 #[ sel1 ](fg:#63577d)
 
+# format = """
+# [([\n ](bg:none fg:#ea9a97)$status  [](bg:none fg:#ea9a97))](fg:#393552 bg:#ea9a97) 
+# [ 🕔 ｢$time｣ ](fg:#383552 bg:#569fba)[](fg:#569fba bg:#373354)\
+# [ 📅 ${custom.date} \\(${custom.dayOfWeek}\\) ](fg:#e0def4 bg:#373354)[](fg:#373354 bg:#817c9c)\
+# [( $git_branch $git_status )](fg:#f6c177 bg:#817c9c)[](fg:#817c9c bg:#eae8ff)\
+# [($dotnet)($nodejs)($lua)($ruby)($python)($docker_context)](bg:#eae8ff)[](fg:#eae8ff bg:#191726)\
+# [ ${custom.folder_number} ${custom.file_number}  \
+# $directory ($shlvl) ](fg:#9ccfd8 bg:#191726)[](fg:#191726)\
+# [\n $shell -> ](fg:#a3be8c)
+# """
 format = """
-[([\n ](bg:none fg:#ea9a97)$status  [](bg:none fg:#ea9a97))](fg:#393552 bg:#ea9a97) 
-[ 🕔 ｢$time｣ ](fg:#383552 bg:#569fba)[](fg:#569fba bg:#373354)\
-[ 📅 ${custom.date} \\(${custom.dayOfWeek}\\) ](fg:#e0def4 bg:#373354)[](fg:#373354 bg:#817c9c)\
 [( $git_branch $git_status )](fg:#f6c177 bg:#817c9c)[](fg:#817c9c bg:#eae8ff)\
 [($dotnet)($nodejs)($lua)($ruby)($python)($docker_context)](bg:#eae8ff)[](fg:#eae8ff bg:#191726)\
 [ ${custom.folder_number} ${custom.file_number}  \
@@ -65,6 +72,7 @@ show_always=true
 
 [directory]
 disabled=false
+truncation_length=12
 format="($read_only)$path"
 
 
