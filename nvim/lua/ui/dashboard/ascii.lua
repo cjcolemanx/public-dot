@@ -163,7 +163,7 @@ function M.get_random_image()
 	local number_img = math.random(img_table_size)
 	local number_text = math.random(texts_table_size)
 	local number_logo = math.random(logo_table_size)
-	local number_fixes = math.random(logo_table_size)
+	local number_fixes = math.random(fixes_table_size)
 
 	-- Index ascii
 	local img = images[number_img]
@@ -175,6 +175,27 @@ function M.get_random_image()
 	-- NOTE: Debug
 	-- local img = images[1]
 	-- local logo = logos[6]
+
+	-- Nil Checks (bad programmer alert)
+	if img == nil then
+		img = {
+			"       ",
+			" OH NO ",
+			"       ",
+		}
+	end
+	if text == nil then
+		text = "Oopie"
+	end
+	if logo == nil then
+		logo = "Neovm"
+	end
+	if prefix == nil then
+		prefix = "*F*"
+	end
+	if postfix == nil then
+		postfix = "~?!"
+	end
 
 	return add_logo_to_art(logo, add_text_to_bottom(add_border_to_art(img), text, prefix, postfix))
 end

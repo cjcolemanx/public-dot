@@ -123,6 +123,7 @@ return packer.startup({
 		use("jacoborus/tender.vim") -- Tender
 		use("rktjmp/lush.nvim") -- Lush
 		use("RRethy/nvim-base16") -- Base16 scheme colleaction
+		use("catppuccin/nvim") -- Catpuccin
 
 		------------------------------
 		-- => Other
@@ -148,6 +149,7 @@ return packer.startup({
 		use("sunjon/Shade.nvim")
 		use("j-hui/fidget.nvim")
 		use("mrjones2014/legendary.nvim")
+		use("phaazon/mind.nvim") -- PKM/Wiki/Task MGMT
 
 		-- NOTE: I'm only using this so that my dream of a hot-reloading dashboard image becomes a ~reality~
 		use("miversen33/import.nvim")

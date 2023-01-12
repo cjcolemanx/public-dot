@@ -93,6 +93,14 @@ local opts = {
 
 local journal_picker = pickers.new(style_mini, opts)
 
-vim.keymap.set("n", ";<space>j", function()
+local function open_journal_picker()
 	journal_picker:find()
-end)
+end
+
+-- vim.keymap.set("n", ";<space>j", function()
+-- 	journal_picker:find()
+-- end)
+
+return {
+	open = open_journal_picker,
+}

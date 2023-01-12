@@ -69,38 +69,6 @@ ls.config.set_config({
 -- Key Maps
 -------------------------
 
--- Select Next Choice
-vim.keymap.set({ "i", "s" }, "<c-j>", function()
-  -- vim.keymap.set("i", "<Tab>", function()
-  if ls.choice_active() then
-    ls.change_choice(1)
-  end
-end)
-vim.keymap.set({ "i", "s" }, "<c-n>", function()
-  -- vim.keymap.set("i", "<Tab>", function()
-  if ls.choice_active() then
-    ls.change_choice(1)
-  end
-end)
-
--- Select Prev Choice
-vim.keymap.set({ "i", "s" }, "<c-k>", function()
-  if ls.choice_active() then
-    ls.change_choice(-1)
-  end
-end)
-vim.keymap.set({ "i", "s" }, "<c-p>", function()
-  if ls.choice_active() then
-    ls.change_choice(-1)
-  end
-end)
-
--- Quickly Add A Blank Line (Can Navigate Through Snippet After)
-vim.keymap.set({ "i", "s" }, "<c-y>", "<esc>o", { silent = true })
-
--- Quickly Edit The Current Buffer's Associated Snippets (Telescope picker)
-vim.keymap.set("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>", { silent = true, noremap = true })
-
 -- Use Namespaced LuaSnip Hints
 vim.cmd([[
 augroup choice_popup
@@ -112,3 +80,5 @@ augroup END
 ]])
 -- vim.keymap.set("n", "<Leader><tab>", "<cmd>lua choice_popup_close()<cr>", { silent = true, noremap = true })
 -- vim.keymap.set("i", "<C-Space>", "<cmd>lua choice_popup_close()<cr>", { silent = true, noremap = true })
+
+require("keymaps.plugin-maps").luasnip(ls)

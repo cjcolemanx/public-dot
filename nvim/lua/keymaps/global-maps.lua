@@ -14,6 +14,7 @@ local global = vim.g
 local remap = { remap = true }
 local noremap = { remap = false }
 local silent = { silent = true }
+local sn = { silent = true, remap = false }
 local esc = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 
 global.mapleader = ","
@@ -27,8 +28,6 @@ global.script_leader = "_"
 -- Movement (just a lil faster)
 setKey("", "J", "5j")
 setKey("", "K", "5k")
--- setKey("", "H", "3B")
--- setKey("", "L", "3W")
 setKey("", "0", "^")
 setKey("", "<Bar>", "^i")
 
@@ -36,17 +35,22 @@ setKey("", "<Bar>", "^i")
 setKey("n", "<Space>c", "ciw", remap)
 setKey("n", "<Space>d", "diw", remap)
 setKey("n", "<Space>D", "dd", remap)
-setKey("n", "<Space>y", "yiw", remap)
-setKey("n", "<Space>Y", "yy", remap)
+setKey("n", "<Space>Y", "yiw", remap)
+setKey("n", "<Space>y", "yy", remap)
 setKey("n", "<Space>m", "mz", remap)
-setKey("n", "<Space>f", "/", remap)
 setKey("n", "<Space>e", "`z", remap)
+setKey("n", "<Space>f", "/", remap)
+setKey("n", "<Space>/", "<CMD>nohl<CR>", sn)
 setKey("n", "<Space>j", "zb", remap)
 setKey("n", "<Space>k", "zt", remap)
 setKey("n", "<Space>l", "zz", remap)
-setKey("n", "<Space>i", "ci", remap) -- "ci" + whatever
+setKey("n", "<Space>]", "<C-]>", remap) -- Using already
 setKey("n", "<Space>wl", ":vsplit<CR><C-l>", remap)
+setKey("n", "<Space>wh", ":vsplit<CR>", remap)
 setKey("n", "<Space>wj", ":split<CR><C-j>", remap)
+setKey("n", "<Space>wk", ":split<CR>", remap)
+setKey("n", "<Space>n", ":bprevious<CR>", silent)
+setKey("n", "<Space>p", ":bnext<CR>", silent)
 
 -- Line Ordering
 setKey("n", "<M-k>", "ddkP", remap)
@@ -55,8 +59,8 @@ setKey("x", "<M-k>", "dkkP", remap) -- NOTE: doesn't work quite right
 setKey("x", "<M-j>", "dp", remap) -- NOTE: doesn't work quite right
 
 -- Better Shifting
-setKey("", ">", ">l")
-setKey("", "<", "<l")
+setKey({ "n", "v" }, ">", ">l")
+setKey({ "n", "v" }, "<", "<l")
 
 -- Save + Exit
 setKey("", "<leader>w", ":w!<CR>") -- Save Current
@@ -77,69 +81,46 @@ setKey("n", "<leader>sk", "<C-W>K")
 setKey("n", "<leader>sh", "<C-W>H")
 setKey("n", "<leader>sl", "<C-W>L")
 setKey("n", "<leader>s<Space>", "<C-W>x")
+
+-- FIXME: Necessary?
 setKey("n", "<leader>sr", "<C-W>r")
+-- FIXME: Necessary?
 setKey("n", "<leader>dl", ":vsplit<CR>") -- Vertical Split (L | R)
+-- FIXME: Necessary?
 setKey("n", "<leader>dj", ":split<CR>") -- Horizontal Split (T / B)
 
 -- Prompt for Window Focus
 setKey("n", "<leader>f", ":sbuffer ")
 setKey("n", "<M-h>", "<C-w>R") -- Rotate backwards
 setKey("n", "<M-l>", "<C-w>r") -- Rotate forwards
--- setKey("n", "<M-l>", "<C-w>r") -- Rotate forwards
--- NOTE: Try out the 'Exchange' version
--- setKey("n", "<M-h>", "<C-w>X") -- Rotate backwards
--- setKey("n", "<M-l>", "<C-w>x") -- Rotate forwards
 setKey("n", "-", function()
-  local quick_switch_window = require("behavior.commands.window-commands").window_switcher
-  quick_switch_window()
-  -- if vim.v.count == 0 then
-  -- 	return
-  -- end
-  -- swap_func(vim.v.count)
-end)
-setKey("n", "<C-a>", function()
-  print(vim.api.nvim_buf_get_name(0))
+	local quick_switch_window = require("behavior.commands.window-commands").window_switcher
+	quick_switch_window()
 end)
 
 -- Window Resizing
--- setKey('', '<C-;>h', ':vertical resize +10<CR>')
 setKey("", "RL", ":vertical resize -10<CR>")
 setKey("", "RH", ":vertical resize +10<CR>")
 setKey("", "RJ", ":resize +5<CR>")
 setKey("", "RK", ":resize -5<CR>")
--- setKey('', '<C-;>H', ':vertical resize +15<CR>')
--- setKey('', '<C-;>L', ':vertical resize -15<CR>')
--- setKey('', '<C-;>J', ':resize +10<CR>')
--- setKey('', '<C-;>K', ':resize -10<CR>')
 
 -- Tabs
 setKey("n", "ta", ":tabnew<CR>:tabm<CR>", silent)
 setKey("n", "tc", ":tabclose<CR>", silent)
-setKey("n", "tn", ":tabprevious<CR>", silent)
-setKey("n", "<Space>tn", ":tabprevious<CR>", silent)
-setKey("n", "tp", ":tabnext<CR>", silent)
-setKey("n", "<Space>tp", ":tabnext<CR>", silent)
 setKey("n", "th", ":tabprevious<CR>", silent)
 setKey("n", "tl", ":tabnext<CR>", silent)
 setKey("n", "tsh", ":tabm -1<CR>", silent)
 setKey("n", "tsl", ":tabm +1<CR>", silent)
 
--- Buffers
--- setKey("n", "<M-h>", ":bprevious<CR>", silent)
-setKey("n", "<Space>[", ":bprevious<CR>", silent)
--- setKey("n", "<M-l>", ":bnext<CR>", silent)
-setKey("n", "<Space>]", ":bnext<CR>", silent)
-setKey("n", "<leader>gb", function()
-  local b = vim.fn.bufnr()
-  vim.fn.setreg("B", b)
-end, silent)
-setKey("n", "<leader>pb", function()
-  local b = vim.fn.getreg("B")
-  vim.cmd("b " .. b)
-end, silent)
-
--- Logging
-setKey("n", ";sm", ":mess<CR>") -- 'S'how 'M'essages
+-- TODO: Buffers
+-- setKey("n", "<leader>gb", function()
+-- 	local b = vim.fn.bufnr()
+-- 	vim.fn.setreg("B", b)
+-- end, silent)
+-- setKey("n", "<leader>pb", function()
+-- 	local b = vim.fn.getreg("B")
+-- 	vim.cmd("b " .. b)
+-- end, silent)
 
 -- Terminal Shortcuts
 -- setKey({ "n", "v" }, "<leader>t", ":terminal<CR>")
@@ -149,42 +130,35 @@ setKey("t", "<Escape>", "<C-\\><C-N>")
 -- Searching
 setKey("", "<leader>/", ":nohl <CR>", silent)
 
--- NOTE: deprecated b/c ui pickers
--- setKey("n", "_ms", "<cmd>mks! ~/.config/nvim/sessions/temp.vim<cr>")
--- setKey("n", "r>rs", "<cmd>source ~/.config/nvim/sessions/temp.vim<cr>")
-
 -- Quick View
 setKey("n", "<leader>2", "<cmd>mess <cr>")
 
--- Formatting and View
-setKey("n", "<C-.>", "")
-
 -- Re-Source Config
 setKey("n", ";<Tab>r", "", {
-  silent = true,
-  desc = "reload init.lua",
-  callback = function()
-    vim.cmd([[
+	silent = true,
+	desc = "reload init.lua",
+	callback = function()
+		vim.cmd([[
     update ~/.config/nvim/init.lua
     source ~/.config/nvim/init.lua
     ]])
-    require("notify").notify("Nvim config successfully reloaded!", vim.log.levels.INFO, { title = "nvim-config" })
-  end,
+		require("notify").notify("Nvim config successfully reloaded!", vim.log.levels.INFO, { title = "nvim-config" })
+	end,
 })
 setKey("n", ";<Tab>o", "", {
-  silent = true,
-  desc = "reload plugin config",
-  callback = function()
-    vim.cmd([[
+	silent = true,
+	desc = "reload plugin config",
+	callback = function()
+		vim.cmd([[
     update ~/.config/nvim/after/plugin/_after.lua
     source ~/.config/nvim/after/plugin/_after.lua
     ]])
-    require("notify").notify(
-      "Nvim _after.lua successfully reloaded!",
-      vim.log.levels.INFO,
-      { title = "nvim-config" }
-    )
-  end,
+		require("notify").notify(
+			"Nvim _after.lua successfully reloaded!",
+			vim.log.levels.INFO,
+			{ title = "nvim-config" }
+		)
+	end,
 })
 
 -- Fix popup lingering
@@ -204,32 +178,36 @@ h : filename modifier "dirname"
 --]]
 -- Change directory for current buffer
 setKey(
-  "n",
-  "<Leader>cd",
-  function()
-    vim.cmd({ cmd = "lcd", args = { "%:h" } })
-    print("Changed local cd")
-  end,
-  -- ":lcd %:h<CR>",
-  silent
+	"n",
+	"<Leader>cd",
+	function()
+		vim.cmd({ cmd = "lcd", args = { "%:h" } })
+		print("Changed local cd")
+	end,
+	-- ":lcd %:h<CR>",
+	silent
 )
 
 -------------------------
 -- => Meta Stuff
 -------------------------
 setKey("n", "<m-y>", function()
-  print("TODO: Create Vim Info Yanker")
+	print("TODO: Create Vim Info Yanker")
 end)
 
 ------------------------------
 -- => Debug
 ------------------------------
-setKey("i", "<m-h>", "<esc>dBxi", silent)
-
+-- setKey("i", "<m-h>", "<esc>dBxi", silent)
+-- setKey("i", "<C-a>", function()
+-- 	print(vim.cmd("set filetype?"))
+-- end)
+--
 -- setKey("n", "<leader><space>di", vim.inspect())
-setKey("n", "<leader><space>di", function()
-  print(vim.inspect(vim.api.nvim__stats()))
-end)
+-- setKey("n", "<leader><space>di", function()
+-- 	print(vim.inspect(vim.api.nvim_buf_get_name(0)))
+-- 	-- print(vim.fn.expand("%:h"))
+-- end)
 
 -------------------------
 -- => Function Keys
@@ -239,10 +217,14 @@ setKey("n", "<F3>", ":checkhealth<CR>")
 -------------------------
 -- =>  Insert Mode
 -------------------------
-setKey("i", "<C-s>", "<ESC>:w!<CR>i", silent) -- Save Current (in insert)
+setKey("i", "<C-s>", "<ESC>:w!<CR>a", silent) -- Save Current (in insert)
 
 ------------------------------
 -- => Unmap
 ------------------------------
 setKey("i", "<c-j>", "", noremap)
 setKey("i", "<c-h>", "", noremap)
+-- Formatting and View
+setKey("n", "<C-.>", "")
+setKey("i", "<Tab>", "<Tab>")
+setKey("i", "<C-p>", "")

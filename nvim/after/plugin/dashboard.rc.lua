@@ -35,13 +35,13 @@ db.custom_center = {
 	},
 	{
 		icon = "  ",
-		desc = "Telescope sessions                    ",
-		shortcut = "; SPC s",
+		desc = "Telescope sessions                   ",
+		shortcut = " ; SPC s",
 		action = "SessionLoad",
 	},
 	{
 		icon = "  ",
-		desc = "Update Neovim Packages                    ",
+		desc = "Update Neovim Plugins                     ",
 		action = "Telescope dotfiles path=~/.config",
 		shortcut = "; u",
 	},
@@ -132,19 +132,19 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("DashboardMappings", { clear = true }),
 	pattern = "dashboard",
 	callback = function()
-		vim.keymap.set("n", ";e", "<Cmd>DashboardNewFile<CR>", { silent = true, buffer = true })
+		vim.keymap.set("n", ";e", "<Cmd>DashboardNewFile<CR><Cmd>lcd %:h<CR>", { silent = true, buffer = true })
 		vim.keymap.set("n", ";q", "<Cmd>NvimTreeClose<CR><Cmd>q!<CR>", { silent = true, buffer = true })
 		vim.keymap.set("n", "<ESC>", "<Cmd>NvimTreeClose<CR><Cmd>q!<CR>", { silent = true, buffer = true })
 		vim.keymap.set(
 			"n",
 			";c",
-			"<Cmd>NvimTreeClose<CR>:lcd ~/.config/<CR>:e updates.md<CR>",
+			"<Cmd>NvimTreeClose<CR>:lcd ~/.config/<CR>:e updates.md<CR>:lcd %:h<CR>",
 			{ silent = true, buffer = true }
 		)
 		vim.keymap.set(
 			"n",
 			";o",
-			"<Cmd>NvimTreeClose<CR>:lcd ~/.config/nvim<CR>:e init.lua<CR>",
+			"<Cmd>NvimTreeClose<CR>:lcd ~/.config/nvim<CR>:e init.lua<CR>:lcd %:h<CR>",
 			{ silent = true, buffer = true }
 		)
 		vim.keymap.set("n", ";u", "<Cmd>PackerInstall<CR>", { silent = true, buffer = true })
