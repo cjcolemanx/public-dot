@@ -1,12 +1,26 @@
-# NVM
+# => Node Version Manager
 if [ -f "/usr/share/nvm/init-nvm.sh" ] ; then
   source /usr/share/nvm/init-nvm.sh
 fi
 
-# Angular CLI Autocompletion
+# => Angular CLI Autocompletion
 source <(ng completion script)
 
-# Cargo (Rust)
+# => Cargo (Rust)
 if [ -f "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
 fi
+
+### => My Scripts
+source "$HOME/bin/bookmarks.sh"
+# source "$HOME/bin/bookmarks.sh"
+source "$HOME/bin/cdls.sh"
+source "$HOME/bin/files/touchNested.sh"
+
+# `bookmark.sh` Aliases
+# alias bkm="bookmarks"
+# alias bkma="bookmarks -a"
+# alias bkmb="bookmarks -B"
+# alias bkml="bookmarks -l"
+# alias bkt="bookmarks -T"
+# alias bk="bookmarks -D"

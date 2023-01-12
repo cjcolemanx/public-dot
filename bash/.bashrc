@@ -2,13 +2,13 @@
 # ~/.bashrc
 #
 
-[[ -f ~/.config/bash/.bash_options ]] && . ~/.config/bash/.bash_options
-[[ -f ~/.config/bash/.bash_aliases ]] && . ~/.config/bash/.bash_aliases
-[[ -f ~/.config/shell/.aliases ]] && . ~/.config/shell/.aliases
-[[ -f ~/.config/shell/.funcs ]] && . ~/.config/shell/.funcs
-[ -f ~/.config/shell/.sources ] && . ~/.config/shell/.sources
-[[ -f /usr/share/bash-completion/bash_completion ]] && \
-  . /usr/share/bash-completion/bash_completion
+[[ -f "$HOME/.config/shell/.aliases" ]] && source "$HOME/.config/shell/.aliases"
+[[ -f "$HOME/.config/shell/.funcs" ]] && source "$HOME/.config/shell/.funcs"
+[[ -f "$HOME/.config/shell/.sources" ]] && source "$HOME/.config/shell/.sources"
+[[ -f "$HOME/.config/bash/.bash_aliases" ]] && source "$HOME/.config/bash/.bash_aliases"
+[[ -f "$HOME/.config/bash/.bash_options" ]] && source "$HOME/.config/bash/.bash_options"
+[[ -f /usr/share/bash-completion/bash_completion ]] &&
+	. /usr/share/bash-completion/bash_completion
 
 # Splashscreen
 archey3
@@ -24,4 +24,3 @@ eval "$(starship init bash)"
 
 # Completions
 eval "$(zoxide init bash)"
-. "$HOME/.cargo/env"

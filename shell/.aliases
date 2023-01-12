@@ -29,7 +29,7 @@ alias   ranger-configs='ranger $HOME/.config'
 alias grep='grep --color'
 alias egrep='egrep -E --color=auto'
 alias fgrep='fgrep -F --color=auto'
-alias   ls='ls --group-directories-first'
+alias   ls='ls -i -g'
 alias list='ls -alX' # same as above, but different format
 alias   la='ls --color=auto --group-directories-first -Aglx'
 alias lsla='ls -al --color=always --group-directories-first'
@@ -74,17 +74,19 @@ alias mv='mv -i'
 
 ### => Quick Config
 ### Faster dotfile editing
-alias   sxhkdrc='nvim ~/.config/sxhkd/sxhkdrc'
-alias   bspwmrc='nvim ~/.config/bspwm/bspwmrc'
-alias   kittyrc='nvim ~/.config/kitty/kitty.conf'
-alias    nvimrc='nvim ~/.config/nvim/init.lua'
-alias    rofirc='nvim ~/.config/rofi/config.rasi'
-alias     ewwrc='nvim ~/.config/eww/eww.yuck'
-alias polybarrc='nvim ~/.config/polybar/grayblocks/config.ini'
-alias   ncmpcpp='nvim ~/.config/ncmpcpp/config'
-alias   shellrc='nvim ~/.config/shell/todo.md'
-alias     zshrc='nvim ~/.config/zsh/todo.md'
-alias    bashrc='nvim ~/.config/bash/todo.md'
+alias   sxhkdrc='nvim $HOME/.config/sxhkd/sxhkdrc'
+alias   bspwmrc='nvim $HOME/.config/bspwm/bspwmrc'
+alias   kittyrc='nvim $HOME/.config/kitty/kitty.conf'
+alias    nvimrc='nvim $HOME/.config/nvim/init.lua'
+alias    rofirc='nvim $HOME/.config/rofi/config.rasi'
+alias     ewwrc='nvim $HOME/.config/eww/eww.yuck'
+alias polybarrc='nvim $HOME/.config/polybar/grayblocks/config.ini'
+alias ncmpcpprc='nvim $HOME/.config/ncmpcpp/config'
+alias   shellrc='nvim $HOME/.config/shell/todo.md'
+alias     zshrc='nvim $HOME/.config/zsh/todo.md'
+alias    bashrc='nvim $HOME/.config/bash/todo.md'
+alias neomuttrc='nvim $HOME/.config/neomutt/neomuttrc'
+alias ohmyzshrc='nvim $HOME/.config/.oh-my-zsh/oh-my-zsh.sh'
 
 ### => Note-Taking
 alias journal="ranger /mnt/A/notes/personal" # Personal Notes
@@ -135,3 +137,6 @@ alias yaysua='yay -Sua --noconfirm' # update AUR pkgs (yay)
 alias yaysyu='yay -Syu --noconfirm' # update standard and AUR pkgs (yay)
 # alias unlock='sudo rm /var/lib/pacman/db.lck' # remove pacman lock
 # alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
+
+### ==> My Script Aliases
+alias bkm='bookmark'

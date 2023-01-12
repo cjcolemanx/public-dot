@@ -5,13 +5,16 @@
 ### => Default Programs
 export PAGER=less
 export EDITOR=nvim
+export GPG_TTY="$TERM"
+export BROWSER="Brave"
+export WM="bspwm"
 
 ### => Locations
-export DIR_HDD_A="/mnt/A"
-export DIR_HDD_BKP="/mnt/BKP"
-export DIR_MY_SCRIPTS="~/.scripts"
-export MY_ARCH_PROFILE="~/.my_arch_profile"
-export MYSCRIPTS="/home/charles/.scripts"
+# export DIR_HDD_A="/mnt/A"
+# export DIR_HDD_BKP="/mnt/BKP"
+# export DIR_MY_SCRIPTS="~/.scripts"
+# export MY_ARCH_PROFILE="~/.my_arch_profile"
+# export MYSCRIPTS="/home/charles/.scripts"
 export HDD_A="/mnt/A"
 
 ### => Config Locations

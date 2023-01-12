@@ -2,14 +2,13 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 ### => Source Configs
-[ -f ~/.config/zsh/.zsh_options ] && source ~/.config/zsh/.zsh_options
-[ -f ~/.config/zsh/.zsh_aliases ] && source ~/.config/zsh/.zsh_aliases
-[ -f ~/.config/zsh/.zsh_binds ] && source ~/.config/zsh/.zsh_binds
-[ -f ~/.config/shell/.aliases ] && source ~/.config/shell/.aliases
-[ -f ~/.config/shell/.funcs ] && source ~/.config/shell/.funcs
-[ -f ~/.config/shell/.variables ] && source ~/.config/shell/.variables
-[ -f ~/.config/shell/.sources ] && source ~/.config/shell/.sources
-[ -f ~/.scripts/master.sh ] && source ~/.scripts/master.sh
+[ -f "$HOME/.config/shell/.aliases" ] && source   "$HOME/.config/shell/.aliases"
+[ -f "$HOME/.config/shell/.funcs" ] && source     "$HOME/.config/shell/.funcs"
+[ -f "$HOME/.config/shell/.sources" ] && source   "$HOME/.config/shell/.sources"
+[ -f "$HOME/.config/shell/.variables" ] && source "$HOME/.config/shell/.variables"
+[ -f "$HOME/.config/zsh/.zsh_aliases" ] && source "$HOME/.config/zsh/.zsh_aliases"
+[ -f "$HOME/.config/zsh/.zsh_binds" ] && source   "$HOME/.config/zsh/.zsh_binds"
+[ -f "$HOME/.config/zsh/.zsh_options" ] && source "$HOME/.config/zsh/.zsh_options"
 # [[ -f /usr/share/bash-completion/bash_completion ]] && \
 #   . /usr/share/bash-completion/bash_completion
 
@@ -40,7 +39,7 @@ bindkey -v
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
+zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
@@ -91,18 +90,13 @@ setopt autocd
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  # archlinux                # aliases for pacman stuff
-  # aliases                  # ohmyzsh cheatsheet
-  # autosuggestions       # suggest commands as you type
   dirhistory               # keyboard directory traversal
-  # fzf                      # fzf
   jsontools                # prettify json data
   npm                      # common npm aliases
   nvm                      # autocomplete for nvm
   python                   # python aliases and commands
-  sudo                     # auto 'sudo' your last command
+  sudo                     # auto 'sudo' your last command (double-ESC <- bind)
   vi-mode                  # enhanced vim-mode
-  # web-search               # use a search engine from the command line
   zsh-autosuggestions      # autosuggestions, obv
   zsh-navigation-tools     # crazy ass set of tools for zsh
   zsh-syntax-highlighting  # highlight as you type
@@ -134,10 +128,6 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Splashscreen
 archey3
