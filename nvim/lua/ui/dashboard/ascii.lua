@@ -81,7 +81,7 @@ local function add_border_to_art(picture, border_index, with_debug)
 		-- Part of Image
 		else
 			new_line = border.side_left .. pic .. border.side_right
-			if with_debug then
+			if with_debug ~= nil and with_debug then
 				new_line = i .. new_line .. i
 			end
 		end
@@ -135,14 +135,15 @@ Choose specific Image, Logo, Text, and Pre- Post-fixes for Dashboard.
 @param logo_name String
 @param text_name String
 @param fixes String
+@param as_debug Boolean
 --]]
-function M.use_specific_images(image_table, image_name, logo_name, text_name, fixes)
+function M.use_specific_images(image_table, image_name, logo_name, text_name, fixes, as_debug)
 	local art = require("ui.dashboard.ascii-art." .. image_table)
 	-- local logo_art = require("ui.dashboard.ascii-art." .. image_table)
 
 	local image = art["" .. image_name .. ""]
 
-	local bordered_image = add_border_to_art(image, nil, true)
+	local bordered_image = add_border_to_art(image, nil, as_debug)
 
 	return bordered_image
 end

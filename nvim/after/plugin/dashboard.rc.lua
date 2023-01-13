@@ -9,7 +9,7 @@ local _, img_func = pcall(require, "ui.dashboard.ascii")
 local db_image = img_func.get_random_image()
 
 -- DEBUGGING IMAGES:
--- db_image = img_func.use_specific_images("anime", "anime_01")
+-- db_image = img_func.use_specific_images("anime", "anime_01", "", "", "", true)
 
 db.custom_header = db_image
 
