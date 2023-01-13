@@ -33,13 +33,15 @@ Borders come from "ui.helpers.ui-tokens.borderStyle"
 picture: (table)
 ?border_index: (number) pick a border
 --]]
-local function add_border_to_art(picture, border_index)
+local function add_border_to_art(picture, border_index, with_debug)
 	-- Get border icons
 	local border_table = require("ui.helpers.ui-tokens").borderStyle
 	local border
 
 	if border_index == nil then
 		border = border_table[1]
+	else
+		border = border_table[border_index]
 	end
 
 	local new_pic = {}
@@ -79,6 +81,9 @@ local function add_border_to_art(picture, border_index)
 		-- Part of Image
 		else
 			new_line = border.side_left .. pic .. border.side_right
+			if with_debug then
+				new_line = i .. new_line .. i
+			end
 		end
 
 		-- Add to image
@@ -137,7 +142,7 @@ function M.use_specific_images(image_table, image_name, logo_name, text_name, fi
 
 	local image = art["" .. image_name .. ""]
 
-	local bordered_image = add_border_to_art(image)
+	local bordered_image = add_border_to_art(image, nil, true)
 
 	return bordered_image
 end

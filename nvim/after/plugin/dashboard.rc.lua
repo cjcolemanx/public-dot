@@ -6,11 +6,12 @@ end
 
 local _, img_func = pcall(require, "ui.dashboard.ascii")
 
-db.custom_header = img_func.get_random_image()
+local db_image = img_func.get_random_image()
 
 -- DEBUGGING IMAGES:
--- local debug_image = img_func.use_specific_images("characters-and-other", "garfield")
--- db.custom_header = debug_image
+-- db_image = img_func.use_specific_images("anime", "anime_01")
+
+db.custom_header = db_image
 
 -- OPTIONS
 db.confirm_key = "o" -- string type key that do confirm in center select
@@ -135,6 +136,22 @@ vim.api.nvim_create_autocmd("FileType", {
 				vim.wo[winnr].cursorline = false
 			end,
 		})
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+	group = "DashboardMappings",
+	callback = function(args)
+		-- TODO: close Mind (use 'set filetype?' maybe)
+
+		if args.file == "dashboard" then
+			vim.cmd("MindClose")
+		end
+		-- local newbuf = vim.api.nvim_buf_get_var(0, "filetype")
+		-- print(vim.inspect(newbuf))
+		-- if vim.g.mind_nvim_main_open or vim.g.mind_nvim_project_open then
+		-- 	vim.cmd("MindClose")
+		-- end
 	end,
 })
 

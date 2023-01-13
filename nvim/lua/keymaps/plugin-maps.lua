@@ -25,40 +25,40 @@ local add_modal = legend.add_to_mode_dependent_to_legend
 Handles Comment Keybindings
 --]]
 function M.comment()
-	local api = require("Comment.api")
+  local api = require("Comment.api")
 
-	-- FIXME: Replace cursor at position
-	setKey("i", "<C-_>", api.toggle.linewise.current)
-	setKey("i", "<C-\\>", api.toggle.blockwise.current)
+  -- FIXME: Replace cursor at position
+  setKey("i", "<C-_>", api.toggle.linewise.current)
+  setKey("i", "<C-\\>", api.toggle.blockwise.current)
 
-	local esc = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
+  local esc = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 
-	setKey("x", "gh", function()
-		vim.api.nvim_feedkeys(esc, "nx", false)
-		api.toggle.linewise(vim.fn.visualmode())
-	end)
-	setKey("x", "gb", function()
-		vim.api.nvim_feedkeys(esc, "nx", false)
-		api.toggle.blockwise(vim.fn.visualmode())
-	end)
+  setKey("x", "gh", function()
+    vim.api.nvim_feedkeys(esc, "nx", false)
+    api.toggle.linewise(vim.fn.visualmode())
+  end)
+  setKey("x", "gb", function()
+    vim.api.nvim_feedkeys(esc, "nx", false)
+    api.toggle.blockwise(vim.fn.visualmode())
+  end)
 
-	local behavior = {
-		toggler = {
-			line = "gh",
-			block = "gb",
-		},
-		opleader = {
-			line = "gh",
-			block = "gb",
-		},
-		extra = {
-			above = "gk",
-			below = "gj",
-			eol = "gl",
-		},
-	}
+  local behavior = {
+    toggler = {
+      line = "gh",
+      block = "gb",
+    },
+    opleader = {
+      line = "gh",
+      block = "gb",
+    },
+    extra = {
+      above = "gk",
+      below = "gj",
+      eol = "gl",
+    },
+  }
 
-	return behavior
+  return behavior
 end
 
 -- DOCUMENT
@@ -75,27 +75,27 @@ add_regular("gb", "Comment: Toggle Blockwise Comment", nil, nil, { "x" })
 Handles LuaSnip keybindings.
 --]]
 function M.luasnip(ls)
-	-- For Dynamic Snippets
-	vim.keymap.set({ "i", "s" }, "<c-j>", function()
-		-- vim.keymap.set("i", "<Tab>", function()
-		if ls.choice_active() then
-			ls.change_choice(1)
-		end
-	end)
-	vim.keymap.set({ "i", "s" }, "<c-k>", function()
-		if ls.choice_active() then
-			ls.change_choice(-1)
-		end
-	end)
+  -- For Dynamic Snippets
+  vim.keymap.set({ "i", "s" }, "<c-j>", function()
+    -- vim.keymap.set("i", "<Tab>", function()
+    if ls.choice_active() then
+      ls.change_choice(1)
+    end
+  end)
+  vim.keymap.set({ "i", "s" }, "<c-k>", function()
+    if ls.choice_active() then
+      ls.change_choice(-1)
+    end
+  end)
 
-	-- Quickly Add A Blank Line (Can Navigate Through Snippet After)
-	vim.keymap.set({ "i", "s" }, "<c-y>", "<esc>o", { silent = true })
+  -- Quickly Add A Blank Line (Can Navigate Through Snippet After)
+  vim.keymap.set({ "i", "s" }, "<c-y>", "<esc>o", { silent = true })
 
-	-- Quickly Edit The Current Buffer's Associated Snippets (Telescope picker)
-	vim.keymap.set("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>", { silent = true, noremap = true })
+  -- Quickly Edit The Current Buffer's Associated Snippets (Telescope picker)
+  vim.keymap.set("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>", { silent = true, noremap = true })
 
-	-- Overrides regular popup closing, or just close luasnip popup
-	vim.keymap.set("s", "<C-h>", "<cmd>lua choice_popup_close()<cr>", { silent = true, noremap = true })
+  -- Overrides regular popup closing, or just close luasnip popup
+  vim.keymap.set("s", "<C-h>", "<cmd>lua choice_popup_close()<cr>", { silent = true, noremap = true })
 end
 
 -- DOCUMENT
@@ -117,91 +117,89 @@ CMP mappings.
 Also handles Tabout, Telescope, and Luasnip Collisions
 --]]
 function M.cmp(cmp, luasnip)
-	-- NOTE: Fixes CMP issues
-	setKey("i", "<Tab>", "<Tab>")
+  -- NOTE: Fixes CMP issues
+  setKey("i", "<Tab>", "<Tab>")
 
-	return {
-		["<C-j>"] = cmp.mapping.select_next_item(),
-		["<M-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select, count = 3 }),
-		["<down>"] = cmp.mapping.select_next_item(),
-		["<C-k>"] = cmp.mapping.select_prev_item(),
-		["<M-k>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select, count = -3 }),
-		["<up>"] = cmp.mapping.select_prev_item(),
+  return {
+    ["<C-j>"] = cmp.mapping.select_next_item(),
+    ["<M-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select, count = 3 }),
+    ["<down>"] = cmp.mapping.select_next_item(),
+    ["<C-k>"] = cmp.mapping.select_prev_item(),
+    ["<M-k>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select, count = -3 }),
+    ["<up>"] = cmp.mapping.select_prev_item(),
 
-		-- Scroll Docs or do a tabout
-		["<C-p>"] = cmp.mapping(function()
-			if cmp.visible() then
-				cmp.mapping.scroll_docs(-4)
-			elseif
-				not luasnip.expand_or_jumpable()
-				and not luasnip.choice_active()
-				and vim.bo.filetype ~= "TelescopePrompt"
-			then
-				vim.cmd("Tabout")
-			-- elseif vim.bo.filetype == "TelescopePrompt" then
-			else
-				-- local key = vim.api.nvim_replace_termcodes("<C-p>", true, true, true)
-				-- vim.api.nvim_feedkeys(key, "i", false)
-				return
-			end
-		end, { "i", "s" }),
+    -- Scroll Docs or do a tabout
+    ["<C-p>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.mapping.scroll_docs(-4)
+      elseif not luasnip.expand_or_jumpable()
+          and not luasnip.choice_active()
+          and vim.bo.filetype ~= "TelescopePrompt"
+      then
+        vim.cmd("Tabout")
+        -- elseif vim.bo.filetype == "TelescopePrompt" then
+      else
+        -- local key = vim.api.nvim_replace_termcodes("<C-p>", true, true, true)
+        -- vim.api.nvim_feedkeys(key, "i", false)
+        return
+      end
+    end, { "i", "s" }),
 
-		["<C-n>"] = cmp.mapping(function()
-			if cmp.visible() then
-				cmp.mapping.scroll_docs(4)
-			elseif
-				not luasnip.expand_or_jumpable()
-				and not luasnip.choice_active()
-				and vim.bo.filetype ~= "TelescopePrompt"
-			then
-				vim.cmd("TaboutBack")
-			-- elseif vim.bo.filetype == "TelescopePrompt" then
-			-- 	local key = vim.api.nvim_replace_termcodes("<C-n>", true, true, true)
-			-- 	vim.api.nvim_feedkeys(key, "i", false)
-			else
-				-- local key = vim.api.nvim_replace_termcodes("<C-n>", true, true, true)
-				-- vim.api.nvim_feedkeys(key, "i", false)
-				return
-			end
-		end, { "i", "s" }),
+    ["<C-n>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.mapping.scroll_docs(4)
+      elseif not luasnip.expand_or_jumpable()
+          and not luasnip.choice_active()
+          and vim.bo.filetype ~= "TelescopePrompt"
+      then
+        vim.cmd("TaboutBack")
+        -- elseif vim.bo.filetype == "TelescopePrompt" then
+        -- 	local key = vim.api.nvim_replace_termcodes("<C-n>", true, true, true)
+        -- 	vim.api.nvim_feedkeys(key, "i", false)
+      else
+        -- local key = vim.api.nvim_replace_termcodes("<C-n>", true, true, true)
+        -- vim.api.nvim_feedkeys(key, "i", false)
+        return
+      end
+    end, { "i", "s" }),
 
-		-- Complete Snipppet Or Insert Completion
-		["<C-e>"] = cmp.mapping(function()
-			if luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
-			else
-				cmp.mapping.confirm({
-					behavior = cmp.ConfirmBehavior.Insert,
-					select = true,
-				})
-			end
-		end, { "i", "s" }),
+    -- Complete Snipppet Or Insert Completion
+    ["<C-e>"] = cmp.mapping(function()
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        cmp.mapping.confirm({
+          behavior = cmp.ConfirmBehavior.Insert,
+          select = true,
+        })
+      end
+    end, { "i", "s" }),
 
-		["<C-l>"] = cmp.mapping(function()
-			if vim.bo.filetype == "TelescopePrompt" then
-				require("telescope.actions"):select_vertical()
-			elseif luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
-			else
-				cmp.confirm({ behavior = cmp.ConfirmBehavior.Select, select = true })
-			end
-		end, { "i", "s" }),
+    ["<C-l>"] = cmp.mapping(function()
+      if vim.bo.filetype == "TelescopePrompt" then
+        require("telescope.actions"):select_vertical()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Select, select = true })
+      end
+    end, { "i", "s" }),
 
-		["<C-h>"] = cmp.mapping(function(fallback)
-			if luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			end
-		end, { "i", "s" }),
+    ["<C-h>"] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      end
+    end, { "i", "s" }),
 
-		["<C-x>"] = cmp.mapping({
-			i = cmp.mapping.abort(),
-			c = cmp.mapping.close(),
-		}),
+    ["<C-x>"] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
 
-		-- ["<C-Space"] = cmp.mapping(function(fallback)
-		-- 	cmp.get_entries()
-		-- end, { "i", "s" }),
-	}
+    -- ["<C-Space"] = cmp.mapping(function(fallback)
+    -- 	cmp.get_entries()
+    -- end, { "i", "s" }),
+  }
 end
 
 add_regular("<C-j> || <Down>", "CMP: Select Next Item", nil, nil, { "i" })
@@ -226,76 +224,76 @@ utils: -- telescope.utils
 previewers -- telescope.previewers
 --]]
 function M.telescope_binds(builtin, utils, previewers)
-	require("plenary")
-	-- Short
-	setKey("n", ";e", builtin.diagnostics)
-	setKey("n", ";f", function()
-		builtin.find_files({
-			no_ignore = false,
-			hidden = true,
-		})
-	end)
-	setKey("n", ";j", builtin.jumplist)
-	setKey("n", ";h", builtin.help_tags)
-	-- setKey("n", ";u", builtin.oldfiles)
-	setKey("n", ";u", "<CMD>Telescope undo<CR>")
-	setKey("n", ";;", builtin.resume)
-	setKey("n", "\\\\", builtin.buffers)
+  require("plenary")
+  -- Short
+  setKey("n", ";e", builtin.diagnostics)
+  setKey("n", ";f", function()
+    builtin.find_files({
+      no_ignore = false,
+      hidden = true,
+    })
+  end)
+  setKey("n", ";j", builtin.jumplist)
+  setKey("n", ";h", builtin.help_tags)
+  -- setKey("n", ";u", builtin.oldfiles)
+  setKey("n", ";u", "<CMD>Telescope undo<CR>")
+  setKey("n", ";;", builtin.resume)
+  setKey("n", "\\\\", builtin.buffers)
 
-	-- Search For Things
-	setKey("n", ";sf", builtin.find_files)
-	setKey("n", ";sb", builtin.buffers)
-	setKey("n", ";sm", builtin.marks)
-	setKey("n", ";sr", builtin.registers)
-	setKey("n", ";sw", builtin.grep_string)
-	setKey("n", ";s/", function()
-		builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-			winblend = 10,
-			previewer = false,
-		}))
-	end)
+  -- Search For Things
+  setKey("n", ";sf", builtin.find_files)
+  setKey("n", ";sb", builtin.buffers)
+  setKey("n", ";sm", builtin.marks)
+  setKey("n", ";sr", builtin.registers)
+  setKey("n", ";sw", builtin.grep_string)
+  setKey("n", ";s/", function()
+    builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+      winblend = 10,
+      previewer = false,
+    }))
+  end)
 
-	-- Verbose
-	setKey("n", ";cmd", builtin.commands)
-	setKey("n", ";grep", builtin.live_grep)
-	setKey("n", ";keys", builtin.keymaps)
-	setKey("n", ";man", builtin.man_pages)
-	setKey("n", ";opt", builtin.vim_options)
-	setKey("n", ";col", builtin.colorscheme)
+  -- Verbose
+  setKey("n", ";cmd", builtin.commands)
+  setKey("n", ";grep", builtin.live_grep)
+  setKey("n", ";keys", builtin.keymaps)
+  setKey("n", ";man", builtin.man_pages)
+  setKey("n", ";opt", builtin.vim_options)
+  setKey("n", ";col", builtin.colorscheme)
 
-	-- Chorded
-	setKey("n", ";<space>da", function()
-		builtin.symbols({ sources = { "emoji", "kaomoji", "gitmoji", "nerd", "math", "latex" } })
-	end)
-	setKey("n", ";<space>de", function()
-		builtin.symbols({ sources = { "emoji", "gitmoji" } })
-	end)
-	setKey("n", ";<space>dn", function()
-		builtin.symbols({ sources = { "kaomoji", "nerd", "gitmoji" } })
-	end)
-	setKey("n", ";<space>dk", function()
-		builtin.symbols({ sources = { "kaomoji" } })
-	end)
-	setKey("n", ";<space>r", builtin.reloader)
-	setKey("n", ";<space>lg", builtin.git_branches)
-	setKey("n", ";<space>la", builtin.git_commits)
-	setKey("n", ";<space>ha", function()
-		builtin.highlights({
-			attach_mappings = function(prompt_bufnr, map)
-				map("i", "<C-y>", function()
-					local selected = require("telescope.actions.state").get_selected_entry()
-					vim.cmd({ cmd = "echo", args = { selected[1] } })
-					require("telescope.actions").close(prompt_bufnr)
-				end)
+  -- Chorded
+  setKey("n", ";<space>da", function()
+    builtin.symbols({ sources = { "emoji", "kaomoji", "gitmoji", "nerd", "math", "latex" } })
+  end)
+  setKey("n", ";<space>de", function()
+    builtin.symbols({ sources = { "emoji", "gitmoji" } })
+  end)
+  setKey("n", ";<space>dn", function()
+    builtin.symbols({ sources = { "kaomoji", "nerd", "gitmoji" } })
+  end)
+  setKey("n", ";<space>dk", function()
+    builtin.symbols({ sources = { "kaomoji" } })
+  end)
+  setKey("n", ";<space>r", builtin.reloader)
+  setKey("n", ";<space>lg", builtin.git_branches)
+  setKey("n", ";<space>la", builtin.git_commits)
+  setKey("n", ";<space>ha", function()
+    builtin.highlights({
+      attach_mappings = function(prompt_bufnr, map)
+        map("i", "<C-y>", function()
+          local selected = require("telescope.actions.state").get_selected_entry()
+          vim.cmd({ cmd = "echo", args = { selected[1] } })
+          require("telescope.actions").close(prompt_bufnr)
+        end)
 
-				return true
-			end,
-		})
-	end)
+        return true
+      end,
+    })
+  end)
 
-	-- Extensions
-	setKey("n", "<Leader>;todo", ":TodoTelescope <CR>")
-	setKey("n", "<Leader>;m", require("telescope").extensions.media_files.media_files)
+  -- Extensions
+  setKey("n", "<Leader>;todo", ":TodoTelescope <CR>")
+  setKey("n", "<Leader>;m", require("telescope").extensions.media_files.media_files)
 end
 
 --[[
@@ -304,64 +302,64 @@ Setup default mappings (used when Telescope is open)
 actions: -- telescope.actions
 --]]
 function M.telescope_setup_mappings(actions)
-	-- TODO: Document Keybinds
-	return {
-		defaults = {
-			mappings = {
-				n = {
-					["q"] = actions.close,
-					["j"] = actions.move_selection_next,
-					["k"] = actions.move_selection_previous,
-				},
-				i = {
-					["<esc>"] = actions.close,
-					["<c-j>"] = actions.move_selection_next,
-					["<c-k>"] = actions.move_selection_previous,
-					["<c-o>"] = actions.select_tab,
-				},
-			},
-		},
-		pickers = {
-			help_tags = {
-				mappings = {
-					n = {
-						["q"] = actions.close,
-						["<C-Space>"] = actions.select_vertical,
-						["<leader><Space>"] = actions.select_vertical,
-						["<c-o>"] = actions.select_tab,
-					},
-				},
-			},
-			man_pages = {
-				mappings = {
-					n = {
-						["<C-Space>"] = actions.select_vertical,
-						["<leader><Space>"] = actions.select_vertical,
-						["<C-o>"] = actions.select_tab,
-					},
-				},
-			},
-		},
-		extensions = {
-			file_browser = {
-				mappings = {
-					["i"] = {
-						["<C-w>"] = function()
-							vim.cmd("normal vbd")
-						end,
-					},
-					["n"] = {
-						["i"] = function()
-							vim.cmd("startinsert")
-						end,
-						["/"] = function()
-							vim.cmd("startinsert")
-						end,
-					},
-				},
-			},
-		},
-	}
+  -- TODO: Document Keybinds
+  return {
+    defaults = {
+      mappings = {
+        n = {
+          ["q"] = actions.close,
+          ["j"] = actions.move_selection_next,
+          ["k"] = actions.move_selection_previous,
+        },
+        i = {
+          ["<esc>"] = actions.close,
+          ["<c-j>"] = actions.move_selection_next,
+          ["<c-k>"] = actions.move_selection_previous,
+          ["<c-o>"] = actions.select_tab,
+        },
+      },
+    },
+    pickers = {
+      help_tags = {
+        mappings = {
+          n = {
+            ["q"] = actions.close,
+            ["<C-Space>"] = actions.select_vertical,
+            ["<leader><Space>"] = actions.select_vertical,
+            ["<c-o>"] = actions.select_tab,
+          },
+        },
+      },
+      man_pages = {
+        mappings = {
+          n = {
+            ["<C-Space>"] = actions.select_vertical,
+            ["<leader><Space>"] = actions.select_vertical,
+            ["<C-o>"] = actions.select_tab,
+          },
+        },
+      },
+    },
+    extensions = {
+      file_browser = {
+        mappings = {
+          ["i"] = {
+            ["<C-w>"] = function()
+              vim.cmd("normal vbd")
+            end,
+          },
+          ["n"] = {
+            ["i"] = function()
+              vim.cmd("startinsert")
+            end,
+            ["/"] = function()
+              vim.cmd("startinsert")
+            end,
+          },
+        },
+      },
+    },
+  }
 end
 
 add_simple("q", "TelescopePrompt: Close")
@@ -407,36 +405,36 @@ bnmap: -- buffer-map function ("normal" mode only)
 buf_set_keymap: -- sets keymap for a certain buffer
 --]]
 function M.lsp_maps_on_attach(bmap, bnmap, buf_set_keymap, opts)
-	-- Insert Mode
-	setKey("i", "<C-m>", "<cmd>Lspsaga peek_definition<CR>", opts)
-	-- setKey("i", "<C-m>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+  -- Insert Mode
+  setKey("i", "<C-m>", "<cmd>Lspsaga peek_definition<CR>", opts)
+  -- setKey("i", "<C-m>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 
-	-- Built-in
-	bmap("n", "gd", vim.lsp.buf.definition)
-	-- bmap("n", "gr", require("telescope.builtin").lsp_references)
-	bmap("n", "gr", "<CMD>Telescope lsp_references<CR>")
-	bmap("n", "gI", vim.lsp.buf.implementation)
-	bmap("n", "gt", vim.lsp.buf.type_definition)
-	-- bmap("n", "<Leader>ds", require("telescope.builtin").lsp_document_symbols)
-	bmap("n", "<Leader>ds", "<CMD>Telescope lsp_document_symbols<CR>")
-	-- bmap("n", "<Leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols)
-	bmap("n", "<Leader>ws", "<CMD>Telescope lsp_dynamic_workspace_symbols<CR>")
+  -- Built-in
+  bmap("n", "gd", vim.lsp.buf.definition)
+  -- bmap("n", "gr", require("telescope.builtin").lsp_references)
+  bmap("n", "gr", "<CMD>Telescope lsp_references<CR>")
+  bmap("n", "gI", vim.lsp.buf.implementation)
+  bmap("n", "gt", vim.lsp.buf.type_definition)
+  -- bmap("n", "<Leader>ds", require("telescope.builtin").lsp_document_symbols)
+  bmap("n", "<Leader>ds", "<CMD>Telescope lsp_document_symbols<CR>")
+  -- bmap("n", "<Leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols)
+  bmap("n", "<Leader>ws", "<CMD>Telescope lsp_dynamic_workspace_symbols<CR>")
 
-	-- LSP Saga
-	-- bnmap("gd", "<Cmd>Lspsaga lsp_finder<CR>")
-	bnmap(";d", "<Cmd>Lspsaga peek_definition<CR>")
-	bnmap(";k", "<Cmd>Lspsaga hover_doc<CR>")
-	bnmap(";t", "<cmd>Lspsaga outline<CR>")
-	bnmap(";r", "<cmd>Lspsaga rename<CR>")
-	bnmap(";a", "<cmd>Lspsaga code_action<CR>")
-	bnmap(";go", "<cmd>Lspsaga show_line_diagnostics<CR>")
-	bnmap(";gn", "<cmd>Lspsaga diagnostic_jump_next<CR>")
-	bnmap(";gp", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
+  -- LSP Saga
+  -- bnmap("gd", "<Cmd>Lspsaga lsp_finder<CR>")
+  bnmap(";d", "<Cmd>Lspsaga peek_definition<CR>")
+  bnmap(";k", "<Cmd>Lspsaga hover_doc<CR>")
+  bnmap(";t", "<cmd>Lspsaga outline<CR>")
+  bnmap(";r", "<cmd>Lspsaga rename<CR>")
+  bnmap(";a", "<cmd>Lspsaga code_action<CR>")
+  bnmap(";go", "<cmd>Lspsaga show_line_diagnostics<CR>")
+  bnmap(";gn", "<cmd>Lspsaga diagnostic_jump_next<CR>")
+  bnmap(";gp", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
 
-	-- NOTE: Terminal is yucky
-	-- setKey("n", "<M-CR>", "<cmd>Lspsaga open_floaterm<CR>", { silent = true })
-	-- setKey("t", "<ESC>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })
-	-- setKey("t", "<M-CR>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })
+  -- NOTE: Terminal is yucky
+  -- setKey("n", "<M-CR>", "<cmd>Lspsaga open_floaterm<CR>", { silent = true })
+  -- setKey("t", "<ESC>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })
+  -- setKey("t", "<M-CR>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })
 end
 
 add_simple("gd", "LSP: Go to Definition")
@@ -460,12 +458,12 @@ add_simple(";gp", "LSP: Previous Diagnostic")
 -------------------------
 
 function M.ufo_binds()
-	local ufo = require("ufo")
-	vim.keymap.set("n", "zR", ufo.openAllFolds)
-	vim.keymap.set("n", "zM", ufo.closeAllFolds)
-	vim.keymap.set("n", "zl", ufo.goNextClosedFold)
-	vim.keymap.set("n", "zh", ufo.goPreviousClosedFold)
-	vim.keymap.set("n", ";z", ufo.peekFoldedLinesUnderCursor)
+  local ufo = require("ufo")
+  vim.keymap.set("n", "zR", ufo.openAllFolds)
+  vim.keymap.set("n", "zM", ufo.closeAllFolds)
+  vim.keymap.set("n", "zl", ufo.goNextClosedFold)
+  vim.keymap.set("n", "zh", ufo.goPreviousClosedFold)
+  vim.keymap.set("n", ";z", ufo.peekFoldedLinesUnderCursor)
 end
 
 add_simple("zR", "Fold: Open All Folds")
@@ -479,8 +477,8 @@ add_simple(";z", "Fold: Peek Fold Under Cursor")
 -------------------------
 
 function M.nvimTree_binds()
-	setKey({ "n", "x" }, "<C-b>", ":NvimTreeToggle<CR>", silent)
-	setKey({ "n", "x" }, "<leader>b", ":NvimTreeFocus<CR>", silent)
+  setKey({ "n", "x" }, "<C-b>", ":NvimTreeToggle<CR>", silent)
+  setKey({ "n", "x" }, "<leader>b", ":NvimTreeFocus<CR>", silent)
 end
 
 --[[
@@ -489,45 +487,45 @@ Set up NvimTree Keybinds (in config)
 helpers: -- module of helper functions (user-defined)
 --]]
 function M.nvimTree(helpers)
-	local nt = require("nvim-tree.api")
-	return {
-		list = {
-			{
-				key = "<C-o>",
-				action = "cd",
-				action_cb = function()
-					nt.tree.change_root_to_node()
-					vim.api.nvim_feedkeys("ggj", "nx", false)
-				end,
-			},
-			{ key = { "<leader>t", "T" }, action = "tabnew" },
-			-- Custom
-			{ key = "s", action = "vsplit", action_cb = helpers.split_right },
-			{ key = "o", action = "edit" },
-			{ key = "L", action = "vsplit", action_cb = helpers.split_right_and_refocus },
-			{ key = "l", action = "open folder", action_cb = helpers.expand_folder },
-			{ key = ">", action = "split", action_cb = helpers.split_below_and_refocus },
-			{ key = "ga", action = "git_add", action_cb = helpers.git_add },
-			-- FIXME: Isn't this redundant?
-			-- { key = "gr", action = "git_add", action_cb = helpers.git_add },
-			{ key = "<C-f>", action = "preview file", action_cb = helpers.launch_find_files },
-			{ key = "<C-g>", action = "live grep", action_cb = helpers.launch_live_grep },
-			-- { key = "<C-p>", action = "open context menu", action_cb = helpers.tree_actions_menu },
-			{ key = "<C-c>", action = "change global cwd", action_cb = helpers.change_root_to_global_cwd },
-			{ key = ";f", cb = helpers.launch_find_files },
-			{ key = ";g", cb = helpers.launch_live_grep },
-			-- API
-			{ key = "<leader>r", action_cb = nt.tree.reload },
-			{ key = "<leader>g", cb = nt.tree.toggle_gitignore_filter },
-			{ key = "?", cb = nt.node.show_info_popup },
-			{ key = { "<ESC>", "q" }, cb = nt.tree.close },
-			{ key = "<leader>ms", cb = nt.marks.select },
-			{ key = "gmj", cb = nt.marks.navigate.next },
-			{ key = "gmk", cb = nt.marks.navigate.prev },
-			{ key = "gml", cb = nt.marks.navigate.next },
-			{ key = "gmh", cb = nt.marks.navigate.prev },
-		},
-	}
+  local nt = require("nvim-tree.api")
+  return {
+    list = {
+      {
+        key = "<C-o>",
+        action = "cd",
+        action_cb = function()
+          nt.tree.change_root_to_node()
+          vim.api.nvim_feedkeys("ggj", "nx", false)
+        end,
+      },
+      { key = { "<leader>t", "T" }, action = "tabnew" },
+      -- Custom
+      { key = "s", action = "vsplit", action_cb = helpers.split_right },
+      { key = "o", action = "edit" },
+      { key = "L", action = "vsplit", action_cb = helpers.split_right_and_refocus },
+      { key = "l", action = "open folder", action_cb = helpers.expand_folder },
+      { key = ">", action = "split", action_cb = helpers.split_below_and_refocus },
+      { key = "ga", action = "git_add", action_cb = helpers.git_add },
+      -- FIXME: Isn't this redundant?
+      -- { key = "gr", action = "git_add", action_cb = helpers.git_add },
+      { key = "<C-f>", action = "preview file", action_cb = helpers.launch_find_files },
+      { key = "<C-g>", action = "live grep", action_cb = helpers.launch_live_grep },
+      -- { key = "<C-p>", action = "open context menu", action_cb = helpers.tree_actions_menu },
+      { key = "<C-c>", action = "change global cwd", action_cb = helpers.change_root_to_global_cwd },
+      { key = ";f", cb = helpers.launch_find_files },
+      { key = ";g", cb = helpers.launch_live_grep },
+      -- API
+      { key = "<leader>r", action_cb = nt.tree.reload },
+      { key = "<leader>g", cb = nt.tree.toggle_gitignore_filter },
+      { key = "?", cb = nt.node.show_info_popup },
+      { key = { "<ESC>", "q" }, cb = nt.tree.close },
+      { key = "<leader>ms", cb = nt.marks.select },
+      { key = "gmj", cb = nt.marks.navigate.next },
+      { key = "gmk", cb = nt.marks.navigate.prev },
+      { key = "gml", cb = nt.marks.navigate.next },
+      { key = "gmh", cb = nt.marks.navigate.prev },
+    },
+  }
 end
 
 add_regular("<C-b>", "Files: Toggle Sidebar", nil, nil, { "n", "x" })
@@ -557,7 +555,7 @@ add_simple("gmk || gmh", "Files: Go to Previous Mark")
 -------------------------
 
 function M.trouble_binds()
-	setKey("n", "<leader>1", "<cmd>TroubleToggle<cr>", snr)
+  setKey("n", "<leader>1", "<cmd>TroubleToggle<cr>", snr)
 end
 
 add_simple("<Leader>1", "Diagnostics: Toggle Diagnostics Window")
@@ -567,7 +565,7 @@ add_simple("<Leader>1", "Diagnostics: Toggle Diagnostics Window")
 -------------------------
 
 function M.zenMode_binds()
-	setKey("n", "<leader>z", ":ZenMode<CR>")
+  setKey("n", "<leader>z", ":ZenMode<CR>")
 end
 
 add_simple("<Leader>z", "View: Toggle Zen Mode")
@@ -577,16 +575,16 @@ add_simple("<Leader>z", "View: Toggle Zen Mode")
 -------------------------
 
 function M.high_str_binds()
-	setKey("v", "<C-h>1", ":<c-u>HSHighlight 1<CR>", snr)
-	setKey("v", "<C-h>2", ":<c-u>HSHighlight 2<CR>", snr)
-	setKey("v", "<C-h>3", ":<c-u>HSHighlight 3<CR>", snr)
-	setKey("v", "<C-h>4", ":<c-u>HSHighlight 4<CR>", snr)
-	setKey("v", "<C-h>5", ":<c-u>HSHighlight 5<CR>", snr)
-	setKey("v", "<C-h>6", ":<c-u>HSHighlight 6<CR>", snr)
-	setKey("v", "<C-h>7", ":<c-u>HSHighlight 7<CR>", snr)
-	setKey("v", "<C-h>8", ":<c-u>HSHighlight 8<CR>", snr)
-	setKey("v", "<C-h>9", ":<c-u>HSHighlight 9<CR>", snr)
-	setKey("v", "<C-h><C-h>", ":<c-u>HSRmHighlight<CR>", snr)
+  setKey("v", "<C-h>1", ":<c-u>HSHighlight 1<CR>", snr)
+  setKey("v", "<C-h>2", ":<c-u>HSHighlight 2<CR>", snr)
+  setKey("v", "<C-h>3", ":<c-u>HSHighlight 3<CR>", snr)
+  setKey("v", "<C-h>4", ":<c-u>HSHighlight 4<CR>", snr)
+  setKey("v", "<C-h>5", ":<c-u>HSHighlight 5<CR>", snr)
+  setKey("v", "<C-h>6", ":<c-u>HSHighlight 6<CR>", snr)
+  setKey("v", "<C-h>7", ":<c-u>HSHighlight 7<CR>", snr)
+  setKey("v", "<C-h>8", ":<c-u>HSHighlight 8<CR>", snr)
+  setKey("v", "<C-h>9", ":<c-u>HSHighlight 9<CR>", snr)
+  setKey("v", "<C-h><C-h>", ":<c-u>HSRmHighlight<CR>", snr)
 end
 
 add_regular("<C-h>{number}", "Highlighter: Highlight Selection With Highlight {number}", nil, nil, { "v" })
@@ -597,7 +595,7 @@ add_regular("<C-h><C-h>", "Highlighter: Remove Highlight From Selection", nil, n
 -------------------------
 
 function M.tabby()
-	setKey("n", "<leader><leader>rt", ":TabRename ")
+  setKey("n", "<leader><leader>rt", ":TabRename ")
 end
 
 add_simple("<Leader><Leader>rt", "Tabs: Rename Tab")
@@ -607,81 +605,81 @@ add_simple("<Leader><Leader>rt", "Tabs: Rename Tab")
 -------------------------
 
 function M.mind(mind)
-	local k = mind.keymap
-	local n = mind.node
-	vim.g.mind_nvim_main_open = false
-	vim.g.mind_nvim_project_open = false
+  local k = mind.keymap
+  local n = mind.node
+  vim.g.mind_nvim_main_open = false
+  vim.g.mind_nvim_project_open = false
 
-	-- Open Mind (main)
-	setKey("n", "<leader>mg", function()
-		local mind_open = vim.g.mind_nvim_main_open
+  -- Open Mind (main)
+  setKey("n", "<leader>mg", function()
+    local mind_open = vim.g.mind_nvim_main_open
 
-		if not mind_open or mind_open == nil then
-			mind.open_main()
-			vim.g.mind_nvim_main_open = true
-			vim.g.mind_nvim_project_open = false
-		else
-			mind.close()
-			vim.g.mind_nvim_main_open = false
-		end
-		-- print(inspect(api.nvim_buf_get_number(0)))
-	end, snr)
+    if not mind_open or mind_open == nil then
+      mind.open_main()
+      vim.g.mind_nvim_main_open = true
+      vim.g.mind_nvim_project_open = false
+    else
+      mind.close()
+      vim.g.mind_nvim_main_open = false
+    end
+    -- print(inspect(api.nvim_buf_get_number(0)))
+  end, snr)
 
-	-- Open Mind (project)
-	setKey("n", "<leader>ml", function()
-		local mind_open = vim.g.mind_nvim_project_open
+  -- Open Mind (project)
+  setKey("n", "<leader>ml", function()
+    local mind_open = vim.g.mind_nvim_project_open
 
-		if not mind_open or mind_open == nil then
-			mind.open_project()
-			vim.g.mind_nvim_project_open = true
-			vim.g.mind_nvim_main_open = false
-		else
-			mind.close()
-			vim.g.mind_nvim_project_open = false
-		end
-	end, snr)
+    if not mind_open or mind_open == nil then
+      mind.open_project()
+      vim.g.mind_nvim_project_open = true
+      vim.g.mind_nvim_main_open = false
+    else
+      mind.close()
+      vim.g.mind_nvim_project_open = false
+    end
+  end, snr)
 
-	setKey("n", "<leader>ma", "<CMD>MindOpenSmartProject<CR>", snr)
-	setKey("n", "<leader>mq", "<CMD>MindOpenProject<CR>", snr)
+  setKey("n", "<leader>ma", "<CMD>MindOpenSmartProject<CR>", snr)
+  setKey("n", "<leader>mq", "<CMD>MindOpenProject<CR>", snr)
 end
 
 M.MindMaps = {
-	normal = {
-		["<cr>"] = "open_data",
-		["<s-cr>"] = "open_data_index",
-		l = "toggle_node",
-		h = "toggle_node",
-		["<s-tab>"] = "toggle_node",
-		["/"] = "select_path",
-		["$"] = "change_icon_menu",
-		-- c = "add_inside_end_index",
-		A = "add_inside_start",
-		a = "add_inside_end",
-		c = "copy_node_link",
-		C = "copy_node_link_index",
-		d = "delete",
-		D = "delete_file",
-		p = "add_above",
-		n = "add_below",
-		q = "quit",
-		r = "rename",
-		R = "change_icon",
-		u = "make_url",
-		x = "select",
-	},
-	selection = {
-		["<cr>"] = "open_data",
-		["<s-tab>"] = "toggle_node",
-		["/"] = "select_path",
-		I = "move_inside_start",
-		i = "move_inside_end",
-		p = "move_above",
-		n = "move_below",
-		-- ["<C-k>"] = "move_above",
-		-- ["<C-j>"] = "move_below",
-		q = "quit",
-		x = "select",
-	},
+  normal = {
+    ["<cr>"] = "open_data",
+    ["<s-cr>"] = "open_data_index",
+    l = "toggle_node",
+    h = "toggle_node",
+    ["<s-tab>"] = "toggle_node",
+    ["/"] = "select_path",
+    ["$"] = "change_icon_menu",
+    -- c = "add_inside_end_index",
+    A = "add_inside_start",
+    a = "add_inside_end",
+    c = "copy_node_link",
+    C = "copy_node_link_index",
+    d = "delete",
+    D = "delete_file",
+    p = "add_above",
+    n = "add_below",
+    q = "quit",
+    r = "rename",
+    R = "change_icon",
+    u = "make_url",
+    x = "select",
+  },
+  selection = {
+    ["<cr>"] = "open_data",
+    ["<s-tab>"] = "toggle_node",
+    ["/"] = "select_path",
+    I = "move_inside_start",
+    i = "move_inside_end",
+    p = "move_above",
+    n = "move_below",
+    -- ["<C-k>"] = "move_above",
+    -- ["<C-j>"] = "move_below",
+    q = "quit",
+    x = "select",
+  },
 }
 
 add_simple("<CR>", "Mind: Open Mind File Under Cursor")
@@ -728,28 +726,28 @@ Tabout mappings.
 Also handles CMP Collisions
 --]]
 function M.tabout()
-	local function replace_keycodes(str)
-		return vim.api.nvim_replace_termcodes(str, true, true, true)
-	end
+  local function replace_keycodes(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+  end
 
-	local function tabout_binding()
-		if vim.fn.pumvisible() ~= 0 then
-			return replace_keycodes("<C-p>")
-		else
-			return replace_keycodes("<Plug>(Tabout)")
-		end
-	end
+  local function tabout_binding()
+    if vim.fn.pumvisible() ~= 0 then
+      return replace_keycodes("<C-p>")
+    else
+      return replace_keycodes("<Plug>(Tabout)")
+    end
+  end
 
-	local function backwards_tabout_binding()
-		if vim.fn.pumvisible() ~= 0 then
-			return replace_keycodes("<C-n>")
-		else
-			return replace_keycodes("<Plug>(TaboutBack)")
-		end
-	end
+  local function backwards_tabout_binding()
+    if vim.fn.pumvisible() ~= 0 then
+      return replace_keycodes("<C-n>")
+    else
+      return replace_keycodes("<Plug>(TaboutBack)")
+    end
+  end
 
-	setKey("i", "<C-p>", tabout_binding, { expr = true })
-	setKey("i", "<C-n>", backwards_tabout_binding, { expr = true })
+  setKey("i", "<C-p>", tabout_binding, { expr = true })
+  setKey("i", "<C-n>", backwards_tabout_binding, { expr = true })
 end
 
 add_simple("<C-p>", "Tabout: Forward Out of Characters")
@@ -760,18 +758,18 @@ add_simple("<C-n>", "Tabout: Backward Out of Characters")
 -------------------------
 
 function M.leap()
-	-- Bidirectional
-	setKey({ "n", "v" }, "<Space>l", function()
-		require("leap").leap({ target_windows = { vim.fn.win_getid() } })
-	end, silent)
-	-- Across Windows
-	setKey({ "n", "v" }, "<Space>L", function()
-		require("leap").leap({
-			target_windows = vim.tbl_filter(function(win)
-				return vim.api.nvim_win_get_config(win).focusable
-			end, vim.api.nvim_tabpage_list_wins(0)),
-		})
-	end, silent)
+  -- Bidirectional
+  setKey({ "n", "v" }, "<Space>l", function()
+    require("leap").leap({ target_windows = { vim.fn.win_getid() } })
+  end, silent)
+  -- Across Windows
+  setKey({ "n", "v" }, "<Space>L", function()
+    require("leap").leap({
+      target_windows = vim.tbl_filter(function(win)
+        return vim.api.nvim_win_get_config(win).focusable
+      end, vim.api.nvim_tabpage_list_wins(0)),
+    })
+  end, silent)
 end
 
 add_regular("<Space>l", "Leap: Bidirectional (single file)", nil, nil, { "n", "v" })
@@ -782,18 +780,18 @@ add_regular("<Space>L", "Leap: Across Windows", nil, nil, { "n", "v" })
 -------------------------
 
 function M.surround()
-	return {
-		normal = "s",
-		normal_line = "S",
-		normal_cur = "<Leader>s",
-		normal_cur_line = "<Leader>S",
-		insert = "<C-Space><C-s>",
-		insert_line = "<C-Space><C-l>",
-		visual = "s",
-		visual_line = "S",
-		delete = "ds",
-		change = "cs",
-	}
+  return {
+    normal = "s",
+    normal_line = "S",
+    normal_cur = "<Leader>s",
+    normal_cur_line = "<Leader>S",
+    insert = "<C-Space><C-s>",
+    insert_line = "<C-Space><C-l>",
+    visual = "s",
+    visual_line = "S",
+    delete = "ds",
+    change = "cs",
+  }
 end
 
 add_simple("s", "Surround: Surround{motion}{character}")
@@ -810,30 +808,30 @@ add_regular("S", "Surround: SurroundVisual, like '(\n words \n)", nil, nil, { "v
 -------------------------
 
 function M.todo(td)
-	setKey("n", "]]", function()
-		td.jump_next()
-	end)
-	setKey("n", "[[", function()
-		td.jump_prev()
-	end)
-	setKey("n", "]t", function()
-		td.jump_next({ keywords = { "TODO" } })
-	end)
-	setKey("n", "[t", function()
-		td.jump_prev({ keywords = { "TODO" } })
-	end)
-	setKey("n", "]e", function()
-		td.jump_next({ keywords = { "FIXME" } })
-	end)
-	setKey("n", "[e", function()
-		td.jump_prev({ keywords = { "FIXME" } })
-	end)
-	setKey("n", "]n", function()
-		td.jump_next({ keywords = { "NOTE" } })
-	end)
-	setKey("n", "[n", function()
-		td.jump_prev({ keywords = { "NOTE" } })
-	end)
+  setKey("n", "]]", function()
+    td.jump_next()
+  end)
+  setKey("n", "[[", function()
+    td.jump_prev()
+  end)
+  setKey("n", "]t", function()
+    td.jump_next({ keywords = { "TODO" } })
+  end)
+  setKey("n", "[t", function()
+    td.jump_prev({ keywords = { "TODO" } })
+  end)
+  setKey("n", "]e", function()
+    td.jump_next({ keywords = { "FIXME" } })
+  end)
+  setKey("n", "[e", function()
+    td.jump_prev({ keywords = { "FIXME" } })
+  end)
+  setKey("n", "]n", function()
+    td.jump_next({ keywords = { "NOTE" } })
+  end)
+  setKey("n", "[n", function()
+    td.jump_prev({ keywords = { "NOTE" } })
+  end)
 end
 
 -------------------------
@@ -849,63 +847,63 @@ end
 -- => Refactoring.Nvim
 -------------------------
 function M.refactoring(refactoring)
-	local opts = { silent = true, noremap = true, expr = false }
-	local rf = refactoring.refactor
-	local db = refactoring.debug
+  local opts = { silent = true, noremap = true, expr = false }
+  local rf = refactoring.refactor
+  local db = refactoring.debug
 
-	-- Visual
-	setKey("v", "<Leader>re", function()
-		rf("Extract Function")
-	end, opts)
-	setKey("v", "<Leader>rf", function()
-		rf("Extract Function To File")
-	end, opts)
-	setKey("v", "<Leader>rv", function()
-		rf("Extract Variable")
-	end, opts)
+  -- Visual
+  setKey("v", "<Leader>re", function()
+    rf("Extract Function")
+  end, opts)
+  setKey("v", "<Leader>rf", function()
+    rf("Extract Function To File")
+  end, opts)
+  setKey("v", "<Leader>rv", function()
+    rf("Extract Variable")
+  end, opts)
 
-	-- Inline works in visual and normal
-	setKey({ "n", "v" }, "<Leader>ri", function()
-		rf("Inline Variable")
-	end, opts)
+  -- Inline works in visual and normal
+  setKey({ "n", "v" }, "<Leader>ri", function()
+    rf("Inline Variable")
+  end, opts)
 
-	-- Block
-	setKey("n", "<Leader>rb", function()
-		rf("Extract Block")
-	end, opts)
-	setKey("n", "<Leader>rbf", function()
-		rf("Extract Block To File")
-	end, opts)
+  -- Block
+  setKey("n", "<Leader>rb", function()
+    rf("Extract Block")
+  end, opts)
+  setKey("n", "<Leader>rbf", function()
+    rf("Extract Block To File")
+  end, opts)
 
-	-- Telescope
-	setKey("v", "<Leader>rr", function()
-		require("telescope").extensions.refactoring.refactors()
-	end, noremap)
+  -- Telescope
+  setKey("v", "<Leader>rr", function()
+    require("telescope").extensions.refactoring.refactors()
+  end, noremap)
 
-	--
-	-- Debugging
-	--
+  --
+  -- Debugging
+  --
 
-	-- Mark the calling function
-	setKey({ "v", "n" }, "<Leader>rdj", function()
-		db.printf({ below = true })
-	end, noremap)
-	setKey({ "v", "n" }, "<Leader>rdk", function()
-		db.printf({ below = false })
-	end, noremap)
+  -- Mark the calling function
+  setKey({ "v", "n" }, "<Leader>rdj", function()
+    db.printf({ below = true })
+  end, noremap)
+  setKey({ "v", "n" }, "<Leader>rdk", function()
+    db.printf({ below = false })
+  end, noremap)
 
-	-- mark Variables
-	setKey("n", "<Leader>rdv", function()
-		db.print_var({ normal = true })
-	end, noremap)
-	setKey("v", "<Leader>rdv", function()
-		db.print_var()
-	end, noremap)
+  -- mark Variables
+  setKey("n", "<Leader>rdv", function()
+    db.print_var({ normal = true })
+  end, noremap)
+  setKey("v", "<Leader>rdv", function()
+    db.print_var()
+  end, noremap)
 
-	-- Clean Debug Print Statements
-	setKey("n", "<Leader>rdclear", function()
-		db.cleanup()
-	end, noremap)
+  -- Clean Debug Print Statements
+  setKey("n", "<Leader>rdclear", function()
+    db.cleanup()
+  end, noremap)
 end
 
 add_regular("<Leader>re", "Refactoring: Extract Function", nil, nil, { "v" })
@@ -919,28 +917,28 @@ add_simple("<Leader>rdv", "Refactoring (Debug): Add Debug Print for Variable Und
 add_simple("<Leader>rdclear", "Refactoring (Debug): Remove Print Statuements Generated by Refactoring Plugin")
 add_regular("<Leader>rdv", "Refactoring (Debug): Add Debug Print for Visually Selected Variable", nil, nil, { "v" })
 add_regular(
-	"<Leader>rdj",
-	"Refactoring (Debug): Add Debug for Function Call Below Current Position",
-	nil,
-	nil,
-	{ "n", "v" }
+  "<Leader>rdj",
+  "Refactoring (Debug): Add Debug for Function Call Below Current Position",
+  nil,
+  nil,
+  { "n", "v" }
 )
 add_regular(
-	"<Leader>rdk",
-	"Refactoring (Debug): Add Debug for Function Call Above Current Position",
-	nil,
-	nil,
-	{ "n", "v" }
+  "<Leader>rdk",
+  "Refactoring (Debug): Add Debug for Function Call Above Current Position",
+  nil,
+  nil,
+  { "n", "v" }
 )
 
 -------------------------
 -- => Dashboard
 -------------------------
 function M.dashboard()
-	setKey("n", ";;da", function()
-		vim.cmd("Dashboard")
-		-- require("dashboard"):instance(true)
-	end, silent)
+  setKey("n", ";;da", function()
+    vim.cmd("Dashboard")
+    -- require("dashboard"):instance(true)
+  end, silent)
 end
 
 add_simple(";;da", "Dashboard: Go to Dashboard")
@@ -949,72 +947,72 @@ add_simple(";;da", "Dashboard: Go to Dashboard")
 -- => Treesitter
 -------------------------
 function M.treeSitter()
-	return {
-		incremental_selection = {
-			init_selection = "<c-space>",
-			node_incremental = "<c-space>",
-			scope_incremental = "<c-s>",
-			node_decremental = "<c-backspace>",
-		},
-		textobjects = {
-			select = {
-				["of"] = "@function.outer",
-				["if"] = "@function.inner",
-				["oc"] = "@class.outer",
-				["ic"] = "@class.inner",
-				["ob"] = "@block.outer",
-				["ib"] = "@block.inner",
-				["ol"] = "@call.outer",
-				["il"] = "@call.inner",
-				["op"] = "@parameter.outer",
-				["ip"] = "@parameter.inner",
-				["oo"] = "@condition.outer",
-				["io"] = "@condition.inner",
-				["os"] = "@statement.outer",
-				["is"] = "@statement.inner",
-			},
-			move = {
-				goto_next_start = {
-					["]f"] = "@function.outer",
-					["]c"] = "@c.outer",
-				},
-				goto_next_end = {
-					["]F"] = "@function.outer",
-					["]M"] = "@c.outer",
-				},
-				goto_previous_start = {
-					["[f"] = "@function.outer",
-					["[c"] = "@c.outer",
-				},
-				goto_previous_end = {
-					["[F"] = "@function.outer",
-					["[M"] = "@c.outer",
-				},
-			},
-		},
-		swap = {
-			next = {
-				["<Leader>a"] = "@parameter.inner",
-			},
-			previous = {
-				["<Leader>A"] = "@parameter.inner",
-			},
-		},
-	}
+  return {
+    incremental_selection = {
+      init_selection = "<c-space>",
+      node_incremental = "<c-space>",
+      scope_incremental = "<c-s>",
+      node_decremental = "<c-backspace>",
+    },
+    textobjects = {
+      select = {
+        ["of"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["oc"] = "@class.outer",
+        ["ic"] = "@class.inner",
+        ["ob"] = "@block.outer",
+        ["ib"] = "@block.inner",
+        ["ol"] = "@call.outer",
+        ["il"] = "@call.inner",
+        ["op"] = "@parameter.outer",
+        ["ip"] = "@parameter.inner",
+        ["oo"] = "@condition.outer",
+        ["io"] = "@condition.inner",
+        ["os"] = "@statement.outer",
+        ["is"] = "@statement.inner",
+      },
+      move = {
+        goto_next_start = {
+          ["]f"] = "@function.outer",
+          ["]c"] = "@c.outer",
+        },
+        goto_next_end = {
+          ["]F"] = "@function.outer",
+          ["]M"] = "@c.outer",
+        },
+        goto_previous_start = {
+          ["[f"] = "@function.outer",
+          ["[c"] = "@c.outer",
+        },
+        goto_previous_end = {
+          ["[F"] = "@function.outer",
+          ["[M"] = "@c.outer",
+        },
+      },
+    },
+    swap = {
+      next = {
+        ["<Leader>a"] = "@parameter.inner",
+      },
+      previous = {
+        ["<Leader>A"] = "@parameter.inner",
+      },
+    },
+  }
 end
 
 -------------------------
 -- => Harpoon
 -------------------------
 function M.harpoonMarks(mark, ui)
-	setKey("n", "<Space>ha", mark.add_file)
-	setKey("n", "<Space>ho", "<CMD>Telescope harpoon marks<CR>")
-	setKey("n", "<Space>hp", "<CMD>lua require('harpoon.ui').nav_next()<CR>")
-	setKey("n", "<Space>hn", "<CMD>lua require('harpoon.ui').nav_prev()<CR>")
-	setKey("n", "<Space>h1", "<CMD>lua require('harpoon.ui').nav_file(1)<CR>")
-	setKey("n", "<Space>h2", "<CMD>lua require('harpoon.ui').nav_file(2)<CR>")
-	setKey("n", "<Space>h3", "<CMD>lua require('harpoon.ui').nav_file(3)<CR>")
-	setKey("n", "<Space>h4", "<CMD>lua require('harpoon.ui').nav_file(4)<CR>")
+  setKey("n", "<Space>ha", mark.add_file)
+  setKey("n", "<Space>ho", "<CMD>Telescope harpoon marks<CR>")
+  setKey("n", "<Space>hp", "<CMD>lua require('harpoon.ui').nav_next()<CR>")
+  setKey("n", "<Space>hn", "<CMD>lua require('harpoon.ui').nav_prev()<CR>")
+  setKey("n", "<Space>h1", "<CMD>lua require('harpoon.ui').nav_file(1)<CR>")
+  setKey("n", "<Space>h2", "<CMD>lua require('harpoon.ui').nav_file(2)<CR>")
+  setKey("n", "<Space>h3", "<CMD>lua require('harpoon.ui').nav_file(3)<CR>")
+  setKey("n", "<Space>h4", "<CMD>lua require('harpoon.ui').nav_file(4)<CR>")
 end
 
 add_simple("<Space>ha", "Harpoon: [H]arpoon [A]dd Mark")
@@ -1026,7 +1024,7 @@ add_simple("<Space>h{1,2,3,4}", "Harpoon: [H]arpoon #")
 -- => Undotree
 -------------------------
 function M.undoTree()
-	setKey("n", "<M-u>", "<CMD>UndotreeToggle<CR>")
+  setKey("n", "<M-u>", "<CMD>UndotreeToggle<CR>")
 end
 
 add_simple("Alt-u", "UndoTree: Toggle UndoTree")
@@ -1035,10 +1033,26 @@ add_simple("Alt-u", "UndoTree: Toggle UndoTree")
 -- => Vim Fugitive
 -------------------------
 function M.fugitive()
-	setKey("n", "<Leader>gs", "<CMD>Git<CR>")
+  setKey("n", "<Leader>gs", "<CMD>Git<CR>")
 end
 
 add_simple("<Leader>gs", "Fugitive: Open [G]it [S]tatus in Fugitive")
+
+-------------------------
+-- => Glow
+-------------------------
+function M.glow()
+  vim.api.nvim_create_augroup("GlowAutocommands", { clear = true })
+  vim.api.nvim_create_autocmd("FileType", {
+    group = "GlowAutocommands",
+    pattern = "markdown",
+    callback = function()
+      setKey("n", ";sp", "<CMD>Glow<CR>")
+    end,
+  })
+end
+
+add_simple(";sp", "Markdown: [s]how Glow [p]review")
 
 -------------------------------------------------------------------------------
 

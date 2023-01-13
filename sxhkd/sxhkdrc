@@ -149,6 +149,9 @@ super + bracket{left,right}
 super + {_, shift + } Tab
   bspc desktop -f {prev,next}.local
 
+super + t; super + {h, l} 
+  bspc desktop -f {prev,next}.local
+
 # Cycle tiled and monocle
 super + m
   bspc desktop -l next
