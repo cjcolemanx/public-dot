@@ -7,6 +7,8 @@ local cmd = vim.cmd
 -- Opts
 local silent = { silent = true }
 local snr = { silent = true, noremap = true }
+local sne = { silent = true, expr = false }
+local noremap = { noremap = true }
 
 -- For Documenting
 local legend = require("keymaps.documentation")
@@ -196,9 +198,9 @@ function M.cmp(cmp, luasnip)
 			c = cmp.mapping.close(),
 		}),
 
-		["<C-Space"] = cmp.mapping(function(fallback)
-			cmp.get_entries()
-		end, { "i", "s" }),
+		-- ["<C-Space"] = cmp.mapping(function(fallback)
+		-- 	cmp.get_entries()
+		-- end, { "i", "s" }),
 	}
 end
 
@@ -226,56 +228,40 @@ previewers -- telescope.previewers
 function M.telescope_binds(builtin, utils, previewers)
 	require("plenary")
 	-- Short
-	setKey("n", ";e", function()
-		builtin.diagnostics()
-	end)
+	setKey("n", ";e", builtin.diagnostics)
 	setKey("n", ";f", function()
 		builtin.find_files({
 			no_ignore = false,
 			hidden = true,
 		})
 	end)
-	setKey("n", ";g", function()
-		builtin.jumplist()
-	end)
-	setKey("n", ";h", function()
-		builtin.help_tags()
-	end)
-	-- setKey("n", ";t", function()
-	-- 	builtin.help_tags()
-	-- end)
-	setKey("n", ";u", function()
-		builtin.oldfiles()
-	end)
-	setKey("n", ";;", function()
-		builtin.resume()
-	end)
-	setKey("n", "\\\\", function()
-		builtin.buffers()
+	setKey("n", ";j", builtin.jumplist)
+	setKey("n", ";h", builtin.help_tags)
+	-- setKey("n", ";u", builtin.oldfiles)
+	setKey("n", ";u", "<CMD>Telescope undo<CR>")
+	setKey("n", ";;", builtin.resume)
+	setKey("n", "\\\\", builtin.buffers)
+
+	-- Search For Things
+	setKey("n", ";sf", builtin.find_files)
+	setKey("n", ";sb", builtin.buffers)
+	setKey("n", ";sm", builtin.marks)
+	setKey("n", ";sr", builtin.registers)
+	setKey("n", ";sw", builtin.grep_string)
+	setKey("n", ";s/", function()
+		builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+			winblend = 10,
+			previewer = false,
+		}))
 	end)
 
 	-- Verbose
-	setKey("n", ";cmd", function()
-		builtin.commands()
-	end)
-	setKey("n", ";grep", function()
-		builtin.live_grep()
-	end)
-	setKey("n", ";keys", function()
-		builtin.keymaps()
-	end)
-	setKey("n", ";man", function()
-		builtin.man_pages()
-	end)
-	setKey("n", ";opt", function()
-		builtin.vim_options()
-	end)
-	setKey("n", ";reg", function()
-		builtin.registers()
-	end)
-	setKey("n", ";col", function()
-		builtin.colorscheme()
-	end)
+	setKey("n", ";cmd", builtin.commands)
+	setKey("n", ";grep", builtin.live_grep)
+	setKey("n", ";keys", builtin.keymaps)
+	setKey("n", ";man", builtin.man_pages)
+	setKey("n", ";opt", builtin.vim_options)
+	setKey("n", ";col", builtin.colorscheme)
 
 	-- Chorded
 	setKey("n", ";<space>da", function()
@@ -290,15 +276,9 @@ function M.telescope_binds(builtin, utils, previewers)
 	setKey("n", ";<space>dk", function()
 		builtin.symbols({ sources = { "kaomoji" } })
 	end)
-	setKey("n", ";<space>r", function()
-		builtin.reloader()
-	end)
-	setKey("n", ";<space>lg", function()
-		builtin.git_branches()
-	end)
-	setKey("n", ";<space>la", function()
-		builtin.git_commits()
-	end)
+	setKey("n", ";<space>r", builtin.reloader)
+	setKey("n", ";<space>lg", builtin.git_branches)
+	setKey("n", ";<space>la", builtin.git_commits)
 	setKey("n", ";<space>ha", function()
 		builtin.highlights({
 			attach_mappings = function(prompt_bufnr, map)
@@ -313,11 +293,9 @@ function M.telescope_binds(builtin, utils, previewers)
 		})
 	end)
 
-	-- Custom
-
 	-- Extensions
-	setKey("n", ";todo", ":TodoTelescope <CR>")
-	-- setKey("n", ";s", ":Telescope project <CR>")
+	setKey("n", "<Leader>;todo", ":TodoTelescope <CR>")
+	setKey("n", "<Leader>;m", require("telescope").extensions.media_files.media_files)
 end
 
 --[[
@@ -387,7 +365,7 @@ function M.telescope_setup_mappings(actions)
 end
 
 add_simple("q", "TelescopePrompt: Close")
-add_simple(";todo", "Telescope: TodoTelescope")
+add_simple("<Leader>;todo", "Telescope: TodoTelescope")
 add_simple(";<Space>da", "Telescope: Emojis (All)")
 add_simple(";<Space>de", "Telescope: Emojis (Emoji)")
 add_simple(";<Space>dn", "Telescope: Emojis (NerdFont)")
@@ -397,19 +375,24 @@ add_simple(";<Space>lg", "Telescope: Git Branches")
 add_simple(";<Space>la", "Telescope: Git Commits")
 add_simple(";<Space>ha", "Telescope: Highlight Groups")
 add_simple(";e", "Telescope: Diagnostics")
-add_simple(";f", "Telescope: Find Files")
-add_simple(";g", "Telescope: Jump List")
-add_simple(";h", "Telescope: Help Tags")
+add_simple(";f", "Telescope: Find [F]iles")
+add_simple(";j", "Telescope: [J]ump List")
+add_simple(";h", "Telescope: [H]elp Tags")
 add_simple(";y", "Telescope: Recent Files")
-add_simple(";u", "Telescope: Resume Cached Picker")
+add_simple(";u", "Telescope: Telescope [U]ndo History")
 add_simple(";;", "Telescope: Buffers")
+add_simple(";sf", "Telescope: [S]earch [F]iles (Exclude Hidden)")
+add_simple(";sb", "Telescope: [S]earch [B]uffers")
+add_simple(";sb", "Telescope: [S]earch [M]arks")
+add_simple(";sw", "Telescope: [S]earch [f]or String")
+add_simple(";s/", "Telescope: [S]earch [C]urrent Buffer")
+add_simple(";st", "Telescope: [S]earch [R]egisters")
 add_simple("\\\\", "Telescope: Diagnostics")
 add_simple(";cmd", "Telescope: Commands")
 add_simple(";grep", "Telescope: Live Grep")
 add_simple(";keys", "Telescope: Keymaps")
 add_simple(";man", "Telescope: Man Pages")
 add_simple(";opt", "Telescope: Set Vim Options")
-add_simple(";reg", "Telescope: Registers")
 add_simple(";col", "Telescope: Change Colorscheme")
 
 -------------------------
@@ -417,8 +400,6 @@ add_simple(";col", "Telescope: Change Colorscheme")
 -------------------------
 
 --[[
--- NOTE: Utilized in `nvim-lsp.rc.lua`
-
 Keymaps to get added on attachment to buffer.
 
 bmap: -- buffer-map function
@@ -430,11 +411,16 @@ function M.lsp_maps_on_attach(bmap, bnmap, buf_set_keymap, opts)
 	setKey("i", "<C-m>", "<cmd>Lspsaga peek_definition<CR>", opts)
 	-- setKey("i", "<C-m>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 
-	-- Normal Mode
-	buf_set_keymap("n", ";1", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
-	buf_set_keymap("n", ";2", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
-	buf_set_keymap("n", ";3", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
-	-- buf_set_keymap("n", ";k", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
+	-- Built-in
+	bmap("n", "gd", vim.lsp.buf.definition)
+	-- bmap("n", "gr", require("telescope.builtin").lsp_references)
+	bmap("n", "gr", "<CMD>Telescope lsp_references<CR>")
+	bmap("n", "gI", vim.lsp.buf.implementation)
+	bmap("n", "gt", vim.lsp.buf.type_definition)
+	-- bmap("n", "<Leader>ds", require("telescope.builtin").lsp_document_symbols)
+	bmap("n", "<Leader>ds", "<CMD>Telescope lsp_document_symbols<CR>")
+	-- bmap("n", "<Leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols)
+	bmap("n", "<Leader>ws", "<CMD>Telescope lsp_dynamic_workspace_symbols<CR>")
 
 	-- LSP Saga
 	-- bnmap("gd", "<Cmd>Lspsaga lsp_finder<CR>")
@@ -453,10 +439,13 @@ function M.lsp_maps_on_attach(bmap, bnmap, buf_set_keymap, opts)
 	-- setKey("t", "<M-CR>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })
 end
 
+add_simple("gd", "LSP: Go to Definition")
+add_simple("gr", "LSP: Go to references")
+add_simple("gI", "LSP: Go to Implementation")
+add_simple("gt", "LSP: Go to Type Definition")
+add_simple("<Leader>ds", "LSP: Telescope Document Symbols")
+add_simple("<Leader>ws", "LSP: Telescope Workspace Symbols")
 add_regular("<C-m>", "LSP: Peek/Edit Definition", nil, nil, { "i" })
-add_simple(";1", "LSP: Peek Definition")
-add_simple(";2", "LSP: Peek Declaration")
-add_simple(";3", "LSP: Peek Implementation")
 add_simple(";p", "LSP: Peek Definition")
 add_simple(";k", "LSP: Show Hoverdoc")
 add_simple(";t", "LSP: Toggle LSP Outline")
@@ -630,6 +619,7 @@ function M.mind(mind)
 		if not mind_open or mind_open == nil then
 			mind.open_main()
 			vim.g.mind_nvim_main_open = true
+			vim.g.mind_nvim_project_open = false
 		else
 			mind.close()
 			vim.g.mind_nvim_main_open = false
@@ -644,19 +634,89 @@ function M.mind(mind)
 		if not mind_open or mind_open == nil then
 			mind.open_project()
 			vim.g.mind_nvim_project_open = true
+			vim.g.mind_nvim_main_open = false
 		else
 			mind.close()
 			vim.g.mind_nvim_project_open = false
 		end
 	end, snr)
 
-	-- TODO: Add Mind to project
-	setKey("n", "<leader>ma", function() end, snr)
+	setKey("n", "<leader>ma", "<CMD>MindOpenSmartProject<CR>", snr)
+	setKey("n", "<leader>mq", "<CMD>MindOpenProject<CR>", snr)
 end
 
+M.MindMaps = {
+	normal = {
+		["<cr>"] = "open_data",
+		["<s-cr>"] = "open_data_index",
+		l = "toggle_node",
+		h = "toggle_node",
+		["<s-tab>"] = "toggle_node",
+		["/"] = "select_path",
+		["$"] = "change_icon_menu",
+		-- c = "add_inside_end_index",
+		A = "add_inside_start",
+		a = "add_inside_end",
+		c = "copy_node_link",
+		C = "copy_node_link_index",
+		d = "delete",
+		D = "delete_file",
+		p = "add_above",
+		n = "add_below",
+		q = "quit",
+		r = "rename",
+		R = "change_icon",
+		u = "make_url",
+		x = "select",
+	},
+	selection = {
+		["<cr>"] = "open_data",
+		["<s-tab>"] = "toggle_node",
+		["/"] = "select_path",
+		I = "move_inside_start",
+		i = "move_inside_end",
+		p = "move_above",
+		n = "move_below",
+		-- ["<C-k>"] = "move_above",
+		-- ["<C-j>"] = "move_below",
+		q = "quit",
+		x = "select",
+	},
+}
+
+add_simple("<CR>", "Mind: Open Mind File Under Cursor")
+add_simple("<Shift-CR>", "Mind: Open Mind Date Index")
+add_simple("l || h", "Mind: Toggle Node")
+add_simple("<Shift-Tab>", "Mind: Toggle Node")
+add_simple("/", "Mind: Select Path")
+add_simple("$", "Mind: Open 'Change Icon' menu")
+add_simple("a", "Mind: Add Node Inside (bottom)")
+add_simple("A", "Mind: Add Node Inside (top)")
+add_simple("c", "Mind: Copy Node Link")
+add_simple("C", "Mind: Copy Node Link Index")
+add_simple("d", "Mind: Delete Node")
+add_simple("D", "Mind: Delete File")
+add_simple("p", "Mind: Add Node Above")
+add_simple("n", "Mind: Add Node Below")
+add_simple("q", "Mind: Quit Mind")
+add_simple("r", "Mind: Rename Node")
+add_simple("R", "Mind: Change Node Icon")
+add_simple("u", "Mind: Make URL")
+add_simple("x", "Mind: Select Node")
+add_simple("/", "Mind: Select Node Path")
+add_simple("I", "Mind: Insert Node Selected At Top")
+add_simple("i", "Mind: Insert Node Selected At Bottom")
+-- add_simple("<C-k>", "Mind: Move Selected Node Above")
+-- add_simple("<C-j>", "Mind: Move Selected Node Below")
+add_simple("p", "Mind: Move Selected Node Above")
+add_simple("n", "Mind: Move Selected Node Below")
+add_simple("q", "Mind: Quit Mind")
+add_simple("x", "Mind: Select Node")
+add_simple("<CR>", "Mind: Open Selected Node's data")
+add_simple("<Shift-Tab>", "Mind: Toggle Selected Node")
 add_simple("<Leader>mg", "Mind: Toggle Main Mind Window")
 add_simple("<Leader>ml", "Mind: Toggle Project Mind Window")
-add_simple("<Leader>ma", "Mind: Add Mind to a Project (WIP)")
+add_simple("<Leader>ma", "Mind: Add Mind to a Project")
 
 -------------------------
 -- => Tabout
@@ -744,6 +804,243 @@ add_simple("ds", "Surround: Remove Surround matching {character}")
 add_simple("cs", "Surround: Change Surround{target_char}{replacement_char}")
 add_regular("s", "Surround: Surround{character}", nil, nil, { "v" })
 add_regular("S", "Surround: SurroundVisual, like '(\n words \n)", nil, nil, { "v" })
+
+-------------------------
+-- => Todo Comments
+-------------------------
+
+function M.todo(td)
+	setKey("n", "]]", function()
+		td.jump_next()
+	end)
+	setKey("n", "[[", function()
+		td.jump_prev()
+	end)
+	setKey("n", "]t", function()
+		td.jump_next({ keywords = { "TODO" } })
+	end)
+	setKey("n", "[t", function()
+		td.jump_prev({ keywords = { "TODO" } })
+	end)
+	setKey("n", "]e", function()
+		td.jump_next({ keywords = { "FIXME" } })
+	end)
+	setKey("n", "[e", function()
+		td.jump_prev({ keywords = { "FIXME" } })
+	end)
+	setKey("n", "]n", function()
+		td.jump_next({ keywords = { "NOTE" } })
+	end)
+	setKey("n", "[n", function()
+		td.jump_prev({ keywords = { "NOTE" } })
+	end)
+end
+
+-------------------------
+-- => No-Neck-Pain
+-------------------------
+-- function M.noNeckPain()
+-- 	setKey("n", "<Leader>a", "<CMD>NoNeckPain<CR>", silent)
+-- end
+--
+-- add_simple("<Leader>a", "NoNeckPain: Center Current Window")
+
+-------------------------
+-- => Refactoring.Nvim
+-------------------------
+function M.refactoring(refactoring)
+	local opts = { silent = true, noremap = true, expr = false }
+	local rf = refactoring.refactor
+	local db = refactoring.debug
+
+	-- Visual
+	setKey("v", "<Leader>re", function()
+		rf("Extract Function")
+	end, opts)
+	setKey("v", "<Leader>rf", function()
+		rf("Extract Function To File")
+	end, opts)
+	setKey("v", "<Leader>rv", function()
+		rf("Extract Variable")
+	end, opts)
+
+	-- Inline works in visual and normal
+	setKey({ "n", "v" }, "<Leader>ri", function()
+		rf("Inline Variable")
+	end, opts)
+
+	-- Block
+	setKey("n", "<Leader>rb", function()
+		rf("Extract Block")
+	end, opts)
+	setKey("n", "<Leader>rbf", function()
+		rf("Extract Block To File")
+	end, opts)
+
+	-- Telescope
+	setKey("v", "<Leader>rr", function()
+		require("telescope").extensions.refactoring.refactors()
+	end, noremap)
+
+	--
+	-- Debugging
+	--
+
+	-- Mark the calling function
+	setKey({ "v", "n" }, "<Leader>rdj", function()
+		db.printf({ below = true })
+	end, noremap)
+	setKey({ "v", "n" }, "<Leader>rdk", function()
+		db.printf({ below = false })
+	end, noremap)
+
+	-- mark Variables
+	setKey("n", "<Leader>rdv", function()
+		db.print_var({ normal = true })
+	end, noremap)
+	setKey("v", "<Leader>rdv", function()
+		db.print_var()
+	end, noremap)
+
+	-- Clean Debug Print Statements
+	setKey("n", "<Leader>rdclear", function()
+		db.cleanup()
+	end, noremap)
+end
+
+add_regular("<Leader>re", "Refactoring: Extract Function", nil, nil, { "v" })
+add_regular("<Leader>rf", "Refactoring: Extract Function to File", nil, nil, { "v" })
+add_regular("<Leader>rv", "Refactoring: Extract Variable", nil, nil, { "v" })
+add_regular("<Leader>ri", "Refactoring: Inline Variable", nil, nil, { "n", "v" })
+add_regular("<Leader>rr", "Refactoring: Telescope Refactor Options", nil, nil, { "v" })
+add_simple("<Leader>rb", "Refactoring: Extract Block")
+add_simple("<Leader>rbi", "Refactoring: Extract Block to File")
+add_simple("<Leader>rdv", "Refactoring (Debug): Add Debug Print for Variable Under Cursor")
+add_simple("<Leader>rdclear", "Refactoring (Debug): Remove Print Statuements Generated by Refactoring Plugin")
+add_regular("<Leader>rdv", "Refactoring (Debug): Add Debug Print for Visually Selected Variable", nil, nil, { "v" })
+add_regular(
+	"<Leader>rdj",
+	"Refactoring (Debug): Add Debug for Function Call Below Current Position",
+	nil,
+	nil,
+	{ "n", "v" }
+)
+add_regular(
+	"<Leader>rdk",
+	"Refactoring (Debug): Add Debug for Function Call Above Current Position",
+	nil,
+	nil,
+	{ "n", "v" }
+)
+
+-------------------------
+-- => Dashboard
+-------------------------
+function M.dashboard()
+	setKey("n", ";;da", function()
+		vim.cmd("Dashboard")
+		-- require("dashboard"):instance(true)
+	end, silent)
+end
+
+add_simple(";;da", "Dashboard: Go to Dashboard")
+
+-------------------------
+-- => Treesitter
+-------------------------
+function M.treeSitter()
+	return {
+		incremental_selection = {
+			init_selection = "<c-space>",
+			node_incremental = "<c-space>",
+			scope_incremental = "<c-s>",
+			node_decremental = "<c-backspace>",
+		},
+		textobjects = {
+			select = {
+				["of"] = "@function.outer",
+				["if"] = "@function.inner",
+				["oc"] = "@class.outer",
+				["ic"] = "@class.inner",
+				["ob"] = "@block.outer",
+				["ib"] = "@block.inner",
+				["ol"] = "@call.outer",
+				["il"] = "@call.inner",
+				["op"] = "@parameter.outer",
+				["ip"] = "@parameter.inner",
+				["oo"] = "@condition.outer",
+				["io"] = "@condition.inner",
+				["os"] = "@statement.outer",
+				["is"] = "@statement.inner",
+			},
+			move = {
+				goto_next_start = {
+					["]f"] = "@function.outer",
+					["]c"] = "@c.outer",
+				},
+				goto_next_end = {
+					["]F"] = "@function.outer",
+					["]M"] = "@c.outer",
+				},
+				goto_previous_start = {
+					["[f"] = "@function.outer",
+					["[c"] = "@c.outer",
+				},
+				goto_previous_end = {
+					["[F"] = "@function.outer",
+					["[M"] = "@c.outer",
+				},
+			},
+		},
+		swap = {
+			next = {
+				["<Leader>a"] = "@parameter.inner",
+			},
+			previous = {
+				["<Leader>A"] = "@parameter.inner",
+			},
+		},
+	}
+end
+
+-------------------------
+-- => Harpoon
+-------------------------
+function M.harpoonMarks(mark, ui)
+	setKey("n", "<Space>ha", mark.add_file)
+	setKey("n", "<Space>ho", "<CMD>Telescope harpoon marks<CR>")
+	setKey("n", "<Space>hp", "<CMD>lua require('harpoon.ui').nav_next()<CR>")
+	setKey("n", "<Space>hn", "<CMD>lua require('harpoon.ui').nav_prev()<CR>")
+	setKey("n", "<Space>h1", "<CMD>lua require('harpoon.ui').nav_file(1)<CR>")
+	setKey("n", "<Space>h2", "<CMD>lua require('harpoon.ui').nav_file(2)<CR>")
+	setKey("n", "<Space>h3", "<CMD>lua require('harpoon.ui').nav_file(3)<CR>")
+	setKey("n", "<Space>h4", "<CMD>lua require('harpoon.ui').nav_file(4)<CR>")
+end
+
+add_simple("<Space>ha", "Harpoon: [H]arpoon [A]dd Mark")
+add_simple("<Space>ho", "Harpoon: [H]arpoon [O]pen Ui")
+add_simple("<Space>h{p/n}", "Harpoon: [H]arpoon Next (p) or Previous (n)")
+add_simple("<Space>h{1,2,3,4}", "Harpoon: [H]arpoon #")
+
+-------------------------
+-- => Undotree
+-------------------------
+function M.undoTree()
+	setKey("n", "<M-u>", "<CMD>UndotreeToggle<CR>")
+end
+
+add_simple("Alt-u", "UndoTree: Toggle UndoTree")
+
+-------------------------
+-- => Vim Fugitive
+-------------------------
+function M.fugitive()
+	setKey("n", "<Leader>gs", "<CMD>Git<CR>")
+end
+
+add_simple("<Leader>gs", "Fugitive: Open [G]it [S]tatus in Fugitive")
+
+-------------------------------------------------------------------------------
 
 M.legend = legend.legend
 

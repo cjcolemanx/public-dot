@@ -5,11 +5,13 @@ if not status then
 	return
 end
 
-nightfox.setup({
-	options = {
-		styles = { comments = "italic", functions = "italic,bold" },
-		transparent = false,
-		dim_inactive = true,
-		terminal_colors = true,
-	},
-})
+if vim.colorscheme == "duskfox" then
+	nightfox.setup({
+		options = {
+			styles = { comments = "italic", functions = "italic,bold" },
+			transparent = false,
+			dim_inactive = true,
+			terminal_colors = true,
+		},
+	})
+end

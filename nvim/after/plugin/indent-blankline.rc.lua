@@ -15,13 +15,13 @@ vim.cmd([[highlight IndentBlanklineContextChar cterm=nocombine ctermfg=11 guifg=
 vim.cmd([[highlight IndentBlanklineContextStart cterm=underline gui=underline guisp=#5a93aa]])
 
 require("indent_blankline").setup({
-  space_char_blankline = " ",
-  show_current_context = true,
-  show_current_context_start = true,
-  char_highlight_list = {
-    "IndentBlanklineIndent1",
-    "IndentBlanklineIndent2",
-    "IndentBlanklineIndent3",
-  },
+	space_char_blankline = " ",
+	show_current_context = true,
+	show_current_context_start = true,
+	char_highlight_list = {
+		"IndentBlanklineIndent1",
+		"IndentBlanklineIndent2",
+		"IndentBlanklineIndent3",
+	},
 })
 -- 191726

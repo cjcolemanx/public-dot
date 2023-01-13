@@ -43,6 +43,7 @@ o.breakindent = true
 o.textwidth = 80
 o.showtabline = 2
 o.termguicolors = true
+o.colorcolumn = "80"
 
 opt.splitright = true
 opt.signcolumn = "yes:1"
@@ -66,18 +67,18 @@ cmd([[set whichwrap+=< whichwrap+=> whichwrap+=h whichwrap+=l]])
 
 -- Automatically show and remove current line highlight
 autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
-  group = augroup("CursorLine", { clear = true }),
-  once = false,
-  callback = function()
-    cmd([[setlocal cursorline]])
-  end,
+	group = augroup("CursorLine", { clear = true }),
+	once = false,
+	callback = function()
+		cmd([[setlocal cursorline]])
+	end,
 })
 autocmd("WinLeave", {
-  group = augroup("CursorLine", { clear = true }),
-  once = false,
-  callback = function()
-    cmd([[setlocal nocursorline]])
-  end,
+	group = augroup("CursorLine", { clear = true }),
+	once = false,
+	callback = function()
+		cmd([[setlocal nocursorline]])
+	end,
 })
 
 -- Turn off autocomments

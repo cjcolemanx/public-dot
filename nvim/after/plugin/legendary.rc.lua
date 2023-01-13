@@ -10,6 +10,7 @@ local commands = {}
 local autocommands = {}
 
 local my_plugin_maps = require("keymaps.plugin-maps").legend
+local my_global_maps = require("keymaps.global-map-legend").legend
 local my_picker_maps = require("ui.pickers").legend
 
 local call_legendary = {
@@ -40,6 +41,9 @@ local call_legendary = {
 }
 
 for _, v in ipairs(my_plugin_maps) do
+	table.insert(keymaps, v)
+end
+for _, v in ipairs(my_global_maps) do
 	table.insert(keymaps, v)
 end
 for _, v in ipairs(my_picker_maps) do

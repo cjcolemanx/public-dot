@@ -44,12 +44,31 @@ telescope.setup({
 			order_by = "desc", -- recent (default), asc, desc
 			sync_with_nvim_tree = false, -- default: false
 		},
+		media_files = {
+			filetypes = {
+				"png",
+				"jpg",
+			},
+			find_cmd = "rg",
+		},
+		refactoring = {},
+		undo = {
+			side_by_side = true,
+			layout_strategy = "vertical",
+			layout_config = {
+				preview_height = 0.8,
+			},
+		},
 	},
 })
 
 -- Load Extensions and Options
 telescope.load_extension("file_browser")
 telescope.load_extension("project")
+telescope.load_extension("media_files")
+telescope.load_extension("refactoring")
+telescope.load_extension("harpoon")
+telescope.load_extension("undo")
 
 -- Add keybinds
 require("keymaps.plugin-maps").telescope_binds(builtin, utils, previewers)

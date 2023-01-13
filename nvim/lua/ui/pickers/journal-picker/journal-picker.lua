@@ -1,4 +1,3 @@
--- TODO: Refactor into plugin (add a setup and such)
 local status = pcall(require, "telescope")
 if not status then
 	print("ERROR: nvim-telescope is unavailable for custom pickers")

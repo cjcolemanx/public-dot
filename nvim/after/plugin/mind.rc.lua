@@ -1,6 +1,7 @@
 local status, mind = pcall(require, "mind")
+local status_maps, map = pcall(require, "keymaps.plugin-maps")
 
-if not status then
+if not status or not status_maps then
 	return
 end
 
@@ -24,44 +25,14 @@ mind.setup({
 			{ " ", "Monitoring" },
 			{ " ", "Internet, Earth, everyone!" },
 			{ " ", "Frozen, on-hold" },
+			{ " ", "Reminder, Time-Sensitive, Nebulous" },
+			{ " ", "Priority Low" },
+			{ " ", "Priority Mid" },
+			{ " ", "Priority High" },
 		},
 	},
-	keymaps = {
-		normal = {
-			["<cr>"] = "open_data",
-			["<s-cr>"] = "open_data_index",
-			l = "toggle_node",
-			h = "toggle_node",
-			["<s-tab>"] = "toggle_node",
-			["/"] = "select_path",
-			["$"] = "change_icon_menu",
-			-- c = "add_inside_end_index",
-			A = "add_inside_start",
-			a = "add_inside_end",
-			c = "copy_node_link",
-			C = "copy_node_link_index",
-			d = "delete",
-			D = "delete_file",
-			n = "add_above",
-			p = "add_below",
-			q = "quit",
-			r = "rename",
-			R = "change_icon",
-			u = "make_url",
-			x = "select",
-		},
-		selection = {
-			["<cr>"] = "open_data",
-			["<s-tab>"] = "toggle_node",
-			["/"] = "select_path",
-			I = "move_inside_start",
-			i = "move_inside_end",
-			["<C-k>"] = "move_above",
-			["<C-j>"] = "move_below",
-			q = "quit",
-			x = "select",
-		},
-	},
+	keymaps = map.MindMaps,
 })
 
-require("keymaps.plugin-maps").mind(mind)
+-- require("keymaps.plugin-maps").mind(mind)
+map.mind(mind)

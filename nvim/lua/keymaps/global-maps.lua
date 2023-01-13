@@ -31,6 +31,7 @@ setKey("", "K", "5k")
 setKey("", "0", "^")
 setKey("", "<Bar>", "^i")
 
+-- MAKE (Space)
 -- Space Is Useful : )
 setKey("n", "<Space>c", "ciw", remap)
 setKey("n", "<Space>d", "diw", remap)
@@ -39,8 +40,8 @@ setKey("n", "<Space>Y", "yiw", remap)
 setKey("n", "<Space>y", "yy", remap)
 setKey("n", "<Space>m", "mz", remap)
 setKey("n", "<Space>e", "`z", remap)
-setKey("n", "<Space>f", "/", remap)
-setKey("n", "<Space>/", "<CMD>nohl<CR>", sn)
+-- setKey("n", "<Space>f", "/", remap)
+-- setKey("n", "<Space>/", "<CMD>nohl<CR>", sn)
 setKey("n", "<Space>j", "zb", remap)
 setKey("n", "<Space>k", "zt", remap)
 setKey("n", "<Space>l", "zz", remap)
@@ -51,16 +52,23 @@ setKey("n", "<Space>wj", ":split<CR><C-j>", remap)
 setKey("n", "<Space>wk", ":split<CR>", remap)
 setKey("n", "<Space>n", ":bprevious<CR>", silent)
 setKey("n", "<Space>p", ":bnext<CR>", silent)
+setKey("n", "<Space>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Line Ordering
 setKey("n", "<M-k>", "ddkP", remap)
 setKey("n", "<M-j>", "ddp", remap)
-setKey("x", "<M-k>", "dkkP", remap) -- NOTE: doesn't work quite right
-setKey("x", "<M-j>", "dp", remap) -- NOTE: doesn't work quite right
+setKey("v", "<M-j>", ":m '>+1<CR>gv=gv")
+setKey("v", "<M-k>", ":m '<-2<CR>gv=gv")
 
 -- Better Shifting
 setKey({ "n", "v" }, ">", ">l")
 setKey({ "n", "v" }, "<", "<l")
+
+-- Better Scrolling and Searching
+setKey("n", "<C-d>", "<C-d>zz")
+setKey("n", "<C-u>", "<C-u>zz")
+setKey("n", "n", "nzzzv")
+setKey("n", "N", "Nzzzv")
 
 -- Save + Exit
 setKey("", "<leader>w", ":w!<CR>") -- Save Current
@@ -124,11 +132,25 @@ setKey("n", "tsl", ":tabm +1<CR>", silent)
 
 -- Terminal Shortcuts
 -- setKey({ "n", "v" }, "<leader>t", ":terminal<CR>")
-setKey({ "n", "v" }, "<C-T>", ":terminal<CR>")
-setKey("t", "<Escape>", "<C-\\><C-N>")
+-- setKey({ "n", "v" }, "<C-T>", ":terminal<CR>")
+-- setKey("t", "<Escape>", "<C-\\><C-N>")
 
 -- Searching
-setKey("", "<leader>/", ":nohl <CR>", silent)
+local ns = vim.api.nvim_create_namespace("toggle_hlsearch")
+
+-- TODO: document
+local function toggle_hlsearch(char)
+	if vim.fn.mode() == "n" then
+		local keys = { "<CR>", "n", "N", "*", "#", "?", "/" }
+		local new_hlsearch = vim.tbl_contains(keys, vim.fn.keytrans(char))
+
+		if vim.opt.hlsearch:get() ~= new_hlsearch then
+			vim.opt.hlsearch = new_hlsearch
+		end
+	end
+end
+
+vim.on_key(toggle_hlsearch, ns)
 
 -- Quick View
 setKey("n", "<leader>2", "<cmd>mess <cr>")
@@ -209,10 +231,20 @@ end)
 -- 	-- print(vim.fn.expand("%:h"))
 -- end)
 
+-- setKey("n", "<C-a>", function()
+-- 	print("has v.09?" .. vim.fn.has("nvim-0.9"))
+-- 	print(vim.inspect(vim.opt.stc))
+-- end)
+
 -------------------------
 -- => Function Keys
 -------------------------
 setKey("n", "<F3>", ":checkhealth<CR>")
+
+-------------------------
+-- => Files
+-------------------------
+setKey("n", "<Space>x", "<CMD>!Chmod +x %<CR>")
 
 -------------------------
 -- =>  Insert Mode

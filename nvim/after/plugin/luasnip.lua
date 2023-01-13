@@ -7,14 +7,15 @@
 
 local status, ls = pcall(require, "luasnip")
 if not status then
-  -- print("ERROR: plugin 'luaSnip' is unavailable")
-  return
+	-- print("ERROR: plugin 'luaSnip' is unavailable")
+	return
 end
 
 local types = require("luasnip.util.types")
 
 -- Snippets Location
 require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
+require("luasnip.loaders.from_vscode").lazy_load()
 
 -- NOTE: not too sure, but here for posterity
 -- Access any *SELECT* variable
@@ -28,41 +29,41 @@ vim.cmd([[command! LuaSnipEdit :lua require("luasnip.loaders").edit_snippet_file
 -------------------------
 
 ls.config.set_config({
-  -- Remember to keep around the last snippet.
-  -- Lets you go back into it if you move outside of the selection
-  history = true,
+	-- Remember to keep around the last snippet.
+	-- Lets you go back into it if you move outside of the selection
+	history = true,
 
-  -- Update dynamic snippets as you type
-  updateevents = "TextChanged,TextChangedI",
+	-- Update dynamic snippets as you type
+	updateevents = "TextChanged,TextChangedI",
 
-  -- Autosnippets
-  enable_autosnippets = true,
+	-- Autosnippets
+	enable_autosnippets = true,
 
-  -- Highlights
-  ext_opts = {
-    [types.insertNode] = {
-      active = {
-        virt_text = { { "", "Success" } },
-      },
-      -- unvisited = {
-      --   hl_group = "DiffChange",
-      -- },
-      -- visited = {
-      --   hl_group = "Search",
-      -- },
-    },
-    [types.choiceNode] = {
-      active = {
-        virt_text = { { "", "Error" } },
-      },
-      -- unvisited = {
-      --   hl_group = "DiffChange",
-      -- },
-      -- visited = {
-      --   hl_group = "Search",
-      -- },
-    },
-  },
+	-- Highlights
+	ext_opts = {
+		[types.insertNode] = {
+			active = {
+				virt_text = { { "", "Success" } },
+			},
+			-- unvisited = {
+			--   hl_group = "DiffChange",
+			-- },
+			-- visited = {
+			--   hl_group = "Search",
+			-- },
+		},
+		[types.choiceNode] = {
+			active = {
+				virt_text = { { "", "Error" } },
+			},
+			-- unvisited = {
+			--   hl_group = "DiffChange",
+			-- },
+			-- visited = {
+			--   hl_group = "Search",
+			-- },
+		},
+	},
 })
 
 -------------------------

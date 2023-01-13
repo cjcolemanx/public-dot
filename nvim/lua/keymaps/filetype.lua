@@ -4,7 +4,15 @@ local augroup = api.nvim_create_augroup
 local aucommand = api.nvim_create_autocmd
 local map = vim.keymap.set
 
--- Markdown
+-- For Documenting
+local legend = require("keymaps.documentation")
+local add_simple = legend.add_simple_to_legend
+local add_regular = legend.add_to_legend
+local add_modal = legend.add_to_mode_dependent_to_legend
+
+-------------------------
+-- => Markdown
+-------------------------
 local md_group = augroup("MarkdownMappings", { clear = false })
 
 aucommand({ "FileType" }, {
@@ -27,6 +35,8 @@ aucommand({ "FileType" }, {
 		end, opts)
 	end,
 })
+
+add_simple("<Leader>t", "F.Markdown: Toggle TODO status")
 
 -- Lua
 -- local lua_group = augroup("LuaMappings", { clear = false })

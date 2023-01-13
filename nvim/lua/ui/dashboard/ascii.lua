@@ -123,8 +123,26 @@ end
 
 M.add_text_to_bottom = add_text_to_bottom
 
+--[[ 
+Choose specific Image, Logo, Text, and Pre- Post-fixes for Dashboard.
+
+@param image_name String
+@param logo_name String
+@param text_name String
+@param fixes String
+--]]
+function M.use_specific_images(image_table, image_name, logo_name, text_name, fixes)
+	local art = require("ui.dashboard.ascii-art." .. image_table)
+	-- local logo_art = require("ui.dashboard.ascii-art." .. image_table)
+
+	local image = art["" .. image_name .. ""]
+
+	local bordered_image = add_border_to_art(image)
+
+	return bordered_image
+end
+
 --[[ Puts a random ascii image and text on the dashboard --]]
--- FIXME: Indexing bug... idk where lol
 function M.get_random_image()
 	-- Set up
 	math.randomseed(os.time())

@@ -40,11 +40,13 @@ end
 lualine.setup({
 	options = {
 		icons_enabled = true,
-		theme = "duskfox",
-		-- theme = "auto",
+		-- theme = "duskfox",
 		-- theme = "nordfox",
-		section_separators = { left = "", right = "" },
+		-- theme = "base16",
+		-- theme = "auto",
+		theme = "nordfox",
 		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
 		disabled_filetypes = {},
 	},
 	sections = {
