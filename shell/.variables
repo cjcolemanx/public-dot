@@ -3,7 +3,7 @@
 #############################
 
 ### => Default Programs
-export PAGER=less
+# export PAGER=less
 export EDITOR=nvim
 export GPG_TTY="$TERM"
 export BROWSER="Brave"

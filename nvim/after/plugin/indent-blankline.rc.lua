@@ -14,10 +14,16 @@ vim.cmd([[highlight IndentBlanklineIndent3 guifg=#fda47f gui=nocombine]])
 vim.cmd([[highlight IndentBlanklineContextChar cterm=nocombine ctermfg=11 guifg=#5a93aa gui=nocombine]])
 vim.cmd([[highlight IndentBlanklineContextStart cterm=underline gui=underline guisp=#5a93aa]])
 
+-- Options
+vim.indentLine_setConceal = 2
+vim.indentLine_concealcursor = ""
+vim.indentLine_bufNameExlude = { "term:.*" }
+
 require("indent_blankline").setup({
 	space_char_blankline = " ",
 	show_current_context = true,
 	show_current_context_start = true,
+	show_end_of_line = true,
 	char_highlight_list = {
 		"IndentBlanklineIndent1",
 		"IndentBlanklineIndent2",

@@ -4,6 +4,8 @@ if not status then
 	return
 end
 
+local hlgroup_finder = require("behavior.functions.util.color-helpers").get_hl
+
 local fn = vim.fn
 local opt = vim.opt
 
@@ -30,12 +32,18 @@ local getAutoformatStatus = function()
 	end
 
 	-- AF Disabled
-	return "[Auto Format OFF]"
+	return "[Formatting OFF]"
 end
 
 local windowBufnr = function()
 	return "Buf" .. vim.fn.bufnr()
 end
+
+-- vim.keymap.set("n", ",,;a", function()
+-- 	print("Normal" .. vim.inspect(hlgroup_finder("Normal")))
+-- 	print("StatusLine" .. vim.inspect(hlgroup_finder("StatusLine")))
+-- 	print("Visual" .. vim.inspect(hlgroup_finder("Visual")))
+-- end)
 
 lualine.setup({
 	options = {
@@ -43,22 +51,38 @@ lualine.setup({
 		-- theme = "duskfox",
 		-- theme = "nordfox",
 		-- theme = "base16",
-		-- theme = "auto",
-		theme = "nordfox",
+		theme = "auto",
+		-- theme = "nordfox",
 		component_separators = { left = "", right = "" },
 		section_separators = { left = "", right = "" },
 		disabled_filetypes = {},
 	},
 	sections = {
 		-- lualine_a = { "mode", { "buffers", mode = 1 } },
-		lualine_a = { "mode", windowBufnr },
-		lualine_b = { "branch" },
+		lualine_a = {
+			"mode",
+			{
+				windowBufnr,
+			},
+		},
+		lualine_b = {
+			{
+				"branch",
+			},
+		},
 		lualine_c = {
 			{
 				"filename",
 				file_status = true, -- displays file status (readonly status, modified status)
 				newfile_status = true,
 				path = 0, -- 0 = just filename, 1 = relative path, 2 = absolute path
+				color = function(section)
+					return {
+						bg = vim.bo.modified and "#aa3355" or "#33aa88",
+						fg = vim.bo.modified and hlgroup_finder("Normal").foreground
+							or hlgroup_finder("Normal").background,
+					}
+				end,
 			},
 			getAutoformatStatus,
 		},
@@ -103,5 +127,5 @@ lualine.setup({
 		lualine_z = { "progress", "location" },
 	},
 	winbar = {},
-	extensions = { "nvim-tree" },
+	extensions = { "nvim-tree", "fugitive", "man" },
 })

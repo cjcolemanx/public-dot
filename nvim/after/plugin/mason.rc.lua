@@ -40,29 +40,6 @@ mason.setup({
 })
 
 mason_lspconfig.setup({
-	ensure_installed = {
-		-- 'angularls',
-		"bashls",
-		-- 'csharp_ls',
-		"cssls",
-		"cssmodules_ls",
-		-- 'dockerls',
-		-- "emmet-ls",
-		-- "eslint_d",
-		-- 'html',
-		-- 'intelephense', -- PHP
-		-- 'jdtls', -- Java
-		-- 'jsonls',
-		"marksman", -- Markdown
-		-- "prettierd",
-		-- 'textlab', -- LaTeX
-		"tsserver",
-		"sumneko_lua",
-		"rust_analyzer",
-		-- "stylelua",
-		-- 'pyright
-		-- 'sqlls,
-		-- 'tailwindcss,
-	},
+	ensure_installed = require("lsp.sources"),
 	automatic_installation = true,
 })

@@ -2,20 +2,38 @@
 
 Don't expect a lot of stability here. I tinker with this constantly.
 
-## Dependencies
+## Programs
 
-- Window Manager: [bspwm](https://github.com/baskerville/bspwm) + [sxxhkd](https://github.com/baskerville/sxhkd)
+- Window Manager:
+  - Main: [bspwm](https://github.com/baskerville/bspwm) + [sxxhkd](https://github.com/baskerville/sxhkd)
+  - Also [i3](https://i3wm.org/) with [i3blocks](https://github.com/vivien/i3blocks) as an i3status replacement
 - Shell: ZSH (w/ [Oh-My-Zsh](https://ohmyz.sh/) and [Starship](https://starship.rs/))
 - Text Editor: [NeoVim](https://neovim.io/) and [VSCodium](https://vscodium.com/)
-- Widgets and Bars: [Rofi](https://github.com/davatorium/rofi), [Eww](https://github.com/elkowar/eww), and [Polybar](https://github.com/polybar/polybar)
+- Widgets and Bars:
+  - BSPWM:
+    - [Rofi](https://github.com/davatorium/rofi)
+    - [Eww](https://github.com/elkowar/eww)
+    - [Polybar](https://github.com/polybar/polybar)
+  - i3:
+    - [i3blocks](https://github.com/vivien/i3blocks)
 - Terminal Emulator: [Kitty](https://sw.kovidgoyal.net/kitty/)
 - Screenshots: [Flameshot](https://flameshot.org/) (wanna look into Scrot tho)
 - Notifications: [Dunst](https://dunst-project.org/)
-- Wallpapers: [Nitrogen](https://github.com/l3ib/nitrogen/)
+- Wallpapers:
+  - [Pywal](https://github.com/dylanaraps/pywal) (autogenerate colorschemes)
+  - No longer using: [Nitrogen](https://github.com/l3ib/nitrogen/)
+    - For some reason, Nitrogen basically doubled my system resource usage ╮(╯_╰)╭
 - Compositor: [Picom](https://github.com/yshui/picom)
 - Clipboard: [Clipmenu](https://github.com/cdown/clipmenu)
 
+## Keybinds
+
+Run `keybinds.sh` to see keybindings.
+
 ### Notes
+
+I use the KDE lock screen, so I can quickly swap between the desktops in
+`/usr/share/xsessions`. Makes it easy to test and hop between different environments.
 
 Some Alacritty stuff is sprinkled around these configs, but I've moved to Kitty
 p much. I don't have any real Kitty configs yet, I've only been using it for a couple
@@ -28,7 +46,7 @@ Eww is probably the newest addition to this ecosystem, so it's the least fleshed
 out.
 
 My Polybar, Eww, and Rofi folders contain a lot of stuff from various other
-repos (that I didn't author) so it can be pretty confusing to parse. As far as
+repos (that I didn't author) so it can be pretty confusing to navigate. As far as
 _which_ of those configs I use/wrote, check these files and folders:
 
 - 'polybar/grayblocks'
@@ -37,9 +55,9 @@ _which_ of those configs I use/wrote, check these files and folders:
 
 Widgets and Dunst are launched/killed with either a keybind or they're part of the `baspwmrc` file.
 
-## The Medium One
+## Window Managers
 
-BSPWM + SXHKD.
+**BSPWM + SXHKD**.
 
 Includes a script for launching a scratchpad terminal.
 
@@ -48,6 +66,14 @@ every command in the `sxhkdrc` will begin with that key.
 
 Rofi menus are accessed via a set of `Super + Space` then `Super + <X>` -type
 commands.
+
+---
+
+**i3**
+
+I caved and tried it out. I really like it, mostly because it handles a couple
+things out of the box that bspwm does not. But I still prefer bspwm for the
+flexibility and simplicity.
 
 ## The Big One
 
@@ -75,8 +101,7 @@ functions in `after/plugin`.
 
 ---
 
-Snippets are in `.lua` format in `snippets`. All the current snippets are my
-own, but you can find more online. Be careful, I have a lot of autosnippets
+Snippets are in `.lua` format in `snippets`.
 
 Custom Telescope pickers are in `lua/ui/pickers`
 
@@ -86,81 +111,16 @@ its fugly, that's why. It's random lol. Sometimes you get a masterpiece like the
 Notepad logo + Garfield, so it's aesthetically consistent with the state of
 these files.
 
-Some notable plugins/features:
+---
 
-- nvim-telescope: I love nvim-telescope. I have too many keybinds nvim-telescope
-  let's me make even more : )
-- LSP: mason, mason-lspconfig, null-ls, and nvim-lspconfig
-- nvim-tree: I have a LOT of custom functionality here
-- nvim-web-devicons
-- Completion via nvim-cmp
-- Treesitter
-- Diagnostics: trouble
-- Motions: nvim-surround, tabout.nvim, Comment.nvim, and leap.nvim
-- Tabline and Statusline: tabby.nvim, lualine.nvim
-- Notifications: nvim-notify, fidget.nvim (for in-buffer status for LSP)
-- Folds: Ufo (still configuring this one)
-- which-key.nvim: Documentaion for keybinds (I have not been a very good keybind
-  document-er)
-- Documentation viewing: LSPSaga, nvim-telescope
-
-Some stuff I may start/stop using soon:
-
-- Shade.nvim - Hates funny buffer operations. Can likely replicate the behavior
-  with an aucommand anyway
-- Drop.nvim - needs an opaque background, but also busts nvim-tree buffers
-- link-visitor.nvim - hasn't broken anything yet, but works 1/3 of the time.
-  Probably my fault
-- which-key - doesn't fit my personal philosophy on contextual, flowmap-styled keybinds.
-  It _could_ but it's really hard to make it work like I _really_ want.
-- neotest: integrated testing tools, just haven't set it up yet
-
-### Completion
-
-- buffer
-- path
-- commands
-- NerdFont glyphs
-- Snippets with LuaSnip
-
-### Color Schemes
-
-> NOTE: The opacity of Nvim is based on the opacity settings of your terminal
-> emulator. If you use the Nvim GUI, then you don't have to worry about that kind
-> of stuff.
-
-I use `nightfox.nvim` with the `duskfox` palette. It's a nice,
-not-too-dark-or-bright dark theme with a green tint.
-
-There's also...
-
-- tokynight
-- gruvbox-material (less straining Gruvbox, my old favorite)
-- neosolarized
-- vim-substrata
-- tender
-- lush
-- nvim-base16 (base16 color scheme collection, check `lua/ui/look`)
-
-### Custom Telescopes: `lua/ui/pickers`
-
-> Note: Most of these are half-finished. The tabs picker one in particular encompasses
-> logic I'd like to extract to a regular keybind.
-
-The default options for each are in the `defaults` folder.
-
-- journal-picker: personal notes and stuff
-- session-picker: I hated every session management plugin, so I built a simpler
-  interface. Saves sessions to `~/.config/nvim/sessions/`
-- tab-manager: tab-switching and reordering
-- config-files: for quick editing nvim config files
-- highlight-picker: helper for high-str.nvim
+Check out [neovim.md](./nvim.md) for more info on bindings and plugins.
 
 ## Other stuff I use
 
 - MPD w/ NCMPCPP (pavucontrol to swap headsets)
-- VLC
+- VLC _AND_ mpc (different use cases)
 - Ranger
 - Zathura
 - Discord Canary
 - Brave
+- qutebrowser

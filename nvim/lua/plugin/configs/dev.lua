@@ -1,4 +1,4 @@
-print("Loaded base plugins.")
+-- print("Loaded base plugins.")
 
 return {
 
@@ -44,11 +44,15 @@ return {
 	-- diagnostic view
 	"nvim-treesitter/nvim-treesitter",
 	"nvim-treesitter/nvim-treesitter-textobjects",
+	"nvim-treesitter/playground",
 	"windwp/nvim-ts-autotag",
+	"JoosepAlviste/nvim-ts-context-commentstring", -- commentstring TO in embeddeded languages (like Vue, React)
 
 	-- debugger
-	-- 'mfussenegger/nvim-dap',
-	-- 'rcarriga/nvim-dap-ui',
+	"mfussenegger/nvim-dap",
+	"rcarriga/nvim-dap-ui",
+	"mxsdev/nvim-dap-vscode-js",
+	{ "microsoft/vscode-js-debug", opt = true, run = "npm install --legacy-peer-deps && npm run compile" },
 	-- 'simrat39/symbols-outline.nvim',
 
 	-- refactoring
@@ -59,10 +63,10 @@ return {
 	-- NeoTest Plugins
 	"nvim-neotest/neotest-python",
 	"nvim-neotest/neotest-vim-test",
+	"Issafalcon/neotest-dotnet", -- Still a wip, so may not completely work (looks good enough rn)
 	"nvim-neotest/neotest-plenary",
 	"haydenmeade/neotest-jest",
 	"nvim-neotest/neotest-go",
 	"MrcJkb/neotest-haskell",
-	"Issafalcon/neotest-dotnet",
 	"rouge8/neotest-rust",
 }

@@ -13,6 +13,18 @@ M.borderStyle = {
 		side_left = "│",
 		side_right = "│",
 	},
+	{
+		top_center = "─",
+		top_left = "┌",
+		top_right = "┐",
+		side_middle = "│",
+		side_right = "│",
+		side_left = "│",
+		bottom_center = "─",
+		bottom_right = "┘",
+		bottom_left = "└",
+		-- side= "│",
+	},
 }
 
 return M

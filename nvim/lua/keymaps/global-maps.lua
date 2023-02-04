@@ -1,11 +1,40 @@
 local setKey = vim.keymap.set
 local api_keymap = vim.api.nvim_set_keymap
+local api = vim.api
 local global = vim.g
 
 -- Helpers
 -- local helpers_status, helpers = pcall(require, "global.functions")
 -- if not helpers_status then
 --   print("error in lua.global configs: can't find helpers")
+-- end
+local function this_window()
+	return api.nvim_win_get_config(0)
+end
+
+local function this_buffer()
+	local all_options = api.nvim_get_all_options_info()
+	local win_number = api.nvim_get_current_win()
+	local v = vim.wo[win_number]
+	local all_options = api.nvim_get_all_options_info()
+	local res_as_string = ""
+	local res_as_table = {}
+
+	for key, val in pairs(all_options) do
+		if val.global_local == false and val.scope == "win" then
+			res_as_string = res_as_string .. "|" .. key .. "=" .. tostring(v[key] or "<not set>") .. "\n"
+			local table_str = key .. "=" .. tostring(v[key] or "<not set>")
+			table.insert(res_as_table, table_str)
+		end
+	end
+	return {
+		str = res_as_string,
+		table = res_as_table,
+	}
+end
+
+-- local function this_tabpage()
+--   return api.nvim_win_get_config(0)
 -- end
 
 ------------------------------
@@ -17,19 +46,26 @@ local silent = { silent = true }
 local sn = { silent = true, remap = false }
 local esc = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 
+-- FIXME: Utilize globals in keybindings
 global.mapleader = ","
-global.maplocalleader = ";"
+global.map_alt_leader = ";"
 global.script_leader = "_"
 
 ------------------------------
 -- => Mappings
 ------------------------------
+-- TODO:
+-- Show diff in split
+-- setKey("n", "<Space>dl", ":w !diff % -<CR>", remap)
 
 -- Movement (just a lil faster)
 setKey("", "J", "5j")
 setKey("", "K", "5k")
 setKey("", "0", "^")
 setKey("", "<Bar>", "^i")
+
+-- Yankin'
+setKey("n", "<Leader>ya", ":%y<CR>", { noremap = false, silent = true })
 
 -- MAKE (Space)
 -- Space Is Useful : )
@@ -90,13 +126,6 @@ setKey("n", "<leader>sh", "<C-W>H")
 setKey("n", "<leader>sl", "<C-W>L")
 setKey("n", "<leader>s<Space>", "<C-W>x")
 
--- FIXME: Necessary?
-setKey("n", "<leader>sr", "<C-W>r")
--- FIXME: Necessary?
-setKey("n", "<leader>dl", ":vsplit<CR>") -- Vertical Split (L | R)
--- FIXME: Necessary?
-setKey("n", "<leader>dj", ":split<CR>") -- Horizontal Split (T / B)
-
 -- Prompt for Window Focus
 setKey("n", "<leader>f", ":sbuffer ")
 setKey("n", "<M-h>", "<C-w>R") -- Rotate backwards
@@ -153,38 +182,15 @@ end
 vim.on_key(toggle_hlsearch, ns)
 
 -- Quick View
-setKey("n", "<leader>2", "<cmd>mess <cr>")
-
--- Re-Source Config
-setKey("n", ";<Tab>r", "", {
-	silent = true,
-	desc = "reload init.lua",
-	callback = function()
-		vim.cmd([[
-    update ~/.config/nvim/init.lua
-    source ~/.config/nvim/init.lua
-    ]])
-		require("notify").notify("Nvim config successfully reloaded!", vim.log.levels.INFO, { title = "nvim-config" })
-	end,
-})
-setKey("n", ";<Tab>o", "", {
-	silent = true,
-	desc = "reload plugin config",
-	callback = function()
-		vim.cmd([[
-    update ~/.config/nvim/after/plugin/_after.lua
-    source ~/.config/nvim/after/plugin/_after.lua
-    ]])
-		require("notify").notify(
-			"Nvim _after.lua successfully reloaded!",
-			vim.log.levels.INFO,
-			{ title = "nvim-config" }
-		)
-	end,
-})
+-- setKey("n", "<leader>2", "<cmd>mess <cr>")
+setKey("n", "<Space>2", "<cmd>mess <cr>")
 
 -- Fix popup lingering
-setKey("n", ",<Tab>", ":popup_clear(1)<CR>", silent)
+-- Works for notifications and choice node pop-ups
+setKey("n", ",<Tab>", function()
+	choice_popup_close()
+	require("notify").dismiss()
+end, silent)
 
 -- Copy + Paste to system clipboard
 -- FIXME: run :h clipboard for more info
@@ -201,14 +207,19 @@ h : filename modifier "dirname"
 -- Change directory for current buffer
 setKey(
 	"n",
-	"<Leader>cd",
+	"<Leader>cdl",
 	function()
-		vim.cmd({ cmd = "lcd", args = { "%:h" } })
-		print("Changed local cd")
+		vim.cmd({ cmd = "lcd", args = { "%:p:h" } })
+		print("Changed local cd for this window")
 	end,
 	-- ":lcd %:h<CR>",
 	silent
 )
+
+setKey("n", "<leader>cdg", function()
+	vim.cmd(":Glcd")
+	print("Changed local cd to Git directory")
+end)
 
 -------------------------
 -- => Meta Stuff
@@ -221,9 +232,42 @@ end)
 -- => Debug
 ------------------------------
 -- setKey("i", "<m-h>", "<esc>dBxi", silent)
--- setKey("i", "<C-a>", function()
--- 	print(vim.cmd("set filetype?"))
+-- setKey("i", ",buf", function()
+-- 	print(vim.cmd("set buftype?"))
+-- 	-- print(vim.cmd("set filetype?"))
 -- end)
+
+setKey(
+	"n",
+	"<leader><leader>vima",
+	[[<Cmd>new<bar>put =execute('lua print(vim.inspect(vim))')
+<CR>]],
+	{ noremap = true, silent = true }
+)
+
+setKey("n", "<leader><leader>vimw", function()
+	local window_config = this_window()
+	local to_print = {}
+
+	for s in vim.inspect(window_config):gmatch("[^\n]+") do
+		table.insert(to_print, s)
+	end
+
+	vim.cmd("new")
+	api.nvim_buf_set_text(0, 0, 0, 0, 0, to_print)
+end, { noremap = true, silent = true })
+
+setKey("n", "<leader><leader>vimb", function()
+	local buf_opts = this_buffer().table
+	local to_print = {}
+
+	-- for s in vim.inspect(window_config):gmatch("[^\n]+") do
+	-- 	table.insert(to_print, s)
+	-- end
+
+	vim.cmd("new")
+	api.nvim_buf_set_text(0, 0, 0, 0, 0, buf_opts)
+end, { noremap = true, silent = true })
 --
 -- setKey("n", "<leader><space>di", vim.inspect())
 -- setKey("n", "<leader><space>di", function()
@@ -239,12 +283,12 @@ end)
 -------------------------
 -- => Function Keys
 -------------------------
-setKey("n", "<F3>", ":checkhealth<CR>")
+setKey("n", "<F12>", ":checkhealth<CR>")
 
 -------------------------
 -- => Files
 -------------------------
-setKey("n", "<Space>x", "<CMD>!Chmod +x %<CR>")
+setKey("n", "<Space>x", "<CMD>!chmod +x %<CR>")
 
 -------------------------
 -- =>  Insert Mode
@@ -260,3 +304,5 @@ setKey("i", "<c-h>", "", noremap)
 setKey("n", "<C-.>", "")
 setKey("i", "<Tab>", "<Tab>")
 setKey("i", "<C-p>", "")
+setKey("n", "<F1>", "")
+setKey("v", "<F1>", "")

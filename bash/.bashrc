@@ -4,6 +4,7 @@
 
 [[ -f "$HOME/.config/shell/.aliases" ]] && source "$HOME/.config/shell/.aliases"
 [[ -f "$HOME/.config/shell/.funcs" ]] && source "$HOME/.config/shell/.funcs"
+[[ -f "$HOME/.config/shell/.env" ]] && source "$HOME/.config/shell/.env"
 [[ -f "$HOME/.config/shell/.sources" ]] && source "$HOME/.config/shell/.sources"
 [[ -f "$HOME/.config/bash/.bash_aliases" ]] && source "$HOME/.config/bash/.bash_aliases"
 [[ -f "$HOME/.config/bash/.bash_options" ]] && source "$HOME/.config/bash/.bash_options"

@@ -50,13 +50,13 @@ autocmd("VimEnter", {
 			-- cmd([[colorscheme nordfox]])
 			-- cmd([[colorscheme neosolarized]]) -- Not working???
 			-- cmd([[colorscheme substrata]])
-			cmd([[colorscheme tender]])
+			-- cmd([[colorscheme tender]])
 			-- cmd([[colorscheme catppuccin]])
 			-- cmd([[colorscheme catppuccin-latte]])
 			-- cmd([[colorscheme catppuccin-mocha]])
 			-- cmd([[colorscheme catppuccin-frappe]])
 			-- cmd([[colorscheme catppuccin-machiatto]])
-			-- cmd([[colorscheme oh-lucy]])
+			cmd([[colorscheme oh-lucy]])
 			-- cmd([[colorscheme oh-lucy-evening]])
 		end
 	end,

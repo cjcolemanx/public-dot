@@ -14,4 +14,5 @@ comment.setup({
   toggler = keys.toggler,
   opleader = keys.opleader,
   extra = keys.extra,
+  pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 })

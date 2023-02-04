@@ -1,3 +1,6 @@
+# Use this to find key names
+# xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
+
 ###########################
 ###      ~ SXHKD ~      ###
 ###########################
@@ -5,6 +8,8 @@
 ### Terminals
 super + {_, alt} + Return 
 	{kitty, alacritty}
+# super + Return 
+# 	kitty
 
 ###########################
 ###   ~ Super Space ~
@@ -19,9 +24,13 @@ super + {_, alt} + Return
 ### Quick Open
 super + space; super + {w}
   {brave}
+super + {_, shift + } b
+	{qutebrowser, brave}
+
 super + o
   bash ~/.config/polybar/grayblocks/scripts/launcher.sh &
-super + shift + o
+
+alt + tab
   rofi -show combi -combi-modi "window"
 
 ### Rofi Launchers
@@ -47,26 +56,37 @@ super + space; super + {slash}
   bash  {~/.config/rofi/scripts/my-scripts/keys_please.sh &}
 
 ### Other Apps/Things
-super + space; super + {c}
-  clipmenu 
-super + u
+
+# super + `
+super + grave 
 	/home/charles/.config/sxhkd/scripts/scratchpad.sh
+
+#TODO:
+### Run
+# super + r
+# 	bash {~/.config/rofi/scripts/my-scripts/}
 
 # FIXME:
 # super + space; super + {f}
 #   bash  {~/.config/rofi/scripts/my-scripts/finders.sh &}
 
+#############################
+###   ~ Alt ~
+###
+### Notifications and Other
+#############################
+
 ### Dunst
 # Hide All Notifications
-super + space; super + space
+alt + backslash
   dunstctl close-all
 
 # Display Notifications
-super + minus
+alt + shift + backslash
   dunstctl history-pop
 
 # Close Latest Notification
-super + equal
+alt + BackSpace
   dunstctl close
 
 ##########################
@@ -90,33 +110,50 @@ super + ctrl + s
 
 ### Audio
 # Volume
-super + ctrl + {j,k}
+# super + ctrl + {j,k}
+alt + ctrl + {j,k}
   mpc volume {-7,+7}
 
 # Incremental Seeking
-super + ctrl + {comma,period}
+# super + ctrl + {comma,period}
+alt + ctrl + {comma,period}
   mpc seekthrough {-00:00:05,+00:00:05}
 
 # Track Switching
-super + ctrl + {h,l}
+# super + ctrl + {h,l}
+alt + ctrl + {h,l}
   mpc {prev,next}
 
 # Play/Pause/Stop
-super + ctrl + space
+# super + ctrl + space
+alt + ctrl + space
   mpc toggle
-super + ctrl + BackSpace
+# super + ctrl + BackSpace
+alt + ctrl + BackSpace
   mpc stop
-super + ctrl + Return
+# super + ctrl + Return
+alt + ctrl + Return
   mpc play
+
+# super + space; super + {c}
+alt + {c}
+  clipmenu 
+
+# Windows-like Behavior
+# FIXME: dumb rofi - no combi enabled.
+alt + Tab
+	rofi -show combi -combi-modes "window"
 
 # Lil' GUI
 # NOTE: Depends on https://github/GuradKenzie/miniplayer
-super + ctrl + m
+# super + ctrl + m
+alt + shift + m
 	/home/charles/.config/sxhkd/scripts/miniplayer.sh
 
 ### Output Routing
 # ALSA stuff is too hard, so I use this GUI
-super + ctrl + equal
+# super + ctrl + equal
+alt + equal
 	pavucontrol --class pavucontrol
 
 ### Headset Controls
@@ -142,12 +179,23 @@ super + {_,shift + } n
   bspc node -f {next,prev}
 
 # Focus Next/Prev Node (Only This Workspace)
-super + bracket{left,right}
+# super + bracket{left,right}
+super + {u,i}
   bspc node -f {prev,next}.local
 
+# super + {_, shift + } Tab
+#   bspc desktop -f {prev,next}.local
+
 # Switch Desktop
-super + {_, shift + } Tab
-  bspc desktop -f {prev,next}.local
+# super + {BackSpace, backslash}
+#   bspc desktop -f {prev,next}.local
+
+super + BackSpace
+  bspc desktop -f prev.local
+
+# NOTE: MAJOR: this is technically equivalent to super + backslash!
+super + shift + Tab
+	bspc desktop -f next.local
 
 super + t; super + {h, l} 
   bspc desktop -f {prev,next}.local
@@ -157,16 +205,47 @@ super + m
   bspc desktop -l next
 
 # close window
-super + w
+super + q
   bspc node -c
 
 # Change Window Type
-super + slash; super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+super + {t,shift + t}
+	bspc node -t {tiled,pseudo_tiled}
+
+super + f
+	bspc node -t floating
+
+# "Minimize" window
+# super + period
+super + slash
+	bspc node -g hidden && bash ~/.config/sxhkd/scripts/append_hidden_window_to_file.sh
+
+# unhide first unhidden in stack
+super + y
+	bspc node $(bspc query -N -n .hidden | tail -n1) -g hidden=off
+
+# "Maximize" window
+super + comma
+	bspc node -t fullscreen
+
+# "Hide" window
+# super + comma
+# 	bspc node -g private
+
+# "IDK" window
+super + apostrophe
+	bspc node -g activate
+
+super + v
+	bspc node -g sticky
+
+
 
 # Focus other monitor
-super + f; super + {h,l}
-  bspc monitor -f {prev, next}
+# super + f; super + {h,l}
+super + semicolon
+  bspc monitor -f next
+  # bspc monitor -f {prev, next}
 
 ### Re-Ordering and Sending
 # Send to desktop
@@ -178,40 +257,95 @@ super + {g, shift + g}
 	bspc node -s {biggest, smallest}.local
 
 # Rotate Desktop
-super + r; super + {h,l}
+super + c; super + {h,l}
 	bspc node @/ -R {270, 90}
 
 # Rotate Nodes
-super + r; super + {j,k}
+super + c; super + {j,k}
 	bspc node @/ -C {forward, backward}
 
-# send to monitor
+# [s]end to monitor
 super + s ; super + {l,h}
   bspc node -m {next,prev} --follow
 
-# Expand a window by moving one of its side outward
-super + alt + {h,j,k,l}
-  bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+### Resizing and Non-Tree Movement
 
-# Contract a window by moving one of its side inward
-super + alt + c; super + alt + {h,j,k,l}
-	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+# Not root
+super + bracket{left,right}
+  bspc node -z left {-20, 20} 0
+
+super + alt + bracket{left,right}
+  bspc node -z left {-60, 60} 0
+
+# Root
+super + ctrl + bracket{left,right}
+  bspc node -z right {-20, 20} 0
+
+super + ctrl + alt + bracket{left,right}
+  bspc node -z right {-60, 60} 0
+
+# Not Bottom
+super + {minus,equal}
+  bspc node -z bottom 0 {-20, 20}
+
+super + alt + {minus,equal}
+  bspc node -z bottom 0 {-60, 60}
+
+# Bottom
+super + ctrl + {minus,equal}
+  bspc node -z top 0 {-20, 20}
+
+super + ctrl + alt + {minus,equal}
+  bspc node -z top 0 {-60, 60}
+
+#### Floating Windows
 
 # Move Floating Window
-super + shift + {a,s,w,d}
+super + ctrl + {h,j,k,l}
 	bspc node focused -v {-40 0, 0 40, 0 -40, 40 0}
+
+# Move Floating Window Faster
+super + ctrl + alt + {h,j,k,l}
+	bspc node focused -v {-120 0, 0 120, 0 -120, 120 0}
+
+
 
 ### Receptacles
 # NOTE: MAJOR WIP - receptacles are difficult to manage, and the bspc syntax isn't helping
 # Insert Receptacle
-super + i; super + r; super + {h,j,k,l}
-	bspc node -i {west,south,north,east}
+# super + i; super + r; super + {h,j,k,l}
+# 	bspc node -i {west,south,north,east}
 
 # Move Focused into Receptacle
-super + i; super + m; super + {h,j,k,l}
-	bash ~/.config/bspwm/scripts/move-to-receptacle.sh
+# super + i; super + m; super + {h,j,k,l}
+# 	bash ~/.config/bspwm/scripts/move-to-receptacle.sh
 
 # FIXME:
 # Kill Receptacle in direction
 # super + i; super + q; super + {h,j,k,l}
 # 	bspc node -k {west,south,north,east}.leaf.\!window
+
+######
+## Text Editing
+######
+
+# NOTE: debugging 
+# control + alt + super + l
+# echo "Class: " > /tmp/window_details; \
+# prop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d '"' -f 2 >> /tmp/window_details; \
+# cho "\nname: " >> /tmp/window_details; \
+# xprop -id "$(xdotool getwindowfocus)" WM_NAME | cut -d '"' -f 2 >> /tmp/window_details
+
+# control + BackSpace
+# 	run_if_window_matches --name "NVIM" \
+# 	xte "keyup BackSpace" "keyup Control_L" "key Delete" "keydown Control_L" 
+# run_if_window_matches --class "(zsh)" \
+# xte "keyup BackSpace" "keyup Control_L" "key Delete" "keydown Control_L" 
+
+# FIXME:
+alt + h
+	xte "keyup Meta_L" "keyup Left" "key Home" "keydown Meta_L" "keyup Meta_L" "keydown Meta_L"
+
+### Alt+Tab behavior
+# alt + tab
+# 	rofi -show window

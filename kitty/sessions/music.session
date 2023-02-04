@@ -1,0 +1,7 @@
+# Album Art
+launch --hold --allow-remote-control zsh -c "kitty +kitten icat --place 400x400@0x0 --align=left /tmp/album_cover.png"
+
+# Library
+launch zsh -c "ncmpcpp --config='~/.config/ncmpcpp/config'"
+# Visualizer
+launch zsh -c "ncmpcpp --config='~/.config/ncmpcpp/vis-only-config'"

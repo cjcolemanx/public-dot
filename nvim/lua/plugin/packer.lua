@@ -104,6 +104,7 @@ return packer.startup({
     -- => LSP
     -------------------------
     use("folke/neodev.nvim") -- NeoVim-focused hoverdoc support
+    use("jose-elias-alvarez/nvim-lsp-ts-utils")
 
     ------------------------------
     -- => Palettes
@@ -134,6 +135,7 @@ return packer.startup({
     use("glepnir/dashboard-nvim") -- NVIM Dashboard
     use("phaazon/mind.nvim") -- PKM/Wiki/Task MGMT
     use("xiyaowong/link-visitor.nvim") -- Quickly Open Links in Browser
+    use("kmonad/kmonad-vim") -- kmonad syntax
 
     ------------------------------
     -- => NeoVim Development

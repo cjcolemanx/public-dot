@@ -130,12 +130,14 @@ vim.api.nvim_create_autocmd("FileType", {
 		-- end, { silent = true, buffer = true })
 
 		-- Cleanup
-		vim.api.nvim_create_autocmd("BufLeave", {
-			group = "DashboardMappings",
-			callback = function()
-				vim.wo[winnr].cursorline = false
-			end,
-		})
+		-- vim.api.nvim_create_autocmd("BufLeave", {
+		-- 	group = "DashboardMappings",
+		-- 	callback = function()
+		-- 		if vim.cmd("set filetype?") ~= "dashboard" then
+		-- 			vim.wo[winnr].cursorline = false
+		-- 		end
+		-- 	end,
+		-- })
 	end,
 })
 

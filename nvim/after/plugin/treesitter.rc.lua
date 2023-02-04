@@ -12,6 +12,17 @@ ts.setup({
 	autotag = {
 		enable = true,
 	},
+	context_commentstring = {
+		enable = true,
+		enable_aoutcmd = false, -- To Work with Comment.nvim
+		-- javascript = {
+		--   __default = "// %s",
+		--   jsx_element = "{/* %s */}",
+		--   jsx_fragment = "{/* %s */}",
+		--   jsx_attribute = "{/* %s */}",
+		--   comment = "{/* %s */}",
+		-- },
+	},
 	ensure_installed = {
 		-- "angular",
 		"bash",

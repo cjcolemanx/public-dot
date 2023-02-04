@@ -19,7 +19,7 @@ wo.number = true
 wo.rnu = true
 
 o.mouse = "a"
-o.title = true
+-- o.title = true
 o.autoindent = true
 o.smartindent = true
 o.hlsearch = true

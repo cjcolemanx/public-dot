@@ -1,6 +1,8 @@
 local M = {}
 
 function M.bind_pickers(msg)
+	local p_picker = require("ui.pickers.project-picker")
+	p_picker.setup()
 	vim.keymap.set("n", ";<space>s", function()
 		require("ui.pickers.session-picker").open()
 	end)
@@ -21,6 +23,11 @@ function M.bind_pickers(msg)
 		--   require("notify").notify("No Tabs to Manage!", vim.log.levels.DEBUG, { title = "tab-manager" })
 		-- end
 	end)
+	-- FIXME: issues with git status and multiple jobs
+	vim.keymap.set("n", ";<space>p", function()
+		-- require("ui.pickers.project-picker").open()
+		-- p_picker.open()
+	end)
 end
 
 local legend = {
@@ -28,6 +35,7 @@ local legend = {
 	{ ";<Space>j", description = "Custom Telescope: Journal Picker (WIP)" },
 	{ ";<Space>hl", description = "Custom Telescope: Highlight Picker (Search Highlight groups)" },
 	{ ";<Space>c", description = "Custom Telescope: Config File Picker" },
+	-- { ";<Space>p", description = "Custom Telescope: Project Picker" },
 	{ ";<Space>t", description = "Custom Telescope: Tab Manager" },
 }
 

@@ -24,11 +24,17 @@ add_simple("ta", "Global: [T]ab [A]dd (New Tab)")
 add_simple("tc", "Global: [T]ab [C]lose")
 add_simple("tl || th", "Global: [T]ab Next/Prev")
 add_simple("tsl || tsh", "Global: [T]ab [S]end Next/Prev")
-add_simple("<Leader>2", "Global: Show Vim Messges")
+-- add_simple("<Leader>2", "Global: Show Vim Messges")
+add_simple("<Space>2", "Global: Show Vim Messges")
 add_simple(",<Tab>", "Global: Clear Popups (Fix UI)")
-add_simple("<Leader>cd", "Global: [C]hange Local [D]irectory (To Current Buffer)")
+add_simple("<Leader>cdl", "Global: [C]hange Local Directory (To Current Buffer)")
+add_simple("<Leader>cdg", "Global: [C]hange Local Directory (To [G]it Root Directory)")
 add_simple("Alt+Y", "Global: TODO - Global Yanker")
-add_simple("F3", "Global: Run Checkhealth")
+add_simple("F12", "Global: Run Checkhealth")
+
+add_simple("<Leader>vima", "Global(debugging): Open New Window With All Vim Configurations")
+add_simple("<Leader>vimb", "Global(debugging): Open New Window With Current Buffer's Options")
+add_simple("<Leader>vimw", "Global(debugging): Open New Window With Current Window's Configurations")
 
 add_simple("<Space>c", "Global: MAKE [C]change in Word")
 add_simple("<Space>d", "Global: MAKE [d]elete in Word")
@@ -46,5 +52,7 @@ add_simple("<Space>n", "Global: MAKE Buffer Swap With Less Recent")
 add_simple("<Space>p", "Global: MAKE Buffer Swap With More Recent")
 add_simple("<Space>x", "Global: MAKE Current File E[x]ecutable")
 add_simple("<Space>s", "Global: MAKE Search and Replace (Uses current word under cursor)")
+
+add_simple(";cc", "External: [c]url [c]heat for a hint")
 
 return legend

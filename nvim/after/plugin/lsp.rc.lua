@@ -55,7 +55,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- => SERVER SETUP
 -------------------------
 -- TypeScript AND JavaScript
-local cmd = { vim.fn.stdpath("data") .. "/mason/bin/typescript-language-server", "--stdio" }
+local ts_js_cmd = { vim.fn.stdpath("data") .. "/mason/bin/typescript-language-server", "--stdio" }
 
 -------------------------
 -- => JavaScript + Web
@@ -66,20 +66,42 @@ lsp.flow.setup({
 })
 
 lsp.tsserver.setup({
-	on_attach = on_attach,
+	on_attach = function(client, bufnr)
+		on_attach(client, bufnr)
+
+		local ts_utils = require("nvim-lsp-ts-utils")
+
+		ts_utils.setup({
+			debug = false,
+			disable_commands = false,
+			enable_import_on_completion = false,
+			import_all_timeout = 5000,
+			eslint_enable_code_actions = false,
+			eslint_enable_disable_comments = false,
+			eslint_bin = "eslint",
+			eslint_config_fallback = nil,
+			eslint_enable_diagnostics = false,
+			update_imports_on_move = true,
+			require_confirmation_on_move = false,
+			watch_dir = nil,
+		})
+
+		ts_utils.setup_client(client)
+		require("keymaps.lsp").javascript(bufnr)
+	end,
 	filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-	cmd = cmd,
+	cmd = ts_js_cmd,
 	init_options = { hostInfo = "neovim" },
 	capabilities = capabilities,
 })
 
-lsp.emmet_ls.setup({
-	on_attach = on_attach,
-	filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less" },
-	cmd = { "emmet-ls", "--stdio" },
-	init_options = { hostInfo = "neovim" },
-	capabilities = capabilities,
-})
+-- lsp.emmet_ls.setup({
+-- 	on_attach = on_attach,
+-- 	filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less" },
+-- 	cmd = { "emmet-ls", "--stdio" },
+-- 	init_options = { hostInfo = "neovim" },
+-- 	capabilities = capabilities,
+-- })
 
 -- TODO:
 -- nvim_lsp.tailwindcss.setup {}
@@ -150,7 +172,7 @@ lsp.sumneko_lua.setup({
 	settings = {
 		Lua = {
 			diagnostics = {
-				globals = { "vim" },
+				globals = { "vim", "use" },
 			},
 			workspace = {
 				library = vim.api.nvim_get_runtime_file("", true),
@@ -252,3 +274,81 @@ protocol.CompletionItemKind = {
 	"ﬦ", -- Operator
 	"", -- TypeParameter
 }
+count_chars = {
+	[1] = "",
+	[2] = "₂",
+	[3] = "₃",
+	[4] = "₄",
+	[5] = "₅",
+	[6] = "₆",
+	[7] = "₇",
+	[8] = "₈",
+	[9] = "₉",
+	["+"] = "",
+}
+
+-- {
+--  default = {
+--     -- if you change or add symbol here
+--     -- replace corresponding line in readme
+--     Text = "",
+--     Method = "",
+--     Function = "",
+--     Constructor = "",
+--     Field = "ﰠ",
+--     Variable = "",
+--     Class = "ﴯ",
+--     Interface = "",
+--     Module = "",
+--     Property = "ﰠ",
+--     Unit = "塞",
+--     Value = "",
+--     Enum = "",
+--     Keyword = "",
+--     Snippet = "",
+--     Color = "",
+--     File = "",
+--     Reference = "",
+--     Folder = "",
+--     EnumMember = "",
+--     Constant = "",
+--     Struct = "פּ",
+--     Event = "",
+--     Operator = "",
+--     TypeParameter = "",
+--   },
+--   codicons = {
+--     Text = "",
+--     Method = "",
+--     Function = "",
+--     Constructor = "",
+--     Field = "",
+--     Variable = "",
+--     Class = "",
+--     Interface = "",
+--     Module = "",
+--     Property = "",
+--     Unit = "",
+--     Value = "",
+--     Enum = "",
+--     Keyword = "",
+--     Snippet = "",
+--     Color = "",
+--     File = "",
+--     Reference = "",
+--     Folder = "",
+--     EnumMember = "",
+--     Constant = "",
+--     Struct = "",
+--     Event = "",
+--     Operator = "",
+--     TypeParameter = "",
+--   },
+-- nvim_lua = "",
+-- treesitter = "",
+-- path = "ﱮ",
+-- buffer = "﬘",
+-- zsh = "",
+-- vsnip = "",
+-- spell = "暈",
+-- }

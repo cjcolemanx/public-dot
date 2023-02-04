@@ -59,6 +59,8 @@ telescope.setup({
 				preview_height = 0.8,
 			},
 		},
+		-- NOTE: no keybind atm
+		notify = {},
 	},
 })
 
@@ -69,6 +71,7 @@ telescope.load_extension("media_files")
 telescope.load_extension("refactoring")
 telescope.load_extension("harpoon")
 telescope.load_extension("undo")
+telescope.load_extension("notify")
 
 -- Add keybinds
 require("keymaps.plugin-maps").telescope_binds(builtin, utils, previewers)

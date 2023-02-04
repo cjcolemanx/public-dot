@@ -1,1 +1,13 @@
+# run showkey -a for key values
+bindkey -r "^J"
+bindkey -r "^K"
+bindkey -r "^H" # Reads as backspace?
+
 bindkey "^L" clear-screen
+bindkey "^J" forward-word
+bindkey "^K" backward-word
+
+bindkey "^[j" dirhistory_zle_dirhistory_up
+bindkey "^[k" dirhistory_zle_dirhistory_down
+bindkey "^[u" dirhistory_zle_dirhistory_back
+bindkey "^[i" dirhistory_zle_dirhistory_future

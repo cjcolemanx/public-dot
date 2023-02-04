@@ -1,9 +1,18 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# vim mode
+bindkey -v
+# emacs mode
+# bindkey -e
+
 ### => Source Configs
 [ -f "$HOME/.config/shell/.aliases" ] && source   "$HOME/.config/shell/.aliases"
 [ -f "$HOME/.config/shell/.funcs" ] && source     "$HOME/.config/shell/.funcs"
+[ -f "$HOME/.config/shell/.env" ] && source     "$HOME/.config/shell/.env"
 [ -f "$HOME/.config/shell/.sources" ] && source   "$HOME/.config/shell/.sources"
 [ -f "$HOME/.config/shell/.variables" ] && source "$HOME/.config/shell/.variables"
 [ -f "$HOME/.config/zsh/.zsh_aliases" ] && source "$HOME/.config/zsh/.zsh_aliases"
@@ -13,11 +22,6 @@
 #   . /usr/share/bash-completion/bash_completion
 
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# vim mode
-bindkey -v
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -98,12 +102,12 @@ plugins=(
   sudo                     # auto 'sudo' your last command (double-ESC <- bind)
   vi-mode                  # enhanced vim-mode
   zsh-autosuggestions      # autosuggestions, obv
-  zsh-navigation-tools     # crazy ass set of tools for zsh
+  zsh-navigation-tools     # mostly useless set of tools for zsh
   zsh-syntax-highlighting  # highlight as you type
   z                        # list frequent and recent folders
 )
 
-bindkey "^L" clear-screen
+# bindkey "^L" clear-screen
 
 source $ZSH/oh-my-zsh.sh
 
@@ -128,6 +132,8 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
+
+zstyle ':completion:*' menu select  # completion menu
 
 # Splashscreen
 archey3
